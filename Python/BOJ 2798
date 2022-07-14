@@ -1,0 +1,18 @@
+from itertools import *
+
+n, m = map(int, input().split())
+
+num_list = list(map(int, input().split()))
+
+printList = list(combinations(num_list, 3))
+
+max = 0
+for j in printList:
+    a = sum(j)
+
+    if m >= a and max <= a:
+        max = a
+        if max == m:
+            break
+
+print(max)
