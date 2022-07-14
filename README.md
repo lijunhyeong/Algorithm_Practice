@@ -1,1 +1,2 @@
-# Algorithm_Practice
+### Algorithm_Practice
+#### Python & Kotlin
