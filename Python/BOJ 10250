@@ -1,0 +1,28 @@
+case = int(input())
+
+for i in range(case):
+    h, w, n = map(int, input().split())
+
+    # 층 yy, 호 xx
+    if n % h == 0:
+        yy = str(h)
+        xx = int(n/h)
+    else:
+        yy = str(int(n%h))
+        xx = int(n/h)+1
+
+    if xx < 10:
+        aa = '0' + str(xx)
+        print(yy+aa)
+    else:
+        print(yy+str(xx))
+   
+
+''' explanation
+호텔의 층(h)과 방문객(n)이 나누어 떨어질 경우 높이가 층이 되고
+호수는 나눈 값이 된다.
+
+호텔의 층(h)과 방문객(n)이 나누어 떨어지지 않을 경우
+n%h가 배정 받을 층수가 되고
+n/h+1 값이 호수가 된다.
+'''
