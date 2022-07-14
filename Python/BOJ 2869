@@ -1,1 +1,19 @@
+a, b, c = map(int, input().split())
 
+answer = 1
+h = c-a     # 올라야 할 높이      
+d = a-b         # 매일 오를 거리
+
+if h % d == 0:
+    print(int(answer+h/d))
+else:
+    print(int(answer+h/d+1))
+
+''' explanation
+3 line: 아침에 시작하기 때문에 무조건 한 번은 오르게 되어있으므로 +1을 하고 시작한다.
+4 line: 처음에 +1을 하고 시작하기 때문에 간 거리만큼 빼준다.
+
+h % d 올라야할 거리를 매일 오를 거리로 나누어 떨어지면 정답.
+만약 나누어 떨어지지 않는다면 한 번 더 올라가야하기 때문에 +1을 한다.
+
+'''
