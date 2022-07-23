@@ -1,0 +1,25 @@
+fun main() {
+
+
+    val n = readLine()!!.map { it.toInt() }
+
+    val case = readLine()!!.split(' ').map { it.toInt() }
+
+    var count =case.size
+    if (1 in case){
+        count-=1
+    }
+
+    for (i in case){
+        for (j in 2 until i){
+            if (i%j==0){
+                count-=1
+                break
+            }
+        }
+    }
+
+    print(count)
+
+
+}
