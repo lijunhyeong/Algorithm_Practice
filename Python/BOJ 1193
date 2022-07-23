@@ -1,0 +1,55 @@
+## 내 코드 -- 시간초과
+n = int(input())
+
+turn = 1         # 분자, 분모 증가 구분
+num = 0          # 횟수
+fountatin=[1,1]  # [분자, 분모]
+for i in range(1, 10000001):
+    
+    for j in range(0, i):
+        num +=1
+        if n == num:
+            print('{}/{}'.format(fountatin[0], fountatin[1]))
+            exit()
+        
+        if j == i-1:
+            if turn % 2 == 1:       # turn이 홀수일 땐 분모 증가 
+                fountatin[1]+=1
+            else:                   # turn이 짝수일 땐 분자 증가
+                fountatin[0]+=1
+            turn +=1
+            break
+
+        # i가 홀수이면 분자+, 분모-
+        if i%2 ==0:
+            fountatin[0]+=1
+            fountatin[1]-=1
+        else:
+            fountatin[0]-=1
+            fountatin[1]+=1
+            
+  
+ ## 정답 코드. 
+ ## 참고: https://www.youtube.com/watch?v=bEQq9jvU_Hg
+ 
+ n = int(input())
+
+index = 0
+
+# 1) 어느 행에 들어갈 것인가?
+while True:
+    index+=1
+    sum = index*(index+1)/2
+    if n <= sum:
+        break
+
+# 2) 그 행에서 몇 번째 값 인가?
+num = int(n - (index-1)*index/2)
+
+# 3) 짝수 행인가 홀수 행인가?
+if index%2 == 0:
+    print("{}/{}".format(num, index-num+1))
+else:
+    print("{}/{}".format(index-num+1, num))
+
+ 
