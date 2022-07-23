@@ -1,0 +1,27 @@
+import java.util.*
+
+fun main() {
+
+
+    val s = Scanner(System.`in`)
+    val n = s.nextInt()
+    var index = 0
+
+    while (true){
+        index +=1
+        var sum = index*(index+1)/2
+        if (n<=sum){
+            break
+        }
+    }
+
+    val num = n-(index-1)*index/2
+
+    if (index%2==0){
+        print("${num}/${index-num+1}")
+    }else{
+        print("${index-num+1}/${num}")
+    }
+
+
+}
