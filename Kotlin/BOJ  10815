@@ -1,0 +1,26 @@
+import java.io.BufferedReader
+import java.io.InputStreamReader
+
+fun main() = with(BufferedReader(InputStreamReader(System.`in`))) {
+
+    // 상근이가 가지고 있는 숫자카드 개수
+    val n = readLine()!!.toInt()
+    // 상근이가 가지고 있는 카드에 적힌 정수
+    val nNumber = readLine().split(' ').map { it.toInt() }
+    // 상근이가 가지고 있는지 구해야할 카드 개수
+    val m = readLine()!!.toInt()
+    // 상근이가 가지고 있는지 구해야할 카드에 적힌 정수
+    val mNumber = readLine().split(' ').map { it.toInt() }
+
+    // list를 set으로 변환
+    val nNumberSet: Set<Int> = nNumber.toSet()
+
+    for (i in mNumber){
+        if (i in nNumberSet){
+            print("1 ")
+        }else{
+            print("0 ")
+        }
+    }
+
+}
