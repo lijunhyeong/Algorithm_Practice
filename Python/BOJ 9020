@@ -1,0 +1,37 @@
+import sys
+
+# 10000까지 소수 nList에 담기
+nList = list()
+for i in range(2,10001):
+    check = True
+    for j in range(2, int(i**0.5) + 1):    
+        if i%j==0:
+            check=False
+            break
+    if check:
+        nList.append(i)
+
+# 테스트 개수
+case = int(sys.stdin.readline())
+
+for j in range(case):
+    n = int(sys.stdin.readline())
+
+    a = n//2
+    b = n//2
+
+    if a not in nList and b not in nList:
+        while True:
+            a -=1
+            b +=1
+            if a in nList and b in nList:
+                break
+    print(a, b)
+
+'''
+20, 23 Line: a, b를 n//2로 나누어준다. 둘이 더했을 때, n이 됨
+23~28 Line: 
+a와 b가 nList에 없다면 while문을 탄다. 
+a가 작은 수에 속하기 때문에 a는 1씩 빼주고 b는 1씩 더해준다.
+a와 b가 nList에 속한다면 출력한다.
+'''
