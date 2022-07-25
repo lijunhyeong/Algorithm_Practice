@@ -1,0 +1,10 @@
+# 10000까지 소수 nList에 담기
+nList = list()
+for i in range(2,10001):
+    check = True
+    for j in range(2, int(i**0.5) + 1):    
+        if i%j==0:
+            check=False
+            break
+    if check:
+        nList.append(i)
