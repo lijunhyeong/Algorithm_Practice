@@ -1,0 +1,17 @@
+n = int(input())
+
+idx = 2
+
+while n>1:
+    if n%idx == 0:
+        n/=idx
+        print(idx)
+    else:
+        idx+=1
+
+
+'''
+idx로 n을 나눴을 때 0이되면 약수이기 때문에 n/idx를 하고 idx를 출력한다
+만약 나눠지지 않는다면 idx를 증가시킨다.
+n이 1이 되면 다 나눠진거기 때문에 종료한다.
+'''
