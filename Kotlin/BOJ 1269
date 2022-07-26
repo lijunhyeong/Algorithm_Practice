@@ -1,0 +1,16 @@
+import java.io.BufferedReader
+import java.io.InputStreamReader
+
+fun main() = with(BufferedReader(InputStreamReader(System.`in`))) {
+
+    var a = readLine().split(' ')
+
+    var aSet = readLine().split(' ').map { it.toInt() }
+    var bSet = readLine().split(' ').map { it.toInt() }
+
+    val aaSet: Set<Int> = aSet.toSet()
+    val bbSet: Set<Int> = bSet.toSet()
+
+
+    print(((aaSet-bbSet).size + (bbSet-aaSet).size))
+}
