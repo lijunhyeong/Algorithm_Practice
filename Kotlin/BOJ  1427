@@ -1,0 +1,26 @@
+package com.atob.kotlintest
+
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+fun main(){
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val n = br.readLine()
+    var arr = mutableListOf<Int>()
+    for (i in n){
+        arr.add(i-'0')
+    }
+    
+    arr.sortWith(reverseOrder())
+    for (i in arr){
+        bw.write(i.toString())
+    }
+
+    // bw.write()
+    bw.flush()
+    bw.close()
+}
