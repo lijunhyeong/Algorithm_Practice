@@ -1,26 +1,12 @@
-package com.atob.kotlintest
+import sys      # 빠른 입출력 sys.stdin.readline().rstrip()
 
-import java.io.BufferedReader
-import java.io.BufferedWriter
-import java.io.InputStreamReader
-import java.io.OutputStreamWriter
+n = list(sys.stdin.readline().rstrip())
+n.sort(reverse=True)
 
-fun main(){
-    val br = BufferedReader(InputStreamReader(System.`in`))
-    val bw = BufferedWriter(OutputStreamWriter(System.out))
+print("".join(n))
 
-    val n = br.readLine()
-    var arr = mutableListOf<Int>()
-    for (i in n){
-        arr.add(i-'0')
-    }
-    
-    arr.sortWith(reverseOrder())
-    for (i in arr){
-        bw.write(i.toString())
-    }
-
-    // bw.write()
-    bw.flush()
-    bw.close()
-}
+'''
+리스트로 수를 받은 후에
+내림차순 정렬을 해주고
+join을 통해 각 요소를 이어 붙여서 줄력한다.
+'''
