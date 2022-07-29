@@ -1,0 +1,16 @@
+import sys      # 빠른 입출력 sys.stdin.readline().rstrip()
+
+n = int(sys.stdin.readline().rstrip())
+arr = list(map(int, sys.stdin.readline().split()))
+
+setList = set(arr)
+
+dic = dict()
+
+cnt = 0
+for i in sorted(setList):
+    dic[i] = cnt
+    cnt+=1
+
+for i in arr:
+    print(dic[i], end=' ')
