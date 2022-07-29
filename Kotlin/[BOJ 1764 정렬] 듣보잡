@@ -1,0 +1,43 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+fun main(){
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val n = br.readLine().split(' ').map { it.toInt() }
+
+    val mapList = mutableMapOf<String, Int>()
+    // 듣도 못한 명단
+    for (i in 0 until n[0]){
+        val s = br.readLine()
+        mapList[s] = 1
+    }
+
+    var cnt = 0
+    // 보도 못한 명단
+    for (i in 0 until n[1]){
+        val s = br.readLine()
+        if (mapList[s] != null){
+            cnt+=1
+            var num = mapList[s]!!.toInt()
+            num +=1
+            mapList[s] = num
+        }
+    }
+    
+    // 듣보잡 수
+    bw.write("$cnt\n")
+    // 사전순으로
+    for (i in mapList.toSortedMap()){
+        if (i.value == 2){
+            bw.write("${i.key}\n")
+        }
+    }
+
+    bw.flush()
+    bw.close()
+}
+
