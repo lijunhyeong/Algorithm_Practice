@@ -1,0 +1,54 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+fun main(){
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val n = br.readLine().toInt()
+    val arr = br.readLine().split(' ').map { it.toInt() }
+    val m = br.readLine().toInt()
+    val arr2 = br.readLine().split(' ').map { it.toInt() }
+    // 빈도수 값을 저장할 맵
+    val hashmap = mutableMapOf<Int, Int>()    
+
+// version 1: 메모리 314072 KB / 시간 1528ms -------------------------------
+    for (i in arr){
+        if (hashmap[i]==null){
+            hashmap[i]=1
+        }else{
+            var nn : Int = hashmap[i]!!.toInt()
+            nn +=1
+            hashmap[i] = nn
+        }
+    }
+
+    for (i in arr2){
+        if (hashmap[i] == null){
+            bw.write("0 ")
+        }else{
+            bw.write("${hashmap[i]} ")
+        }
+    }
+// -------------------------------------------------------------------------
+    
+// version 2: 메모리 374180 KB / 시간 2164ms -------------------------------
+    for (i in arr2){
+        hashmap[i] = 0
+    }
+
+    for (i in arr){
+        hashmap.merge(i, 1, Int::plus)
+    }
+
+    for (i in arr2){
+        bw.write("${hashmap[i]} ")
+    }
+// -------------------------------------------------------------------------
+
+    bw.flush()
+    bw.close()
+}
+
