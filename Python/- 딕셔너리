@@ -1,0 +1,12 @@
+#  기본 값을 딕셔너리의 초기값으로 지정할 수 있다.
+from collections import defaultdict 
+
+# 자료형을 Int로 지정
+dic = defaultdict(int)
+
+for i in range(5):
+    # 초기값을 지정해 주지 않음
+    dic[i]
+
+print(dic)
+# Output: defaultdict(<class 'int'>, {0: 0, 1: 0, 2: 0, 3: 0, 4: 0})
