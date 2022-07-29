@@ -1,0 +1,36 @@
+
+// 조합(Combination) 함수
+fun <T> combination(answer: MutableList<List<T>>, el: List<T>, ck: Array<Boolean>, start: Int, target: Int) {
+    if(target == 0) {
+        answer.addAll( listOf(el.filterIndexed { index, t -> ck[index] }) )
+    } else {
+        for(i in start until el.size) {
+            ck[i] = true
+            combination(answer, el, ck, i + 1, target - 1)
+            ck[i] = false
+        }
+    }
+}
+
+
+fun main(){
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val arr = arrayListOf<Int>(1,3,4,6,7)
+    
+    // 조합 반환 받을 list
+    val answer = mutableListOf<List<Int>>()
+    
+    // answer: 조합 반환 받을 리스트
+    // arr: 조합에 쓰일 리스트
+    // 끝에 3: 3개씩 
+    combination(answer, arr, Array<Boolean>(arr.size) { false }, 0,  3)
+
+    bw.write(answer.toString())
+    // 결과 값
+    // [[1, 3, 4], [1, 3, 6], [1, 3, 7], [1, 4, 6], [1, 4, 7], [1, 6, 7], [3, 4, 6], [3, 4, 7], [3, 6, 7], [4, 6, 7]]
+    
+    bw.flush()
+    bw.close()
+}
