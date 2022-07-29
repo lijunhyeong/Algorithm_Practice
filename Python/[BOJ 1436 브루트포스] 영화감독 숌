@@ -1,0 +1,16 @@
+import sys      # 빠른 입출력 sys.stdin.readline().rstrip()
+
+n = int(sys.stdin.readline().rstrip())
+cnt = 0
+count = 665
+answer = 0
+
+while cnt < n:
+
+    count +=1
+    if '666' in str(count):
+        cnt+=1
+        answer = count
+
+print(answer)
+
