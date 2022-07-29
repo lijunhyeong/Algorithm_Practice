@@ -1,0 +1,11 @@
+fun main(args: Array<String>){
+
+    val myList: List<String> = listOf("1", "2", "3", "4", "5")
+
+    val mySet: Set<String> = myList.toSet()
+
+    println(mySet)
+}
+
+Output:
+[1, 2, 3, 4, 5]
