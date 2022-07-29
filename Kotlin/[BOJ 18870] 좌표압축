@@ -24,4 +24,4 @@ fun main(){
     bw.flush()
     bw.close()
 }
-// indexof로 인덱스 번호를 찾기보단 hashmap을 통해 for문 한 번으로 인덱스 자리를 저장하는 게 효율적임.(양이 많은 경우)
+// indexof(시간복잡도 O(N))로 인덱스 번호를 찾기보단 hashmap을 통해 for문 한 번으로 인덱스 자리를 저장하는 게 효율적임.(양이 많은 경우)
