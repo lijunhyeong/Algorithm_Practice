@@ -1,0 +1,51 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+fun main(){
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val n = br.readLine().toInt()
+    val arr = br.readLine().split(' ').map { it.toInt() }
+
+
+    // 각 사람이 돈을 인출한 시간
+    var sol = 0
+    // 각 사람이 돈을 인출한 시간의 합
+    var min = 0
+    for (i in arr.sorted()){
+        sol+=i
+        min += sol
+    }
+
+
+    bw.write(min.toString())
+
+    bw.flush()
+    bw.close()
+}
+'''
+예제 입력
+5
+3 1 4 3 2
+
+sol = 1     // 2번 사람은 1분
+min = 1
+
+sol = 3     // 5번 사람은 1+2 = 3분
+min = 4
+
+sol = 6     // 1번 사람은 1+2+3 = 6분
+min = 10
+
+sol = 9     // 4번 사람은 1+2+3+3 = 9분
+min = 19
+
+sol = 13    // 3번 사람은 1+2+3+3+4 = 13분
+min = 32
+
+32          // 1+3+6+13
+
+'''
