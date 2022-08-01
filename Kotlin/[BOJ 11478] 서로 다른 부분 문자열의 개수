@@ -1,0 +1,45 @@
+
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+fun main(){
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val s = br.readLine()
+
+    val answer = mutableSetOf<String>()
+    for (i in s.indices){
+        var str = s[i].toString()
+        answer.add(str)
+        for (j in i+1 until s.length){
+            str += s[j]
+
+            answer.add(str)
+        }
+    }
+
+    bw.write(answer.size.toString())
+
+    bw.flush()
+    bw.close()
+}
+
+'''
+인덱스 0번부터 끝까지 하나씩 더한 값을 추가한다.
+ex) ababc
+1 -> a
+2 -> ab
+3 -> aba
+4 -> abab
+5 -> ababc
+6 -> b
+7 -> ba
+8 -> bab
+.
+.
+.
+n -> c
+'''
