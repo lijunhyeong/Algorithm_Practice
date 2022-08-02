@@ -1,0 +1,17 @@
+fun main(){
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val arr = br.readLine().split(' ').map { it.toDouble() }
+
+    // 아침은 무조건 처음 오기 때문에(V-A)
+    var V = (arr[2]-arr[0]).toInt()
+
+    // 남은 높이 / 하루에 올라갈 수 있는 높이(arr[0]-arr[1]) 값을 올림해준후 +1을 해준다.
+    // +1을 해주는 이유는 무조건 하루는 필요하기 때문이다(8 Line에서 하루 올라가는 높이 뺴줌) 
+    bw.write("${ceil(V/(arr[0]-arr[1])).toInt()+1}")
+
+
+    bw.flush()
+    bw.close()
+}
