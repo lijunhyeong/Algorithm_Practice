@@ -1,0 +1,40 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+fun main(){
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val n = br.readLine().toInt()
+
+    var num = 1
+    var cnt=1
+    while (num < n){
+
+        num += cnt *6
+        cnt+=1
+
+    }
+    bw.write("$cnt")
+
+    bw.flush()
+    bw.close()
+}
+'''
+방 횟수 -> 방 범위
+1 -> 1
+2 -> 2~7    // 방 6
+3 -> 8~19   // 방 12
+4 -> 20~37  // 방 18개
+
+ex)
+n-=13번 방이 몇개의 방을 지나야하는지 구해야된다면,
+cnt = 1 // 방을 지나는 개수
+num = 1 // 방 범위
+1 = 1
+2 = 1+(1*6)= 7    // cnt=2, num=7
+3 = 7+(2*6)=19    // cnt=3, num=19
+while문 조건이 num<n이기 때문에 조건에 만족하면 while문을 벗어나 cnt를 출력한다.
+'''
