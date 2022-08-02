@@ -1,0 +1,41 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+fun main(){
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val n = br.readLine().toInt()
+
+    // hashmap 에 책 제목과 팔린 횟수 저장
+    val arr = hashMapOf<String, Int>()
+    for (i in 0 until n){
+        val s = br.readLine()
+        if (s in arr.keys){
+            val num = arr[s]
+            arr[s] = num!! + 1
+        }else{
+            arr[s] = 1
+        }
+    }
+
+    // 제일 많이 팔린 개수와 같은 것들을 answer에 추가
+    val answer = mutableListOf<String>()
+    val max = arr.values.maxOrNull()
+    for (i in arr){
+        if (i.value == max) {
+            answer.add(i.key)
+        }
+    }
+
+    // answer가 하나 이상이면 오름차순(가장 많이 팔린 책이 여러 개일 경우에는 사전 순으로 가장 앞서는 제목을 출력)
+    if (answer.size > 1){
+        answer.sort()
+    }
+    println(answer[0])
+
+    bw.flush()
+    bw.close()
+}
