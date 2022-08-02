@@ -1,0 +1,50 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+fun main(){
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val n = br.readLine().toInt()
+
+    val distance = br.readLine().split(' ').map { it.toLong() }
+    val gasCost = br.readLine().split(' ').map { it.toLong() }
+
+
+    // 정답
+    var answer = 0.toLong()
+
+    // 더 싼 주유소를 찾기 위한 인덱스
+    var cnt = 0
+    // 가야할 기본값에 처음 가야할 거리(distance[0])를 넣어둔다.
+    var nowDistance = distance[0]
+
+    for (i in 1 until distance.size){
+
+        // 만약 기준 주요소보다 싼 주유소가 나온다면
+            // 지금껀 온 거리 * 기준 주유비를 answer에 더한다.
+                // 기준 주유소 인덱스를 정해주기 위해 cnt에 i 값을 넣어주고
+                    // 가야할 기본 거리에 현재 거리를 넣어준다.
+        if (gasCost[cnt] > gasCost[i]){
+            answer += nowDistance* gasCost[cnt]
+            cnt = i
+            nowDistance = distance[i]
+        }else{
+            nowDistance += distance[i]
+        }
+
+    }
+
+    // 가야할 거리가 0이 아니라면 현재 기준 주유소곱하기 가야할 거리로 마무리 지어준다.
+    if (nowDistance != 0.toLong()){
+        answer += nowDistance* gasCost[cnt]
+    }
+    bw.write("$answer")
+
+
+    bw.flush()
+    bw.close()
+}
+
