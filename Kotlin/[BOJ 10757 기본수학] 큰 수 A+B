@@ -1,0 +1,25 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+fun main(){
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val arr = br.readLine().split(' ').map { it.toBigDecimal() }
+
+
+    bw.write("${arr[0]+arr[1]}")
+
+
+    bw.flush()
+    bw.close()
+}
+'''
+toBigDecimal(): 
+소수점을 저장하는 float과 double은 소수점의 정밀도가 완벽하지 않아 값의 오차가 생길 수 있다.
+그 이유는 내부적으로 수를 저장할 때 이진수의 근사치를 저장하기 때문이다.
+그렇기 때문에 미세한 숫자의 변동도 허용하지 않는 돈계산과 소수점을 다룬다면 BigDecimal을 사용해야 한다.
+BigDecimal은 속도는 느리지만 숫자가 어긋날 가능성을 미연에 방지할 수 있다.
+'''
