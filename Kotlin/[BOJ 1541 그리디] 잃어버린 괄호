@@ -1,0 +1,43 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+fun main(){
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    // 55-50+40 입력에 splite('-')하면
+    // s = [55, 50+40]
+    val s = br.readLine().split('-')
+
+   // +가 있는 것들을 더하여 arr 리스트에 담는다.
+   // arr = [55, 90]
+    var arr = mutableListOf<Int>()
+    for (i in s){
+        if ('+' in i){
+            var num = i.split('+').map { it.toInt() }
+            arr.add(num.sum())
+        }else{
+            arr.add(i.toInt())
+        }
+    }
+
+    // arr의 첫번째 인덱스를 초기 값으로 넣어주고
+    // arr의 모든 값을 빼준다.
+    var answer = arr[0]
+    if (arr.size > 1){
+        for (i in 1 until arr.size){
+            answer -=arr[i]
+        }
+    }
+
+    bw.write("$answer")
+
+    bw.flush()
+    bw.close()
+
+}
+'''
+-를 구분자로 나누고 모두 더한 후 빼면 되는 문제. 
+'''
