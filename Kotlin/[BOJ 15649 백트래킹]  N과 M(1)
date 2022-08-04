@@ -1,0 +1,52 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import java.util.*
+
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val n = br.readLine().split(' ').map { it.toInt() }
+
+    // 출력 할 스택 생성
+    val stack = Stack<Int>()
+
+    // 방문을 확인 할 check 리스트 생성
+    val check = mutableListOf<Boolean>()
+    for (i in 0..n[0]){
+        check.add(false)
+    }
+
+    fun dfs(depth:Int) {
+
+        // 스택에 사이즈가 m이라면 출력한다.
+        if (stack.size == n[1]){
+            for (i in stack){
+                bw.write("$i ")
+            }
+            bw.write("\n")
+            return
+        }
+
+        // 여기서 재귀의 깊이 depth를 조절한다.
+        for (i in 1..n[0]){
+            if (!check[i]){
+                check[i] = true
+                stack.add(i)
+                dfs(depth+1)
+                check[i]=false
+                stack.pop()
+            }
+        }
+    }
+
+    dfs(0)
+
+    bw.flush()
+    bw.close()
+
+
+}
