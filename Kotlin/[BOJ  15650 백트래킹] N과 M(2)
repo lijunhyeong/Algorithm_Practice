@@ -1,0 +1,69 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import java.util.*
+
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    // n[0]= N , n[1]= M
+    val n = br.readLine().split(' ').map { it.toInt() }
+
+    val stack = Stack<Int>()
+    val check = mutableListOf<Boolean>()
+    for (i in 0..n[0]){
+        check.add(false)
+    }
+
+    val arr = mutableSetOf<List<Int>>()
+    fun dfs(depth:Int){
+        if (stack.size == n[1]){
+            val ans = mutableListOf<Int>()
+            for (i in stack){
+                ans.add(i)
+            }
+            ans.sortDescending()
+            arr.add(ans)
+            return
+        }
+
+
+        for (i in 1..n[0]){
+            if (!check[i]){
+                check[i] = true
+                stack.add(i)
+                dfs(depth+1)
+
+                check[i] = false
+                stack.pop()
+            }
+
+        }
+
+    }
+
+    dfs(1)
+
+
+    for (i in arr){
+        for (j in i.sorted()){
+            bw.write("$j ")
+        }
+        bw.write("\n")
+    }
+
+    bw.flush()
+    bw.close()
+
+
+}
+'''
+2022.08.05 3:02am
+생각 했던 아이디어가 오류가 나여 비효율적인 코드인 것은 알지만 정답을 만들어 보았다.
+전 문제인 15650문제를 이용해서 Set에 내림차순으로 넣고
+dfs함수가 끝나면 다시 오름차순으로 돌려서 출력한다.
+추후에 다시 풀어볼 예정.
+'''
