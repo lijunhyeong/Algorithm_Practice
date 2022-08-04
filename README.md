@@ -1,3 +1,3 @@
-## Algorithm_Practice
-### Python & Kotlin
-#### 코드 설명과 개념공부
+## 기술
+### Kotlin
+### Python
