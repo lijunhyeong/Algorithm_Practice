@@ -1,3 +1,3 @@
 ## 기술  
--Kotlin  
+- Kotlin  
 - Python  
