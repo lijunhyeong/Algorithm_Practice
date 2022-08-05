@@ -1,0 +1,84 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import java.util.*
+import kotlin.collections.ArrayList
+
+
+// 경로의 값을 저장
+var arr: Array<IntArray> = arrayOf()
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val (n, m) = br.readLine().split(' ').map { it.toInt() }
+
+    // 지도
+    val map = mutableListOf<List<Int>>()
+    repeat(n) {
+        val s = br.readLine()
+        val arr = mutableListOf<Int>()
+        for (i in s) {
+            arr.add(i-'0')
+        }
+        map.add(arr)
+    }
+
+    // 방문 체크
+    val checked = Array(n) { BooleanArray(m) { false } }
+    arr = Array(n) { IntArray(m) }
+
+    // 방향
+    val dy = arrayOf(0,1,0,-1)
+    val dx = arrayOf(1,0,-1,0)
+    fun bfs(y: Int, x:Int){
+        val q : Queue<Int> = ArrayDeque()
+        q.add(y)
+        q.add(x)
+        while (q.isNotEmpty()){
+            val yy = q.poll()
+            val xx = q.poll()
+
+            for (i in 0 until 4){
+                val ny = yy +dy[i]
+                val nx = xx + dx[i]
+                if (ny in 0 until n && nx in 0 until m){
+                    if (map[ny][nx]==1 && !checked[ny][nx]){
+                        checked[ny][nx]=true
+                        q.add(ny)
+                        q.add(nx)
+                        arr[ny][nx] = arr[yy][xx] + 1
+                        for (k in arr){
+                            for (aa in k){
+                                print("$aa ")
+                            }
+                            println()
+                        }
+                        println()
+                    }
+                }
+
+
+            }
+        }
+
+    }
+
+    for (j in 0 until n){
+        for (i in 0 until m){
+            if (map[j][i]==1 && !checked[j][i]){
+                checked[j][i] = true
+                bfs(j, i)
+            }
+        }
+    }
+
+    // 0부터 시작하기 때문에 +1을 해준다.
+    bw.write("${arr[n-1][m-1]+1}")
+
+    bw.flush()
+    bw.close()
+
+}
