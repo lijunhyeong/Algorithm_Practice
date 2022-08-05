@@ -1,0 +1,148 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import kotlin.collections.ArrayList
+
+
+// 1. BFS 방법 / 메모리: 14336KB, 시간: 120ms-------------------------------------------------------------------
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val n = br.readLine().toInt()
+
+    // 집 목록
+    val home = mutableListOf<IntArray>()
+    repeat(n) {
+        val s = br.readLine().map { it - '0' }.toIntArray()
+        home.add(s)
+    }
+    // 방문 체크
+    val check = Array(n) { BooleanArray(n) { false } }
+
+    // 방향(오, 아래, 왼, 위)
+    val dy = arrayOf(0, 1, 0, -1)
+    val dx = arrayOf(1, 0, -1, 0)
+    fun bfs(y: Int, x: Int): Int {
+        var rs = 1      // 단지 개수
+        // 단지 안에 집 넣기
+        val arr = mutableListOf<Int>()
+        arr.add(y)
+        arr.add(x)
+
+        // arr 단지 안에 집이 없으면 종료
+        while (arr.size > 0) {
+            val xx = arr.removeLast()
+            val yy = arr.removeLast()
+
+            for (i in 0 until 4) {
+                val ny = yy + dy[i]
+                val nx = xx + dx[i]
+                if (ny in 0 until n && nx in 0 until n) {
+                    if (home[ny][nx]==1 && !check[ny][nx]){
+                        check[ny][nx]=true
+                        rs +=1
+                        arr.add(ny)
+                        arr.add(nx)
+                    }
+                }
+            }
+
+        }
+
+        return rs
+    }
+
+    var cntHome = 0 // 단 개수
+    val answer = mutableListOf<Int>()   // 단지 안에 집 개수
+    for (j in 0 until n) {
+        for (i in 0 until n) {
+
+            if (home[j][i] == 1 && !check[j][i]) {
+                check[j][i] = true
+                cntHome += 1
+                val num = bfs(j, i)
+                answer.add(num)
+            }
+
+        }
+    }
+
+    bw.write("$cntHome\n")
+    answer.sort()
+    for (i in answer) {
+        bw.write("$i\n")
+    }
+
+    bw.flush()
+    bw.close()
+
+
+}
+// 2. DFS 방법 / 메모리: 14388KB, 시간: 116ms----------------------------------------------------
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val n = br.readLine().toInt()
+
+    // 집 목록
+    val home = mutableListOf<IntArray>()
+    repeat(n) {
+        val s = br.readLine().map { it - '0' }.toIntArray()
+        home.add(s)
+    }
+    // 방문 체크
+    val check = Array(n) { BooleanArray(n) { false } }
+
+    var rs = 0      // 단지 개수
+
+    // 방향(오, 아래, 왼, 위)
+    val dy = arrayOf(0, 1, 0, -1)
+    val dx = arrayOf(1, 0, -1, 0)
+    fun dfs(y: Int, x: Int) {
+
+        rs += 1
+
+        // arr 단지 안에 집이 없으면 종료
+        for (i in 0 until 4) {
+            val ny = y + dy[i]
+            val nx = x + dx[i]
+            if (ny in 0 until n && nx in 0 until n) {
+                if (home[ny][nx] == 1 && !check[ny][nx]) {
+                    check[ny][nx] = true
+                    dfs(ny, nx)
+                }
+            }
+        }
+
+    }
+
+    var cntHome = 0 // 단 개수
+    val answer = mutableListOf<Int>()   // 단지 안에 집 개수
+    for (j in 0 until n) {
+        for (i in 0 until n) {
+
+            if (home[j][i] == 1 && !check[j][i]) {
+                check[j][i] = true
+                cntHome += 1
+                rs = 0
+                dfs(j, i)
+                answer.add(rs)
+            }
+
+        }
+    }
+
+    bw.write("$cntHome\n")
+    answer.sort()
+    for (i in answer) {
+        bw.write("$i\n")
+    }
+
+    bw.flush()
+    bw.close()
+
+
+}
