@@ -1,0 +1,66 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import java.util.*
+import kotlin.collections.ArrayList
+
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val (n, m) = br.readLine().split(' ').map { it.toInt() }
+
+    val checked = Array(n) { BooleanArray(m) { false } }
+    val bottom = arrayListOf<List<String>>()
+    repeat(n) {
+        val s = br.readLine()
+        val arr = mutableListOf<String>()
+        for (i in s) {
+            arr.add(i.toString())
+        }
+        bottom.add(arr)
+    }
+
+
+    // 정답
+    var cnt = 0
+    fun dfs(y: Int, x: Int) {
+
+        if (x < m && bottom[y][x] == "-") {
+            for (k in x+1 until m) {
+                if (bottom[y][k] == "-" && !checked[y][k]) {
+                    checked[y][k] = true
+                } else {
+                    break
+                }
+            }
+        } else if (y < n){
+            // | 경우
+            for (k in y+1 until n) {
+                if (bottom[k][x] == "|" && !checked[k][x]) {
+                    checked[k][x] = true
+                } else {
+                    break
+                }
+            }
+        }
+        cnt+=1
+    }
+
+    for (j in 0 until n) {
+        for (i in 0 until m) {
+            if (!checked[j][i]) {
+                checked[j][i] = true
+                dfs(j, i)
+            }
+        }
+    }
+
+    bw.write("$cnt")
+
+    bw.flush()
+    bw.close()
+
+}
