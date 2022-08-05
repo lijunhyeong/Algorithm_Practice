@@ -1,0 +1,85 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import kotlin.collections.ArrayList
+
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    // n[0]=Y , n[1]=X
+    val n = br.readLine().split(' ').map { it.toInt() }
+
+    // 그림
+    val painting = mutableListOf<List<Int>>()
+    repeat(n[0]) {
+        val s = br.readLine().split(' ').map { it.toInt() }
+        painting.add(s)
+    }
+    // 2차원 배열 -- 방문 체크
+    val check = Array(n[0]) { BooleanArray(n[1]) { false } }
+
+    // 오, 아래, 왼, 위
+    val dy = arrayOf(0, 1, 0, -1)
+    val dx = arrayOf(1, 0, -1, 0)
+
+    fun bfs(y: Int, x: Int): Int {
+        var rs = 1      // 그림 크기
+        val q = ArrayList<Int>()
+        q.add(y)
+        q.add(x)
+
+        while (q.size > 0) {
+            val xx = q.removeLast()
+            val yy = q.removeLast()
+
+            for (i in 0 until 4) {
+                val ny = yy + dy[i]
+                val nx = xx + dx[i]
+
+                if (0 <= ny && ny < n[0] && 0 <= nx && nx < n[1]){
+                    if (painting[ny][nx] == 1 && !check[ny][nx]){
+                        check[ny][nx]= true
+                        rs +=1
+                        q.add(ny)
+                        q.add(nx)
+                    }
+
+                }
+
+
+            }
+
+        }
+        return rs
+    }
+
+    var cnt = 0     // 그림 개수
+    var maxv = 0    // 최대 그림 개수
+    for (j in 0 until n[0]) {
+        for (i in 0 until n[1]) {
+            // 방문 했는지 안 했는지
+            if (painting[j][i] == 1 && !check[j][i]) {
+                check[j][i] = true
+                cnt += 1
+                // 그림 사이즈 비교
+                val size = bfs(j, i)
+                if (size > maxv) {
+                    maxv = size
+                }
+            }
+
+        }
+
+    }
+
+    bw.write("$cnt\n")
+    bw.write("$maxv")
+
+    bw.flush()
+    bw.close()
+
+
+}
