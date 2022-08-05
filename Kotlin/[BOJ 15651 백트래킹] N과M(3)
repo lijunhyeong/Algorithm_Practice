@@ -1,0 +1,51 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import java.util.*
+
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    // n[0]= N , n[1]= M
+    val n = br.readLine().split(' ').map { it.toInt() }
+
+    val stack = Stack<Int>()
+
+    fun dfs(depth:Int){
+
+        if (stack.size==n[1]){
+
+            for (i in stack){
+                bw.write("$i ")
+            }
+            bw.write("\n")
+            return
+        }
+
+        for (i in 1..n[0]){
+
+            stack.add(i)
+            dfs(depth+1)
+            stack.pop()
+
+        }
+
+
+    }
+
+    dfs(1)
+
+
+    bw.flush()
+    bw.close()
+
+
+}
+'''
+N과M(1)번 문제에서 check 리스트를 통해 방문을 확인해주는 알고리즘으로 같은 수 여러번 되는 것을 막았다.
+이번 문제에서는 check리스트를 빼고 실행하면 된다.
+'''
+
