@@ -1,0 +1,45 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import java.util.*
+
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    // n[0]= N , n[1]= M
+    val n = br.readLine().split(' ').map { it.toInt() }
+
+    val stack = Stack<Int>()
+
+    fun dfs(depth: Int) {
+
+        if (stack.size == n[1]) {
+            for (i in stack) {
+                bw.write("$i ")
+            }
+            bw.write("\n")
+            return
+        }
+
+        for (i in 1..n[0]) {
+            // 스택이 비어있거나 마지막 요소가 현재 i보다 작을 경우 실행한다.
+            if ( stack.size ==0 || stack[stack.size-1] <= i){
+                stack.add(i)
+                dfs(depth + 1)
+                stack.pop()
+            }
+        }
+
+    }
+
+    dfs(1)
+
+
+    bw.flush()
+    bw.close()
+
+
+}
