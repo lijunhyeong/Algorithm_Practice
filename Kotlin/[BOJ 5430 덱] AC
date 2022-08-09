@@ -1,0 +1,89 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import java.util.*
+import kotlin.collections.ArrayDeque
+import kotlin.collections.ArrayList
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    // 테스트 케이스
+    val n = br.readLine().toInt()
+
+    for (i in 0 until n) {
+        // 수행할 함수
+        val action = br.readLine()
+        val nn = br.readLine()
+        var aa = br.readLine()
+
+        // answer 에 Deque으로 넣어준다.
+        val answer = ArrayDeque<String>()
+        var s = ""
+        for (j in 1..aa.length - 2) {
+            if (aa[j] == ',') {
+                answer.add(s)
+                s = ""
+            } else {
+                s += aa[j]
+            }
+        }
+        if (s != "") {
+            answer.add(s)
+        }
+
+        var check = true
+        var count = 0
+        for (j in action) {
+            if (j == 'D') {
+                if (answer.isEmpty()) {
+                    bw.write("error\n")
+                    check = false
+                    break
+                } else {
+                    // 만약 홀수면 뒤에서 빼기
+                     if (count % 2 == 1 ) {
+                         answer.removeLast()
+                    } else {
+                        // 짝수면 앞에서 빼기
+                        answer.removeFirst()
+                    }
+                }
+            } else {
+                // 뒤집기 카운트
+                count += 1
+            }
+        }
+
+        if (check) {
+
+            // 짝수면 뒤집을 필요가 없음. 홀수면 뒤집어야함.
+            if (count % 2 == 1 ) {
+                // 문자열 뒤집기
+                for (k in 0 until answer.size / 2) {
+                    val temp = answer[k]
+                    answer[k] = answer[answer.size - k - 1]
+                    answer[answer.size - k - 1] = temp
+                }
+                bw.write("[${answer.joinToString(",")}]\n")
+            } else {
+                bw.write("[${answer.joinToString(",")}]\n")
+            }
+        }
+
+
+    }
+
+    bw.flush()
+    bw.close()
+
+}
+
+'''
+시간 복잡도를 많이 생각해야되는 문제다. (시간초과가 많이 나옴)
+또한 출력 예제를 자세히 봐야한다. 
+[1, 2, 3]과 [1,2,3]은 다르다.
+리스트를 그대로 출력했다가 틀려서 한참 해맸다.
+'''
