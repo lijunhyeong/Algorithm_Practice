@@ -1,0 +1,15 @@
+val answer = arrayOf("a","b","c")
+
+// 시간 복잡도 O(N/2)
+ for (k in 0 until answer.size / 2) {
+    val temp = answer[k]
+    answer[k] = answer[answer.size - k - 1]
+    answer[answer.size - k - 1] = temp
+}
+
+// reversed(), reverse() - 시간 복잡도 O(N)
+val answer = arrayOf("a","b","c")
+println(answer.reversed())
+
+
+출력: [c, b, a]
