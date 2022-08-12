@@ -1,0 +1,49 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import java.util.*
+import kotlin.math.abs
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val n = br.readLine().toInt()
+
+    val priorityQueue = PriorityQueue<Int>(n, Comparator { o1, o2 ->
+        var abs1 = abs(o1)
+        var abs2 = abs(o2)
+        // 1. abs1 == abs2 -> 오름차순으로 정렬
+        // 2. 두 값이 다를 경우 절대값에서 숫자의 크기로 비교해서 오름차순으로 정렬.
+        when (abs1) {
+            abs2 -> o1-o2
+            else -> abs1 - abs2
+        }
+    })
+
+    repeat(n) {
+        val s = br.readLine().toInt()
+        if (priorityQueue.isEmpty() && s == 0) {
+            bw.write("0\n")
+        } else if (s == 0) {
+            bw.write("${priorityQueue.poll()}\n")
+        } else {
+            priorityQueue.add(s)
+        }
+    }
+
+
+    bw.flush()
+    bw.close()
+
+}
+/*
+priorityQueue 값이 삽입되면 바로 정렬을 한다.
+정렬은 음수 양수 기준으로 정렬한다. 0일 경우, 같은 값일 경우 정렬을 할 필요가 없다.
+o1, o2의 두 개의 값을 비교할 때 먼저 절댓값으로 변환한다.
+절댓값이 같을 경우, 같은 값 내에서 음수 양수로 구분을 하기 위해서 기존의 o1, o2로 다시 비교한다.
+o1 - o2를 하여 양수 값일 경우 o1이 크므로 default 오름차순 정렬로 자리를 변경한다.
+o1 - o2 의 값이 음수 일 경우, 오름차순이 정렬되어 있으므로 그대로 둔다.
+두 개의 값을 뺀 값으로 비교를 해서 뺀 값을 양수와 음수로 구분으로 하여 정렬을 진행하는 메커니즘이다
+*/
