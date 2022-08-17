@@ -1,0 +1,52 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import java.lang.Math.abs
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    // 20까지만 초기화를 시키면 된다.
+    val arr = Array(21) { Array(21) { Array(21) { 0 } } }
+
+    // 다이나믹 프로그래밍에 맞춰 주어진 재귀함수를 작성한다.
+    fun w(a: Int, b: Int, c: Int): Int {
+        when {
+            a <= 0 || b <= 0 || c <= 0 -> return 1
+            a > 20 || b > 20 || c > 20 -> {
+                arr[20][20][20] = w(20, 20, 20)
+                return arr[20][20][20]
+            }
+            b in (a + 1) until c -> {
+                if (arr[a][b][c] == 0) {
+                    arr[a][b][c] = w(a, b, c - 1) + w(a, b - 1, c - 1) - w(a, b - 1, c)
+                }
+                return arr[a][b][c]
+            }
+            else->{
+                if (arr[a][b][c] == 0) {
+                    arr[a][b][c] = w(a - 1, b, c) + w(a - 1, b - 1, c) + w(a - 1, b, c - 1) - w(a - 1,b - 1,c - 1)
+                }
+                return arr[a][b][c]
+            }
+        }
+
+
+    }
+
+    while (true) {
+        val (a, b, c) = br.readLine().split(' ').map { it.toInt() }
+
+        // a,b,c가 -1이면 종료
+        if (a == -1 && b == -1 && c == -1) break
+
+        bw.write("w($a, $b, $c) = ${w(a, b, c)}\n")
+    }
+
+
+    bw.flush()
+    bw.close()
+
+}
