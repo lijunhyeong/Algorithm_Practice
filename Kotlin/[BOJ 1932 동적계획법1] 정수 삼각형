@@ -1,0 +1,71 @@
+/*
+정수 삼각형 1932
+1. 아이디어:
+이전 값을 저장할 dt
+이전 값을 토대로 현재 값중 더 큰 값을 저장할 dp
+2. 시간복잡도 O(N)
+3. 자료구조 DP
+ */
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import java.lang.Math.*
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val n = br.readLine().toInt()
+
+    val dp = Array(500) { 0 }
+    val dt = Array(500) { 0 }
+
+    var max = 0
+    repeat(n) { idx ->
+        when (idx) {
+            0 -> {
+                val zero = br.readLine().toInt()
+                dt[0] = zero
+                dt[1] = zero
+                max = zero
+            }
+            1 -> {
+                val (a, b) = br.readLine().split(' ').map { it.toInt() }
+                dt[0] += a
+                dt[1] += b
+                max = kotlin.math.max(dt[0], dt[1])
+                dp[0] = dt[0]
+            }
+            else -> {
+                val num = br.readLine().split(' ').map { it.toInt() }
+
+                // 0번째 인덱스는 0번째만 더해준다.
+                dp[0] += num[0]
+                // 마지막 인덱스는 마지막 값만 더해준다.
+                dp[num.size-2] += num[num.size-1]
+                val max2 = kotlin.math.max(dp[0], dp[num.size - 2])
+                if (max < max2){
+                    max = max2
+                }
+                for (i in 1 until num.size) {
+                    dp[i] = kotlin.math.max(num[i] + dt[i - 1], dt[i] + num[i])
+                    if (dp[i] > max) {
+                        max = dp[i]
+                    }
+                }
+                for (j in num.indices) {
+                    dt[j] = dp[j]
+                }
+
+
+            }
+        }
+    }
+
+    bw.write("$max")
+
+    bw.flush()
+    bw.close()
+
+}
