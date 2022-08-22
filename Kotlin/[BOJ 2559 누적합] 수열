@@ -1,0 +1,46 @@
+/*
+2559 수열
+1. 아이디어:
+dp[i] = dp[i-1] - arr[i-k] + arr[i]
+예) 2일치 큰 값을 구한다면 DP[0]+DP[1](1일+2일)을 하고 3일차(arr[2])에 1일차(arr[0])를 빼고 3일차를 더한다.
+2. 시간복잡도 O(N)
+3. 자료구조  DP
+ */
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import kotlin.math.max
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val (n,k)  = br.readLine().split(' ').map { it.toInt() }
+
+    val arr = br.readLine().split(' ').map { it.toInt() }
+
+    val dp = Array(n+1){0}
+    var max = -101
+    for (i in arr.indices){
+        // 첫 연속 날짜까지는 계속 더하기만 함
+        if (i < k){
+            if (i==0){
+                dp[i]=arr[i]
+            }else{
+                dp[i] = dp[i-1]+ arr[i]
+            }
+            max = dp[i]
+        }else{
+            // 마지막 숫자 - 처음 더한 숫자 + 현재 숫자
+            dp[i] = dp[i-1] - arr[i-k] + arr[i]
+            if (max < dp[i]) max = dp[i]
+        }
+    }
+
+    bw.write("$max")
+
+    bw.flush()
+    bw.close()
+
+}
