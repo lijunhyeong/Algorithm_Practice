@@ -1,0 +1,39 @@
+/*
+1010 다리놓기
+1. 아이디어:
+조합 mCn을 구현한다. n!/m!*(n-m)!
+2. 시간복잡도 O(N)
+3. 자료구조  Array, toBigDecimal()
+ */
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import kotlin.math.max
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val num = br.readLine().toInt()
+
+    val dp = Array(32){0.toBigDecimal()}
+    dp[0]=1.toBigDecimal()
+    for (i in 1..31){
+        dp[i] = i.toBigDecimal() * dp[i-1]
+    }
+
+    repeat(num){
+        val (m, n) = br.readLine().split(' ').map { it.toInt() }
+        val res = if (n-m==0) 1 else n-m
+        bw.write("${dp[n]/((dp[res])*dp[m])}\n")
+
+    }
+
+
+
+
+    bw.flush()
+    bw.close()
+
+}
