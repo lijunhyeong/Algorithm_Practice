@@ -1,0 +1,63 @@
+/*
+10844 쉬운 계단 수
+1. 아이디어:
+long으로 선언해야하는 이유:
+%1000000000을 거치면 10억보다 작은 수로 이루어져 있고 int형 범위는 이십 몇억 정도되지만
+10개의 dp[i]를 더하다 보면 int형 범위를 넘어 날 수 있다.
+0과 9는 전에 계산한 값의 한자리만 더해야되기 때문에 따로 예외 처리를 해준다.
+dt = 이전 연산 값
+dp = 현재 연산 값
+dp[i] = (dt[i-1] % 1000000000) + (dt[i+1] % 1000000000)
+2. 시간복잡도 O(N)
+3. 자료구조  Array
+ */
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import kotlin.math.max
+import kotlin.math.min
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val num = br.readLine().toInt()
+
+    val dp = Array(10){1L}       // 새로운 값
+    val dt = Array(10){1L}       // 전의 값
+    dp[0] = 0
+    dt[0] = 0
+
+    repeat(num-1){
+
+        for (i in 0..9){
+            when (i) {
+                0 -> {
+                    dp[i] = dt[1] % 1000000000
+                }
+                9 -> {
+                    dp[i] = dt[8] % 1000000000
+                }
+                else -> {
+                    dp[i] = (dt[i-1] % 1000000000) + (dt[i+1] % 1000000000)
+                }
+            }
+        }
+
+        for (i in 0..9){
+            dt[i] = dp[i]
+        }
+    }
+
+    var sum = 0L
+    for (i in 0..9){
+        sum = (dp[i] + sum) % 1000000000
+    }
+
+    bw.write("${sum % 1000000000}")
+
+    bw.flush()
+    bw.close()
+
+}
