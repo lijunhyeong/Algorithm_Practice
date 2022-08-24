@@ -1,0 +1,37 @@
+/*
+11053 가장 긴 증가하는 수열
+1. 아이디어:
+dp[i]=arr[i]를 마지막 원소로 가지는 부분 수열의 최대 길이
+모든 0<=j<i에 대하여, dp[i]=max(dp[i], dp[j]+1) if(arr[j]<arr[i])
+2. 시간복잡도 O(N2)
+3. 자료구조  Array
+ */
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import kotlin.math.max
+import kotlin.math.min
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val n = br.readLine().toInt()
+    val arr = br.readLine().split(' ').map { it.toInt() }
+
+    val dp = Array(n + 1) { 1 }
+
+    for (i in 1 until n){
+        for (j in 0 until i){
+            if (arr[j] < arr[i])
+                dp[i] = max(dp[i], dp[j]+1)
+        }
+    }
+
+    bw.write("${dp.maxOrNull()}")
+
+    bw.flush()
+    bw.close()
+
+}
