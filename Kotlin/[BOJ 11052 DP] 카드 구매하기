@@ -1,0 +1,39 @@
+/*
+11052 카드 구매하기
+1. 아이디어:
+각 카드 장수의 최대 값을 구한다
+각 카드 장수를 조합해서 최대 값을 구한다.
+2. 시간복잡도 O(N2)
+3. 자료구조  Array
+ */
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import kotlin.math.max
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val n = br.readLine().toInt()
+
+    val arr = br.readLine().split(' ').map { it.toInt() }
+    val dp = Array(n + 1) { 0 }
+
+    for (i in 1..n) {
+        for (j in 1..i) {
+            dp[i] = max(dp[i], dp[i-j] + arr[j-1]) // 각 장의 최대값
+        }
+    }
+
+    for (i in 1..n){
+        println(dp[i])
+    }
+
+    bw.write("${dp[n]}")
+
+    bw.flush()
+    bw.close()
+
+}
