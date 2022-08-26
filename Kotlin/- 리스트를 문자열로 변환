@@ -7,14 +7,18 @@ ex)
 val answer = arrayOf("a","b","c")
 
 // 1
+answer.joinToString("")
+answer: abc 
+
+// 2
 answer.joinToString()
 answer: a, b, c 
 
-//2
+// 3
 answer.joinToString(",")
 answer: a,b,c
 
-//3 
+// 4
 answer.joinToString(",", "[","]")
 answer: [a,b,c]
 
