@@ -1,0 +1,42 @@
+/*
+20291 파일 정리
+1. 아이디어:
+hashmap을 사용하여 .뒤의 확장자를 키 값으로 두고 카운트를 한 후, 키 값을 정렬한다.
+2. 시간복잡도 O(N)
+3. 자료구조  hasmap
+ */
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val n = br.readLine().toInt()
+    val hashmap = hashMapOf<String, Int>()
+    repeat(n){
+        val s = br.readLine()
+        val ss = s.split('.')
+
+        if (hashmap[ss[1]] == null){
+            hashmap[ss[1]] = 1
+        }else{
+            val num : Int = hashmap[ss[1]]!!
+            hashmap[ss[1]] = num+1
+        }
+
+
+    }
+
+    for ((key, value) in hashmap.toSortedMap()){
+        bw.write("$key $value\n")
+    }
+
+
+
+    bw.flush()
+    bw.close()
+
+}
