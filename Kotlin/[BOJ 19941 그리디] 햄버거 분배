@@ -1,0 +1,68 @@
+/*
+19941 햄버거 분배
+1. 아이디어:
+왼쪽에 햄버거가 있을 경우 제일 먼 거
+오른쪽에 햄버거가 있을 경우 제일 가까운 거
+2. 시간복잡도 O(N)
+3. 자료구조  Array
+ */
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    // 식탁길이 N, 햄버거를 선택할 수 있는 거리 K
+    var (N, K) = br.readLine().split(" ").map { it.toInt() }
+    val s = br.readLine()
+    val dp = Array(N + K + 1) { '0' }
+
+    // 배열에 입력 받은 값 넣어주기
+    for (i in 1..s.length) {
+        dp[i] = s[i - 1]
+    }
+
+    for (i in 1..s.length) {
+        var check = true
+        if (dp[i] == 'P') {
+            // 왼쪽 가장 먼 햄버거 부터 탐색
+            if (i > K) {
+                for (j in i - K until i) {
+                    if (dp[j] == 'H') {
+                        dp[j] = 'E'       // 먹었을 경우
+                        check = false
+                        break
+                    }
+                }
+            } else {
+                // i가 K보다 작을 경우 1부터 i전까지 탐색
+                for (j in 1 until i) {
+                    if (dp[j] == 'H') {
+                        dp[j] = 'E'       // 먹었을 경우
+                        check = false
+                        break
+                    }
+                }
+            }
+
+            // 왼쪽에서 햄버거를 못 먹었을 경우 오른쪽 탐색
+            if (check) {
+                for (j in i + 1..i + K) {
+                    if (dp[j] == 'H') {
+                        dp[j] = 'E'       // 먹었을 경우
+                        break
+                    }
+                }
+            }
+
+        }
+    }
+
+    bw.write("${dp.count { it == 'E' }}")
+
+    bw.flush()
+    bw.close()
+}
