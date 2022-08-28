@@ -1,0 +1,27 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val n = br.readLine().toInt()
+
+
+    repeat(n) {
+        val s = br.readLine()
+        // 정규식 조건에 모든 패턴이 일치하면 true
+        if (Regex("^[A-F]?A+F+C+[A-F]?$").matches(s)){
+            bw.write("Infected!\n")
+        }else{
+            bw.write("Good\n")
+        }
+        
+    }
+
+    bw.flush()
+    bw.close()
+
+}
