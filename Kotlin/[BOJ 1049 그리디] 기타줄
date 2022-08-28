@@ -1,0 +1,47 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import kotlin.math.min
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    // 기타줄의 개수 N, 기타줄 브랜드 M개
+    val (N, M) = br.readLine().split(" ").map { it.toInt() }
+
+    // 가장 싼 패키지 가격과 낱개 가격
+    var pack = 1000
+    var item = 1000
+    repeat(M) {
+        // 한 패키지에 기타줄 6개 가격 P, 낱개 가격 i
+        val (p, i) = br.readLine().split(" ").map { it.toInt() }
+        if (pack > p) {
+            pack = p
+        }
+        if (item > i) {
+            item = i
+        }
+    }
+
+    // 패키지로만 구매한 가격
+    val onlyPack = if (N % 6 == 0) {
+        pack * (N / 6)
+    } else {
+        pack * ((N / 6) + 1)
+    }
+
+    // 낱개로만 구매했을 때
+    val onlyItem = item * N
+
+    // 패키지로 구매하고 나머지를 낱개로 구매했을 때 가격
+    val otherPay = (pack * (N / 6)) + ((N%6) * item)
+    
+    bw.write("${minOf(onlyPack, onlyItem, otherPay)}")
+    
+
+    bw.flush()
+    bw.close()
+
+}
