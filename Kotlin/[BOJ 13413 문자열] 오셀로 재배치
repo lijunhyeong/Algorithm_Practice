@@ -1,0 +1,45 @@
+/*
+13413 오셀로 재배치
+1. 아이디어:
+초기 상태와 목표 상태의 각 인덱스 값을 비교한다.
+인덱스의 값이 다르면 초기상태의 값을 리스트에 넣는다.
+BW가 한짝을 이루면 리스트에서 빼고 +1을 한다.
+2. 시간복잡도 O(N)
+3. 자료구조
+ */
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import java.lang.Math.max
+import kotlin.math.abs
+import kotlin.math.min
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val n = br.readLine().toInt()
+
+    repeat(n) {
+        val num = br.readLine().toInt()
+        val def = br.readLine().toMutableList()
+        val target = br.readLine().toMutableList()
+
+        val arr = mutableListOf<Char>()
+        for (i in 0 until num) {
+            if (def[i] != target[i]) {
+                arr.add(def[i])
+            }
+        }
+
+        val arrW = arr.count { it == 'W' }
+        val arrB = arr.count { it == 'B' }
+
+        bw.write("${min(arrW, arrB)+abs(arrW-arrB)}\n")
+
+    }
+
+    bw.flush()
+    bw.close()
+}
