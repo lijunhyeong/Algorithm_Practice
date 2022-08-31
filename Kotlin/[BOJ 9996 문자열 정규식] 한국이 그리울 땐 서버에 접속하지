@@ -1,0 +1,36 @@
+/*
+9996 한국이 그리울 땐 서버에 접속하지
+1. 아이디어:
+정규식을 이용하여
+주어진 패턴에 맞게
+첫글자와 마지막글자를 넣고 가운데엔 a-z까지 0회 이상으로 한다.
+2. 시간복잡도 O(N)
+3. 자료구조  Regex
+ */
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val case = br.readLine().toInt()
+    val pattern = br.readLine().split("*")
+    val regex = "^${pattern[0]}[a-z]*${pattern[1]}$".toRegex()
+
+    repeat(case){
+        val s = br.readLine()
+
+        if (regex.matches(s)){
+            bw.write("DA\n")
+        }else{
+            bw.write("NE\n")
+        }
+    }
+
+
+    bw.flush()
+    bw.close()
+}
