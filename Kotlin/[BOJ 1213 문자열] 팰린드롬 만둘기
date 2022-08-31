@@ -1,0 +1,65 @@
+/*
+1213 팰린드롬 만들기
+1. 아이디어:
+팰린드롬(회문): 거꾸로 읽어나 똑바로 읽으나 똑같은 단어
+정렬후 각 문자를 반으로 잘라서 정렬 순으로 양 끝 안쪽으로 붙인다.
+짝수이면 하나씩 비교 아니면,
+마지막에 하나도 남지 않거나 홀수인 문자가 하나이상일 경우 실패
+이미 정렬된 문자중 홀수인 문자가 유일하게 하나면 괜찮음
+2. 시간복잡도 O(N)
+3. 자료구조  MutableList
+ */
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import kotlin.collections.ArrayDeque
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val s = br.readLine().toMutableList()
+    s.sort()
+
+    // 마지막에 들어갈 홀수
+    var last =""
+
+    // 팰린드롬이 될 수 있는지 체크
+    var check = true
+    var check1 = 0
+    for (i in s.toSet()) {
+        if (s.count { it == i } % 2 == 1) {
+            last = i.toString()
+            check1 += 1
+            if (check1 == 2) {
+                check = false
+                bw.write("I'm Sorry Hansoo")
+                break
+            }
+        }
+    }
+
+    if (check) {
+        // 홀수 문자 하나만 스킵
+        var check2 = true
+        val front = mutableListOf<String>()
+        val back = ArrayDeque<String>()
+        while (s.size > 0) {
+            val str = s.removeFirst().toString()
+            if (str==last && check2){
+                check2=false
+                continue
+            }else{
+                front.add(str)
+                if (s.isNotEmpty()){
+                    back.addFirst(s.removeFirst().toString())
+                }
+            }
+        }
+        bw.write(front.joinToString("")+last+back.joinToString(""))
+    }
+
+    bw.flush()
+    bw.close()
+}
