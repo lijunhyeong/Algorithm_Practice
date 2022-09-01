@@ -1,0 +1,50 @@
+/*
+2910 빈도 정렬
+1.아이디어
+주어진 배열을 set으로 만들고
+var sequence = 0
+for (i in set){
+    hashMap[i] = Pair(arr.count { it== i}, sequence)
+    sequence+=1 }
+해당값 = 개수, 순서를 넣어준다.
+2.시간복잡도
+O(N)
+3.자료구조
+hashmap, Array, set
+ */
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val (N, C) = br.readLine().split(" ").map { it.toInt() }
+    val arr = br.readLine().split(" ").map { it.toInt() }
+
+    val hashMap = hashMapOf<Int, Pair<Int, Int>>()
+    val set = arr.toMutableSet()
+
+    var sequence = 0
+    for (i in set){
+        hashMap[i] = Pair(arr.count { it== i}, sequence)
+        sequence+=1
+    }
+    // 리스트로 만들어서 정렬하기
+    // 1. 개수 정렬 -- 내림차순
+    // 2. 개수가 같으면 -> 먼저 나온 순서 -- 오름차순
+    val answer = hashMap.toList().sortedWith(compareByDescending<Pair<Int, Pair<Int, Int>>> { it.second.first }.thenBy { it.second.second })
+
+    // 해당값 = 개수, 순서
+    for ((k, v) in answer){
+        for (j in 0 until v.first){
+            bw.write("$k ")
+        }
+    }
+
+    bw.flush()
+    bw.close()
+}
