@@ -1,0 +1,60 @@
+/*
+17298 오큰수
+1.아이디어
+주어진 리스트의 끝에 값부터 arrStack 스택에 넣는다.
+끝 값부터 하나씩 arrStack의 top이랑 비교하여
+arrStack에 해당값 보다 큰 수가 있으면 Stack에 넣어준다.
+arrStack에 큰 수가 없다면 Stack -1를 넣는다.
++주석 참고
+2.시간복잡도
+O(N2)
+3.자료구조
+stack
+ */
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import java.util.*
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val n = br.readLine().toInt()
+    val arr = br.readLine().split(" ").map { it.toInt() }.toMutableList()
+
+    val stack = Stack<Int>()
+    val arrStack = Stack<Int>()
+
+    for (i in n-1 downTo 0){
+        var check = true
+
+        // arrStack이 비어있지 않다면
+        while (arrStack.isNotEmpty()) {
+            // 해당 값이랑 비교해서 arrStack 에 더 큰 값이 있으면 멈춤
+            if (arr[i] < arrStack.peek()) {
+                stack.add(arrStack.peek())
+                check = false
+                break
+            } else {
+                // arr[i]보다 큰지 않다면 stack에서 지움
+                arrStack.pop()
+            }
+        }
+        // arrStack 에 arr[i]보다 큰 수 없으면 -1
+        if (check) {
+            stack.add(-1)
+        }
+
+        arrStack.add(arr[i])
+    }
+
+    // 스택 top 하나씩 출력
+    while (stack.isNotEmpty()){
+            bw.write("${stack.pop()} ")
+    }
+
+    bw.flush()
+    bw.close()
+}
