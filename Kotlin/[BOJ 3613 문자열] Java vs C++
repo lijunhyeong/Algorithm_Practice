@@ -1,0 +1,88 @@
+/*
+3613 Java vs C++
+1.아이디어
+입력 받은 값이
+Java 또는 C++ 형식인지 조건을 확인하고 아니면 Error! 출력
+Java 또는 C++형식이라면,
+Java -> C++
+C++ -> Java 형식으로 변환하여 출력한다.
+2.시간복잡도
+O(N)
+3.자료구조
+hashmap, Array, set
+ */
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val s = br.readLine()
+
+    // true = C++, false = java
+    val check = s.contains("_")
+
+    // java or C++ 형식인지 확인
+    var check2 = true
+    for (i in s.indices){
+        // error 경우의 수
+        if (s[0] == '_' || s[s.length-1] == '_' || s[0].isUpperCase()){
+            // 맨 뒤와 맨 앞이 '_'면 error, 첫글자가 대문자면
+            check2 = false
+            break
+        }else if (i > 0 && s[i] == '_' && s[i-1] == '_'){
+            //'_' 연속 두개면 에러
+            check2 = false
+            break
+        }
+
+        if (check){ // C++의 경우
+            if (s[i]=='_'){
+                continue
+            }else{
+                if (s[i].isUpperCase()){
+                    check2 =false
+                    break
+                }
+            }
+        }else{      // java 경우
+            /*if (s[0].isUpperCase()){
+                check2 = false
+                break
+            }*/
+        }
+    }
+
+    // 형식 검사에서 통과했음연 true
+    if (check2){
+        if (check){ // C++의 경우
+            val c = s.split("_")
+            bw.write(c[0])
+            for (i in 1 until c.size){
+                for (j in c[i].indices){
+                    val a = if (j==0){
+                        c[i][j].toUpperCase()
+                    } else{
+                        c[i][j]
+                    }
+                    bw.write("$a")
+                }
+            }
+        }else{      // java 경우
+            for (i in s){
+                if (i.isUpperCase()){
+                    bw.write("_${i.toLowerCase()}")
+                }else{
+                    bw.write("$i")
+                }
+            }
+        }
+
+    }else{
+        bw.write("Error!")
+    }
+    bw.flush()
+    bw.close()
+}
