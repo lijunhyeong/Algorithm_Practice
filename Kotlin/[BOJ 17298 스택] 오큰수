@@ -7,7 +7,7 @@ arrStack에 해당값 보다 큰 수가 있으면 Stack에 넣어준다.
 arrStack에 큰 수가 없다면 Stack -1를 넣는다.
 +주석 참고
 2.시간복잡도
-O(N2)
+O(n lg n)
 3.자료구조
 stack
  */
