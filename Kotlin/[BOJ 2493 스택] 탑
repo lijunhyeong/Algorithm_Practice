@@ -1,0 +1,55 @@
+/*
+2493 탑
+1.아이디어
+첫번째는 무조건 0
+순서를 출력하는 것.
+ex)
+1 2 3 4 5
+6 9 5 7 4
+ans: 0 0 2 2 4
+앞에서 부터 stack에 넣고 arr가 stack에 있는 값 보다 작으면
+stack에 있는 값의 순서를 넣는다.
+왼쪽에서 가장 가까운 큰 수의 순서번소 출력
+2.시간복잡도
+O(n lg n)
+3.자료구조
+stack
+ */
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import java.util.*
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val n = br.readLine().toInt()
+    val arr = br.readLine().split(" ").map { it.toInt() }
+    val stack = Stack<Pair<Int, Int>>()     // 순서, 값
+
+    for (i in 1..arr.size){
+        var check = true
+
+        while (stack.isNotEmpty()){
+            if (stack.peek().second > arr[i-1]){
+                bw.write("${stack.peek().first} ")
+                check = false
+                break
+            }else{
+                stack.pop()
+            }
+        }
+
+        if (check){
+            bw.write("0 ")
+        }
+
+        stack.add(Pair(i, arr[i-1]))
+    }
+
+
+    bw.flush()
+    bw.close()
+}
