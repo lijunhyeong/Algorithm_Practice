@@ -1,0 +1,40 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val (A, K) = br.readLine().split(" ").map { it.toInt() }
+
+    val answer = IntArray(1000001)
+    fun bfs() {
+        val q = ArrayDeque<Int>()
+        q.add(A)
+
+        while (q.isNotEmpty()) {
+            val now = q.removeFirst()
+            if (now == K) {
+                break
+            }
+            val arr = arrayOf(now + 1, now * 2)
+            for (next in arr) {
+                // 1<=A<=1000000 범위 안에 들어와야되고
+                // answer[next]==0 -> 중복체크 이미 나온 값이면 패스
+                // answer의 초기값이 0이기 때문에 한 번이라도 나온 수는 최소 1이다.
+                if (next in 1..1000000 && answer[next] == 0) {
+                    answer[next] = answer[now] + 1
+                    q.add(next)
+                }
+            }
+        }
+    }
+
+    bfs()
+    bw.write("${answer[K]}")
+
+    bw.flush()
+    bw.close()
+}
