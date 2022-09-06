@@ -1,0 +1,63 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import kotlin.collections.ArrayList
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    // n=정점의 개수, m=간선의 개수, v=탐색을 시작할 정점의 번호호
+   val (n, m, v) = br.readLine().split(" ").map { it.toInt() }
+    // 그래프
+    val map: Array<ArrayList<Int>> = Array(n+1) { arrayListOf() }
+
+    // 방문 체크
+    var dfsChecked = BooleanArray(n+1)
+    var bfsChecked = BooleanArray(n+1)
+
+    val bfsArray = mutableSetOf<Int>()
+    repeat(m) {
+        val (o, t) = br.readLine().split(" ").map { it.toInt() }
+        map[t].add(o)
+        map[o].add(t)
+    }
+    //[], [2, 3, 4], [1, 4], [1, 4], [1, 2, 3]
+
+    // 깊이우선 탐색
+    fun dfs(vt: Int) {
+        dfsChecked[vt] = true
+        bw.write("$vt ")        // 출력
+        // 정렬해줘야함
+        for (i in map[vt].sorted()){
+            if (!dfsChecked[i]) dfs(i)
+        }
+    }
+    dfs(v)
+    bw.write("\n")
+
+    // 너비우선 탐색
+    fun bfs(vt: Int) {
+        val q = mutableListOf<Int>()
+        bfsArray.add(vt)
+        q.add(vt)
+        while (q.isNotEmpty()) {
+            val vertex = q.removeFirst()
+            for (i in map[vertex].sorted()) {
+                if (!bfsChecked[vertex]) {
+                    bfsChecked[vertex] = true
+                    q.add(i)
+                    bfsArray.add(i)     // set으로 중복 제거거
+                }
+
+           }
+        }
+    }
+    bfs(v)
+    bw.write(bfsArray.joinToString(" "))
+
+    bw.flush()
+    bw.close()
+
+}
