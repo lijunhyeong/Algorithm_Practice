@@ -1,0 +1,42 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val (N, K) = br.readLine().split(" ").map { it.toInt() }
+
+    val check = IntArray(100001)
+
+    fun bfs() {
+        val q = ArrayDeque<Int>()
+        q.add(N)
+
+        while (q.isNotEmpty()) {
+            val position = q.removeFirst()
+            if (position == K) {
+                break
+            }
+            val arr = arrayOf(position - 1, position + 1, position * 2)
+            for (next in arr) {
+                if (next in 0 until 100001 && check[next] == 0) {
+                    // bfs 특성대로 레벨 단위로 더한다.
+                    check[next] = check[position] + 1
+                    q.add(next)
+                }
+            }
+        }
+
+    }
+
+    bfs()
+
+    bw.write("${check[K]}")
+
+    bw.flush()
+    bw.close()
+
+}
