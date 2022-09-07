@@ -1,0 +1,94 @@
+/*
+17609 회문
+1.아이디어
+주석 참고
+2.시간복잡도
+O(n2)
+3.자료구조
+String
+ */
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val n = br.readLine().toInt()
+
+    repeat(n) {
+        val s = br.readLine()
+        var answer = 0
+        var check = true
+
+        var front = 0
+        var back = s.length - 1
+        /* 반례
+        1
+        baaba
+         */
+        for (i in 0 until s.length / 2) {
+
+            if (s[front] != s[back]) {
+                answer += 1
+                // 현재 반대편+1이랑 내거랑 맞는지 비교
+
+                if (s[front+1] == s[back] && s[front] == s[back-1]){
+                    // 해당 글자 카운트해서 짝수를 버린다.
+                    var frontNum = 0
+                    var backNum = 0
+                    for (j in front..back){
+                        if (s[front] == s[j]){ frontNum+=1 }
+                        if (s[back] == s[j]){ backNum+=1 }
+                    }
+
+                    // 앞의 글자가 짝수일 경우 현재수를 버린다.
+                    if (frontNum%2==1){
+                        front+=1
+                    }
+                    else if (backNum%2==1){
+                        // 뒤에 글자가 홀수일 경우 현재수를 버린다.
+                        back-=1
+                    }else{
+                        // 둘다 짝수일 경우(아무수나 버림)
+                        back-=1
+                    }
+                }
+                else if (s[front] == s[back-1]){
+                    // 현재글자와 현재 뒤의 앞글자가 같을 경우 뒤 글자를 버림
+                    back-=1
+                }else if (s[front+1] == s[back]){
+                    // 현재 뒤 글자와 앞글자의 하나 앞 글자가 같은경우 앞글자버림림
+                    front+1
+                }else{
+                    answer+=1
+                }
+
+                if (answer > 1) {
+                    check = false
+                    break
+                }
+            }
+
+            front += 1
+            back -= 1
+        }
+
+        if (check) {
+            if (answer == 1) {
+                bw.write("1\n")
+            } else {
+                bw.write("0\n")
+            }
+        } else {
+            bw.write("2\n")
+        }
+
+    }
+
+    bw.flush()
+    bw.close()
+
+}
