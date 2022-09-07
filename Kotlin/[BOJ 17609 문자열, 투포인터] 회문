@@ -39,6 +39,8 @@ fun main() {
                     // 해당 글자 카운트해서 짝수를 버린다.
                     var frontNum = 0
                     var backNum = 0
+                    
+                    // 현재 글자 사이에 해당 앞, 뒤 글자가 몇 개 있는지 카운트트
                     for (j in front..back){
                         if (s[front] == s[j]){ frontNum+=1 }
                         if (s[back] == s[j]){ backNum+=1 }
