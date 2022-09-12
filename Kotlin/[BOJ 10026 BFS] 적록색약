@@ -1,0 +1,92 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+    val n = br.readLine().toInt()
+    val map = ArrayList<MutableList<Char>>()
+    val checked = Array(n + 1) { BooleanArray(n + 1) }
+    val visited = Array(n + 1) { BooleanArray(n + 1) }
+    repeat(n) {
+        val s = br.readLine().toMutableList()
+        map.add(s)
+    }
+    // 왼, 오, 아, 위
+    val dx = arrayOf(-1, 1, 0, 0)
+    val dy = arrayOf(0, 0, 1, -1)
+    fun bfs(x: Int, y: Int, color: Char) {
+        val q = ArrayDeque<Int>()
+        q.add(x)
+        q.add(y)
+        while (q.isNotEmpty()) {
+            val xx = q.removeFirst()
+            val yy = q.removeFirst()
+            for (i in dx.indices) {
+                val nx = xx + dx[i]
+                val ny = yy + dy[i]
+                if (nx in 0 until n && ny in 0 until n) {
+                    if (!checked[nx][ny] && map[nx][ny] == color) {
+                        checked[nx][ny] = true
+                        q.add(nx)
+                        q.add(ny)
+                    }
+                }
+            }
+        }
+    }
+    fun bfs2(x: Int, y: Int, color: Char) {
+        val q = ArrayDeque<Int>()
+        q.add(x)
+        q.add(y)
+        while (q.isNotEmpty()) {
+            val xx = q.removeFirst()
+            val yy = q.removeFirst()
+            for (i in dx.indices) {
+                val nx = xx + dx[i]
+                val ny = yy + dy[i]
+                if (nx in 0 until n && ny in 0 until n) {
+                    val nowColor = if (map[nx][ny] == 'B'){
+                        'B'
+                    }else{
+                        'G'
+                    }
+                    if (!visited[nx][ny] && nowColor == color) {
+                        visited[nx][ny] = true
+                        q.add(nx)
+                        q.add(ny)
+                    }
+                }
+            }
+        }
+    }
+    // 적록색약이 아닌 사람
+    var answerNot = 0
+    // 적록 색약
+    var answer = 0
+    for (i in 0 until n) {
+        for (j in 0 until n) {
+            // 적록색약 탐색 -> 빨간색일 경우 초록색으로 통일
+            if (!visited[i][j]) {
+                answer += 1
+                visited[i][j] = true
+                val colorNow: Char = if (map[i][j] == 'B'){
+                    'B'
+                }else{
+                    'G'
+                }
+                bfs2(i, j, colorNow)
+            }
+            // 적록색약이 아닌 사람 탐색
+            if (!checked[i][j]) {
+                answerNot += 1
+                checked[i][j] = true
+                bfs(i, j, map[i][j])
+            }
+        }
+    }
+    bw.write("$answerNot $answer")
+    bw.flush()
+    bw.close()
+}
