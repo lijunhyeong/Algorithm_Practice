@@ -1,0 +1,40 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import java.util.ArrayList
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+    val (N,M,R) = br.readLine().split(" ").map { it.toInt() }
+    val map: Array<ArrayList<Int>> = Array(N+1){ arrayListOf() }
+    val checked = BooleanArray(N+1)
+
+    // 양반향 간선 입력 받기
+    repeat(M){
+        val (n, m) = br.readLine().split(" ").map { it.toInt() }
+        map[n].add(m)
+        map[m].add(n)
+    }
+    // 해당 정점이 몇번째인지 값 저장하기
+    val answer = IntArray(N+1)
+    var count=1
+    fun dfs(x:Int){
+        checked[x] = true
+        answer[x] = count
+        for (i in map[x].sortedDescending()){
+            if (!checked[i]){
+                checked[i] = true
+                count+=1
+                dfs(i)
+            }
+        }
+    }
+    dfs(R)
+
+    for (i in 1..N){
+        bw.write("${answer[i]}\n")
+    }
+    bw.flush()
+    bw.close()
+}
