@@ -1,0 +1,72 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+
+    while (true) {
+        val (w, h) = br.readLine().split(" ").map { it.toInt() }
+
+        if (w == 0 && h == 0) {
+            break
+        }
+
+        val map = Array(h + 1) { IntArray(w + 1) }
+        val visited = Array(h + 1) { BooleanArray(w + 1) }
+
+        for (y in 0 until h) {
+            val s = br.readLine().split(" ").map { it.toInt() }
+            for (x in 0 until w) {
+                map[y][x] = s[x]
+            }
+        }
+
+        // 왼, 오, 아래, 위, 대각선 오위, 대각선왼위, 대각선 오아래, 대각선 왼아래
+        val dy = arrayOf(0, 0, 1, -1, -1, -1, 1, 1)
+        val dx = arrayOf(-1, 1, 0, 0, 1, -1, 1, -1)
+        fun bfs(y: Int, x: Int) {
+            val q = ArrayDeque<Int>()
+            q.add(y)
+            q.add(x)
+
+            while (q.isNotEmpty()) {
+                val yy = q.removeFirst()
+                val xx = q.removeFirst()
+                for (i in dy.indices) {
+                    val ny = yy + dy[i]
+                    val nx = xx + dx[i]
+                    if (ny in 0 until h && nx in 0 until w) {
+                        if (!visited[ny][nx] && map[ny][nx] == 1) {
+                            visited[ny][nx] = true
+                            q.add(ny)
+                            q.add(nx)
+                        }
+                    }
+                }
+
+            }
+        }
+
+        var answer = 0
+        for (y in 0 until h) {
+            for (x in 0 until w) {
+                if (!visited[y][x] && map[y][x] == 1) {
+                    answer += 1
+                    visited[y][x] = true
+                    bfs(y, x)
+                }
+            }
+        }
+
+        bw.write("$answer\n")
+
+
+    }
+
+    bw.flush()
+    bw.close()
+}
