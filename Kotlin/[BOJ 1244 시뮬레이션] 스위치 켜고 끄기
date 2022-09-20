@@ -1,0 +1,67 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import java.util.*
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val n = br.readLine().toInt()
+    val arr = br.readLine().split(" ").map { it.toInt() }.toIntArray()
+
+    repeat(br.readLine().toInt()) {
+        val (s, num) = br.readLine().split(" ").map { it.toInt() }
+        if (s == 1) {
+            // 남학생일 경우
+            val case = n / num
+            for (i in 1..case) {
+                val position = (i * num) - 1
+                if (arr[position] == 0) {
+                    arr[position] = 1
+                } else {
+                    arr[position] = 0
+                }
+            }
+        } else {
+            // 여학생일 경우 s==2
+            if (arr[num - 1] == 0) {
+                arr[num - 1] = 1
+            } else {
+                arr[num - 1] = 0
+            }
+            var left = num - 2
+            var right = num
+            while (true) {
+                if (left < 0 || right >= n) {
+                    break
+                }
+                if (arr[left] == arr[right]) {
+                    if (arr[left] == 0) {
+                        arr[left] = 1
+                        arr[right] = 1
+                    } else {
+                        arr[left] = 0
+                        arr[right] = 0
+                    }
+                } else {
+                    break
+                }
+                left -= 1
+                right += 1
+            }
+        }
+    }
+
+    for (i in 1..arr.size){
+        bw.write("${arr[i-1]} ")
+        if (i%20 == 0){
+            bw.write("\n")
+        }
+    }
+
+
+    bw.flush()
+    bw.close()
+}
