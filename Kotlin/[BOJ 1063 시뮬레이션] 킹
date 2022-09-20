@@ -1,0 +1,75 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import kotlin.collections.HashMap
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val hashmap = HashMap<String, Pair<Int, Int>>()
+    hashmap["R"] = Pair(0, 1)
+    hashmap["L"] = Pair(0, -1)
+    hashmap["T"] = Pair(1, 0)
+    hashmap["B"] = Pair(-1, 0)
+    hashmap["RB"] = Pair(-1, 1)
+    hashmap["LB"] = Pair(-1, -1)
+    hashmap["RT"] = Pair(1, 1)
+    hashmap["LT"] = Pair(1, -1)
+
+    val positionX = mapOf(
+        'A' to 1,
+        'B' to 2,
+        'C' to 3,
+        'D' to 4,
+        'E' to 5,
+        'F' to 6,
+        'G' to 7,
+        'H' to 8
+    )
+    // 킹, 돌, 움직인 횟수
+    val (k, s, m) = br.readLine().split(" ")
+
+    var kY = k[1] - '0'
+    var kX = positionX[k[0]]!!
+    var sY = s[1] - '0'
+    var sX = positionX[s[0]]!!
+
+    for (i in 0 until m.toInt()) {
+        val p = br.readLine()
+        val y = kY + hashmap[p]!!.first
+        val x = kX + hashmap[p]!!.second
+        if (y in 1..8 && x in 1..8) {
+            // 겹치는 경우
+            if (y == sY && x == sX) {
+                if (sY + hashmap[p]!!.first in 1..8 && sX + hashmap[p]!!.second in 1..8) {
+                    sY += hashmap[p]!!.first
+                    sX += hashmap[p]!!.second
+                    kY = y
+                    kX = x
+                } else {
+                    continue
+                }
+            } else {
+                kY = y
+                kX = x
+            }
+        }
+
+    }
+
+    bw.write(
+        "${
+            positionX.filterValues { it == kX }.keys.toString().replace(Regex("""[\[\]]"""), "")
+        }${kY}\n"
+    )
+    bw.write(
+        "${
+            positionX.filterValues { it == sX }.keys.toString().replace(Regex("""[\[\]]"""), "")
+        }${sY}"
+    )
+
+    bw.flush()
+    bw.close()
+}
