@@ -1,0 +1,49 @@
+import java.util.ArrayList
+
+fun main() {
+
+    val id_list = arrayOf("muzi", "frodo", "apeach", "neo")
+    var report = arrayOf("muzi frodo","apeach frodo","frodo neo","muzi neo","apeach muzi")
+    val k = 2
+    report = report.toSet().toTypedArray()
+
+    // 본인이 신고당한 횟수
+    val sHashMap = HashMap<String, Int>()
+    // 본인이 신고한 회원
+    val dHashMap = HashMap<String, ArrayList<String>>()
+    for (i in report){
+        val(s, d) = i.split(" ")
+        if (sHashMap[d] == null){
+            sHashMap[d] = 1
+        }else{
+            val num = sHashMap[d]!!
+            sHashMap[d] = num+1
+        }
+
+        if (dHashMap[s] == null){
+            val arr = mutableListOf<String>()
+            arr.add(d)
+            dHashMap[s]= arr as ArrayList<String>
+        }else{
+            dHashMap[s]!!.add(d)
+        }
+
+    }
+
+
+    val answer = mutableListOf<Int>()
+    for (i in id_list){
+        var n = 0
+        if (dHashMap[i] != null){
+            for (j in dHashMap[i]!!){
+                if (sHashMap[j]!! >= k){
+                    n+=1
+                }
+            }
+        }
+        answer.add(n)
+    }
+
+    println(answer.toIntArray())
+
+}
