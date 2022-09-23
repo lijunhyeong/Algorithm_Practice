@@ -1,0 +1,58 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import java.util.*
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    // 수빈 위치, 동생 위치
+    val (n, k) = br.readLine().split(" ").map { it.toInt() }
+    // 한칸 뒤로, 앞으로, 곱하기 2 칸 앞으로
+    val dx = arrayOf(-1, 1, 2)
+    val visited = BooleanArray(100001)
+
+    var cnt = 0
+    var minValue = 0
+    var check = false // 최초 달성 체크
+    fun bfs(n: Int, k: Int) {
+        val q =ArrayDeque<Pair<Int,Int>>()
+        q.add(Pair(n, 0))
+        visited[n] = true
+
+        while (q.isNotEmpty()){
+
+            val x = q.first.first   // 현재 숫자
+            val y = q.first.second  // 몇번째 깊이인지 저장
+            q.remove()
+            visited[x] = true
+
+            // 이미 목적지에 한 번 도달했을 경우 cnt+=1
+            if (check && minValue == y && x==k) cnt+=1
+
+            // 최초로 목적지 도달시 최소 기간 기록
+            if (!check && x ==k){
+                check = true
+                minValue = y // 최소 기간 기록       
+                cnt+=1
+            }
+
+            // 세가지 경우의 수
+            for (i in dx){
+                val nx = if (i==1||i==-1) { x + i }else{ x*i }
+                if (nx in 0..100000 && !visited[nx]){
+                    q.add(Pair(nx,y+1)) // 깊이 하나 추가
+                }
+            }
+        }
+    }
+
+
+    bfs(n,k)
+
+    bw.write("$minValue\n")
+    bw.write("$cnt\n")
+
+    bw.flush()
