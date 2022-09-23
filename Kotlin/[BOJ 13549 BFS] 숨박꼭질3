@@ -18,6 +18,7 @@ fun main() {
     var minValue = 0
     var check = false // 최초 달성 체크
     fun bfs(n: Int, k: Int) {
+        // 숫자와 깊이
         val q =ArrayDeque<Pair<Int,Int>>()
         q.add(Pair(n, 0))
         visited[n] = true
