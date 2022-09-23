@@ -1,0 +1,61 @@
+/*
+11404 플로이드
+1. 아이디어:
+- 모든점 -> 모든점: 플로이드
+- 비용 배열 INF 초기화
+- 간선의 비용 대입
+- 거쳐서 비용 줄어들 경우, 갱신(for문 3번)
+2. 시간복잡도
+- 플로이드: O(V^3)
+- 1e6 > 가능
+3. 변수
+- 비용 배열
+ */
+
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import kotlin.math.min
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    // 도시의 개수
+    val n = br.readLine().toInt()
+    // 버스의 개수
+    val m = br.readLine().toInt()
+
+    val INF = 10000000
+    val map = Array(n+1){IntArray(n+1){INF} }
+
+    // 자신의 값은 0
+    for (i in 1..n) map[i][i] = 0
+
+    repeat(m){
+        val (start, end, value) = br.readLine().split(" ").map { it.toInt() }
+        map[start][end] = min(map[start][end], value)
+    }
+
+
+    for (k in 1..n){    // 거치는 값
+        for (j in 1..n){    // 시작
+            for (i in 1..n){    // 도착
+                if (map[j][i] > (map[j][k] + map[k][i])) {
+                    map[j][i] = map[j][k] + map[k][i]
+                }
+            }
+        }
+    }
+
+    for (j in 1..n){
+        for (i in 1..n){
+            if (map[j][i] == INF) bw.write("0 ")
+            else bw.write("${map[j][i]} ")
+        }
+        bw.write("\n")
+    }
+    bw.flush()
+    bw.close()
+}
