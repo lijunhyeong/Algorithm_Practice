@@ -14,7 +14,7 @@ fun main() {
     val edge = Array(V+1){ mutableListOf<List<Int>>()}
     
     val INF = Int.MAX_VALUE
-    val dist = IntArray(V+1) { _ -> INF }
+    val dist = IntArray(V+1) { _ -> INF }       // 거리 배열 초기값 갱신
 
     for (i in 0 until E){
         val (u,v,w) = br.readLine().split(" ").map { it.toInt() }
@@ -26,12 +26,15 @@ fun main() {
     val priorityQueue = PriorityQueue<Pair<Int,Int>>(V+1, Comparator {
             a, b -> a.first - b.first
     })
-    priorityQueue.add(Pair(0,K))
+    priorityQueue.add(Pair(0,K))    // 최소값, 시작점 넣기
 
     while (priorityQueue.isNotEmpty()){
+        // ew 현재 비용, ev 현재 노드
         val (ew, ev) = priorityQueue.remove()
         if (dist[ev] != ew) continue
+        // nw 다음 간선 비용, nv 다음 간선 노드
         for ( (nw, nv) in edge[ev]){
+            // 현재 관리하고 있는 배열이 더 크면은 갱신하고 우선순위큐에 추가
             if (dist[nv] > (ew+nw)){
                 dist[nv] = ew+nw
                 priorityQueue.add(Pair(dist[nv], nv))
