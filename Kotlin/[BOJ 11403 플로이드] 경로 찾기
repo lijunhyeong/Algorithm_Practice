@@ -1,0 +1,40 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val V = br.readLine().toInt()
+
+    val INF = 1000000000
+    val map = Array(V + 1) { IntArray(V + 1) { INF } }
+    for (i in 1..V) {
+        val s = br.readLine().split(" ").map { it.toInt() }
+        for (j in 1..s.size) {
+            map[i][j] = s[j - 1]
+        }
+    }
+
+    for (k in 1..V) {    // 거치는 값
+        for (j in 1..V) {    // 시작값
+            for (i in 1..V) {    // 끝값
+                if (map[j][k] == 1 && map[k][i] == 1)
+                    map[j][i] =1
+            }
+        }
+    }
+
+    for (j in 1..V) {
+        for (i in 1..V) {
+            if (map[j][i] == INF) bw.write("0 ")
+            else bw.write("${map[j][i]} ")
+        }
+        bw.write("\n")
+    }
+
+    bw.flush()
+    bw.close()
+}
