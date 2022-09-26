@@ -1,0 +1,33 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import java.math.BigInteger
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val case = br.readLine().toInt()
+
+    val answer = mutableListOf<BigInteger>()
+    repeat(case){
+        var s = br.readLine()
+        val str = s.replace("[^0-9]".toRegex(), "*").split("*")
+
+        for (i in str){
+            if (i != ""){
+                // Int, Long 타입 보다 큰 숫자가 나올 수 있다. * 주의
+                answer.add(i.toBigInteger())
+            }
+        }
+    }
+    answer.sort()
+    for (i in answer){
+        bw.write("$i\n")
+    }
+
+
+    bw.flush()
+    bw.close()
+}
