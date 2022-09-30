@@ -1,0 +1,70 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import kotlin.math.max
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val (n, m) = br.readLine().split(" ").map { it.toInt() }
+
+    val map = Array(m + 1) { IntArray(n + 1) }
+    var answer = 0
+    var tomato = 0
+    val queue = ArrayDeque<Pair<Int, Int>>()
+    repeat(m) {
+        val s = br.readLine().split(" ").map { it.toInt() }
+        for (i in s.indices) {
+            if (s[i] == 1) {
+                // 1일 때마다 큐에 넣어준다.
+                queue.add(Pair(it, i))
+            } else if (s[i] == 0) {
+                // 토마토 개수를 카운트 한다.
+                tomato += 1
+            }
+            map[it][i] = s[i]
+        }
+    }
+
+    val dx = arrayOf(-1, 1, 0, 0)
+    val dy = arrayOf(0, 0, 1, -1)
+
+    while (queue.isNotEmpty()) {
+        val (yy, xx) = queue.removeFirst()
+
+        for (i in 0 until 4) {
+            val ny = yy + dy[i]
+            val nx = xx + dx[i]
+            if (ny in 0 until m && nx in 0 until n) {
+                if ( map[ny][nx] == 0) {
+                    map[ny][nx] = map[yy][xx] + 1
+                    queue.add(Pair(ny, nx))
+                    // 0을 만나면 토마토를 하나씩 지워준다.
+                    tomato -= 1
+                    // 현재까지 토마토 익은 날짜를 비교한다.
+                    // 1부터 시작했기 때문에 -1을 해줌
+                    answer = max(answer, map[ny][nx] - 1)
+                }
+            }
+            // 익을 토마토가 없으면 종료
+            if (tomato == 0) {
+                queue.clear()
+                break
+            }
+        }
+    }
+
+    if (tomato == 0)
+    // 토마토가 다 익은 경우
+        bw.write("$answer")
+    else
+    // 토마토가 하나 이상일 경우 다 익지 않은 거기때문에 -1 출력
+        bw.write("-1")
+
+
+
+    bw.flush()
+    bw.close()
+}
