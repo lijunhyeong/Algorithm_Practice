@@ -25,3 +25,5 @@ fun binarySearch(st: Int, en: Int, target: Int){
 시간복잡도: O(N)
 가정: 데이터 정렬 X
 방식: 양 끝단에서 한칸씩 이동하면서 알맞는 값을 찾음
+
+// 예제문제 [BOJ 2470 투 포인터]두 용액 
