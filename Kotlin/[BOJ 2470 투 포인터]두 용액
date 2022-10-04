@@ -1,0 +1,46 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import kotlin.math.abs
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val n = br.readLine().toInt()
+    val arr = br.readLine().split(" ").map { it.toInt() }.sorted()
+
+    var left = 0
+    var right = n-1
+    var answer = 2000000001
+    val intArray = IntArray(2)
+    for (i in 0 until n){
+        // 이분탐색이 끝났거나 문제 조건이 0에 가까워지는 것이므로 0이면 종료
+        if (left>= right || answer==0){
+            break
+        }
+        val num = arr[right] + arr[left]
+
+        if (abs(num) < abs(answer)){
+            answer=num
+            intArray[0] = arr[left]
+            intArray[1] = arr[right]
+        }
+
+        // 다음 연산 값이 더 작은 쪽으로 right or left를 이동한다.
+        if (abs(arr[right] + arr[left+1]) > abs(arr[right-1]+arr[left])){
+            right-=1
+        }else{
+            left+=1
+        }
+
+
+    }
+
+    bw.write("${intArray[0]} ${intArray[1]}")
+
+
+    bw.flush()
+    bw.close()
+}
