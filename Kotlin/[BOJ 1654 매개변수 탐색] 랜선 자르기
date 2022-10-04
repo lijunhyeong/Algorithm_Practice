@@ -1,0 +1,48 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import kotlin.math.max
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val (k, n) = br.readLine().split(" ").map { it.toInt() }
+    val arr = mutableListOf<Int>()
+    var end = 0L
+    repeat(k){
+        val num = br.readLine().toInt()
+        arr.add(num)
+
+        end = max(num.toLong(), end)
+    }
+
+    var start = 1L
+    var answer = 0L
+
+    // start가 end보다 커질 때까지 진행
+    while (end >= start){
+        val mid = (end+start)/2
+
+        var num : Long = 0
+        for (i in arr){
+            num+=(i/mid)
+        }
+
+        // 찾아야 되는 조건의 최대 값 구하기기
+        if(num >= n){
+            answer = max(mid, answer)
+            start = mid +1
+        }else{
+            end = mid-1
+        }
+
+    }
+
+    bw.write("$answer")
+
+
+    bw.flush()
+    bw.close()
+}
