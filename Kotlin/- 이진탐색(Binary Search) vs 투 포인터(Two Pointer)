@@ -3,6 +3,24 @@
 가정: 데이터 정렬 O
 방식: mid를 화용해서 매 연산마다 탐색하는 범위를 절반으로 좁힘
 
+// 이진탐색 기본 코드
+fun binarySearch(st: Int, en: Int, target: Int){
+    if (st == en) {
+        //....
+        return 
+    }
+    
+    val mid = (st + en) / 2
+    
+    if (nList[mid] < target) {
+        binarySearch(mid + 1, en, target)
+    } else {
+        binarySearch(st, mid, target)
+    }
+
+}
+
+
 2. 투 포인터(Two Pointer)
 시간복잡도: O(N)
 가정: 데이터 정렬 X
