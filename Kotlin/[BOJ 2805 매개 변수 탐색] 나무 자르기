@@ -1,0 +1,41 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import kotlin.math.max
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val (n, m) = br.readLine().split(" ").map { it.toInt() }
+    val arr = br.readLine().split(" ").map { it.toInt() }
+
+    var end = arr.maxOrNull()!!.toLong()
+    var start = 1L
+
+    var answer = 0L
+    while (start <= end) {
+        val mid : Long = (start + end) / 2
+
+        // 자른 나무의 높이
+        var num = 0L
+        for (i in arr) {
+            if (i > mid) {
+                num += i - mid
+            }
+        }
+
+        if (num >= m) {
+            answer = max(answer, mid)
+            start = mid + 1
+        } else {
+            end = mid - 1
+        }
+    }
+
+    bw.write("$answer")
+
+    bw.flush()
+    bw.close()
+}
