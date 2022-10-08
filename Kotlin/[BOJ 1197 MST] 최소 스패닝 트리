@@ -1,0 +1,50 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import java.util.*
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val (v, e) = br.readLine().split(" ").map { it.toInt() }
+
+    val map = Array(v+1){ mutableListOf<Pair<Int,Int>>() }
+    val visited = BooleanArray(v+1)
+    repeat(e){
+        val (a,b,c) =br.readLine().split(" ").map { it.toInt() }
+        // a번 노드에서 b번 노드로 가는 간선의 값이 c
+        map[a].add(Pair(b,c))
+        map[b].add(Pair(a,c))
+    }
+
+    // 간선의 합
+    var answer = 0L
+    // 가중치, 정점
+    val priorityQ = PriorityQueue<Pair<Int,Int>>(v+1, kotlin.Comparator {
+            t, t2 -> t.first-t2.first })
+    priorityQ.add(Pair(0, 1))
+
+    while (priorityQ.isNotEmpty()){
+        val (value, position) = priorityQ.remove()
+
+        // 방문하지 않은 정점만 방문!!
+        if (!visited[position]){
+            visited[position] = true
+            answer+=value
+
+            for (i in map[position]){
+                if (!visited[i.first]){
+                    priorityQ.add(Pair(i.second, i.first))
+                }
+            }
+        }
+
+    }
+
+    bw.write("$answer")
+
+    bw.flush()
+    bw.close()
+}
