@@ -1,0 +1,83 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val (N, K) = br.readLine().split(" ").map { it.toInt() }
+    val a = br.readLine().split(" ").map { it.toInt() }.toIntArray()
+
+    // 정렬한 배열을 담을 배열
+    val sorted = IntArray(N)
+
+    var answer = 0  // 구해야하는 횟수의 값
+    var num = 0     // 저장되는 횟수
+    fun merge(arr: IntArray, p: Int, q: Int, r: Int) {
+        var i = p
+        var j = q + 1
+        var t = 0
+        // 작은 순서대로 배열에 삽입
+        while (i <= q && j <= r) {
+            if (arr[i] <= arr[j]) {
+                sorted[t] = arr[i]
+                i += 1
+            } else {
+                sorted[t] = arr[j]
+                j += 1
+            }
+            t += 1
+        }
+        // 왼쪽 배열 부분이 남은 경우
+        while (i <= q){
+            sorted[t] = arr[i]
+            t+=1
+            i+=1
+        }
+        // 오른쪽 배열 부분이 남은 경우
+        while (j <= r){
+            sorted[t] = arr[j]
+            t+=1
+            j+=1
+        }
+
+        // 정렬된 배열을 삽입
+        i = p
+        t = 0
+        while (i <= r){
+            arr[i] = sorted[t]
+            // 해당 횟수의 수 구하기
+            num+=1
+            if (num == K){
+                answer = arr[i]
+            }
+            // 인덱스 +1
+            i+=1
+            t+=1
+
+        }
+    }
+
+    fun mergeSort(a: IntArray, p: Int, r: Int) {
+        // 크기가 1보다 큰 경우
+        if (p < r) {
+            val q = (p + r) / 2            // 중간지점
+            mergeSort(a, p, q)         // 전반부 정렬
+            mergeSort(a, q + 1, r)    // 후반부 정렬
+            merge(a, p, q, r)             // 병합
+        }
+    }
+
+    mergeSort(a, 0, N - 1)
+
+    if (num>=K){
+        bw.write("$answer")
+    }else{
+        bw.write("-1")
+    }
+
+    bw.flush()
+    bw.close()
+}
