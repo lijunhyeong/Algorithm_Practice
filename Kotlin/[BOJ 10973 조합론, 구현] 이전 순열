@@ -1,0 +1,55 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val n = br.readLine().toInt()
+    val arr = br.readLine().split(" ").map { it.toInt() }.toIntArray()
+    var check = true
+
+    for (i in n - 1 downTo 0) {
+
+        // arr[i] 보다 arr[i-1]이 더 클 경우 (큰 수가 더 앞에 있을 때)
+        if (i > 0 && arr[i - 1] > arr[i]) {        
+            
+            for (j in n - 1 downTo 0) {
+                // arr[i - 1]보다 작은 수가 있을 경우 위치를 바꿈
+                if (arr[i - 1] > arr[j]) {
+                    // 위치 swap
+                    val temp = arr[j]
+                    arr[j] = arr[i - 1]
+                    arr[i - 1] = temp
+                    check = false
+
+                    // 출력
+                    for (k in 0 until i) {
+                        bw.write("${arr[k]} ")
+                    }
+                    val a = mutableListOf<Int>()
+                    for (kk in i until n) {
+                        a.add(arr[kk])
+                    }
+                    a.sortDescending()
+                    for (kk in a) {
+                        bw.write("$kk ")
+                    }
+                    break
+                }
+            }
+            if (!check) {
+                break
+            }
+        }
+    }
+
+    if (check){
+        bw.write("-1")
+    }
+
+    bw.flush()
+    bw.close()
+}
