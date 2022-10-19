@@ -1,0 +1,45 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val (n,c) = br.readLine().split(" ").map{it.toInt()}
+    val arr = mutableListOf<Int>()
+    repeat(n){ arr.add(br.readLine().toInt()) }
+    arr.sort()
+
+    var answer = 0
+    var left= 1         // 시작점을 1로 주어야 최소값 구하는 시간을 단축하며 탐색 가능
+    var right=arr[n-1]-arr[0]
+    while(left <= right){
+        // mid는 최소 거리를 의미
+        val mid = (left+right)/2
+        var value = arr[0]      // 현재 위치
+        var cnt = 1
+        for(i in 1 until n){
+            // value+mid 현재 공유기에서 최소거리
+            // 그 길이보다 arr[i]가 클 경우
+            if(arr[i] >= value+mid){
+                value = arr[i]
+                cnt+=1
+            }
+        }
+
+        if (cnt>=c){
+            // C개 이상 공유기 설치 가능 경우
+            left=mid+1
+            answer=mid
+        }else{
+            right = mid-1
+        }
+    }
+
+    bw.write("$answer")
+
+    bw.flush()
+    bw.close()
+}
