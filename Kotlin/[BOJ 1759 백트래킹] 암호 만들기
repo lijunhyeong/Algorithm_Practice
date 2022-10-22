@@ -1,0 +1,51 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+
+    val (L,C) = br.readLine().split(" ").map{it.toInt()}
+    val arr = br.readLine().split(" ")
+
+    val answer = mutableSetOf<String>()
+    val q = ArrayDeque<String>()
+    val visited = BooleanArray(C)
+    val vowelList = arrayOf("a", "e", "i", "o", "u")    // 모음
+    // consonant = 자음
+    fun back(idx:Int, dept:Int, vowel: Int, consonant:Int){
+        var vowelCnt = vowel                // 모음 개수
+        var consonantCnt = consonant        // 자음 개수
+
+        if(q.size == L){
+            if (vowelCnt >=1 && consonantCnt >= 2) answer.add(q.sorted().joinToString(""))
+            return
+        }
+
+        for(i in idx until C){
+            if(!visited[i]){
+                if(arr[i] in vowelList) vowelCnt+=1
+                else consonantCnt+=1
+                visited[i] = true
+                q.add(arr[i])
+                back( i,dept+1, vowelCnt, consonantCnt)
+                val str = q.removeLast()
+                if(str in vowelList) vowelCnt-=1
+                else consonantCnt-=1
+                visited[i] = false
+            }
+        }
+
+    }
+
+    back(0,0, 0, 0)
+
+    bw.write("${answer.sorted().joinToString("\n")}\n")
+
+
+    bw.flush()
+    bw.close()
+}
