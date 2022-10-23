@@ -1,0 +1,47 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+
+    val n = br.readLine().toMutableList()
+
+
+    if(n.sortedDescending().joinToString("").toInt() == n.joinToString("").toInt()){
+        bw.write("0")
+    }else{
+        val visited = BooleanArray(n.size)
+        val q = ArrayDeque<Char>()
+        val answer = mutableSetOf<Int>()
+        fun back(dept:Int){
+            if(q.size == n.size){
+                if (q.joinToString("").toInt() > n.joinToString("").toInt()) {
+                    answer.add(q.joinToString("").toInt())
+                }
+                return
+            }
+
+            for(i in 0 until n.size){
+                if(!visited[i]){
+                    visited[i] = true
+                    q.add(n[i])
+                    back(dept+1)
+                    visited[i] = false
+                    q.removeLast()
+                }
+            }
+        }
+
+        back(0)
+        bw.write("${answer.sorted()[0]}")
+    }
+
+
+
+    bw.flush()
+    bw.close()
+}
