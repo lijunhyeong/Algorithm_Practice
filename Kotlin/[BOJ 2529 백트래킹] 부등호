@@ -1,0 +1,68 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val n = br.readLine().toInt()
+    val arr = br.readLine().split(" ")
+    val case = mutableListOf<Boolean>()
+    for(i in arr){
+        if(i == ">"){
+            case.add(true)
+        }else{
+            case.add(false)
+        }
+    }
+
+    val answer = mutableListOf<String>()
+    val q = ArrayDeque<Int>()
+    val visited = BooleanArray(10)
+    fun back(dept:Int){
+        if(q.size==n+1){
+            var check = true
+            for(i in 1..n){
+                if(case[i-1]){
+                    // 참일 경우([i-1] > [i])
+                    if(q[i-1] < q[i]){
+                        // 거짓이면 멈춤
+                        check = false
+                        break
+                    }
+                }else{
+                    // 거짓일 경우 ([i-1] < [i])
+                    if(q[i-1] > q[i]){
+                        // 거짓이면 멈춤
+                        check = false
+                        break
+                    }
+                }
+            }
+            if(check){
+                answer.add(q.joinToString(""))
+            }
+            return
+        }
+
+
+        for(i in 0..9){
+            if(!visited[i]){
+                visited[i] = true
+                q.add(i)
+                back(dept+1)
+                q.removeLast()
+                visited[i] = false
+            }
+        }
+    }
+    back(0)
+
+    answer.sort()
+    bw.write("${answer[answer.size-1]}\n${answer[0]}")
+
+    bw.flush()
+    bw.close()
+}
