@@ -2,7 +2,7 @@
     var nList = arrayListOf<Int>()
     for (i in 2..10000){
         var check = true
-        for (j in 2..sqrt((i+1.toDouble().toInt()).toDouble()).toInt()){
+        for (j in 2..kotlin.math.sqrt((i+1.toDouble().toInt()).toDouble()).toInt()){
             if (i%j==0){
                 check=false
             }
