@@ -1,0 +1,75 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+    
+    // 수의 개수
+    val n = br.readLine().toInt()
+    // 주어진 수들
+    val arr = br.readLine().split(" ").map{it.toInt()}
+    // 사칙연산 개수
+    val case = br.readLine().split(" ").map{it.toInt()}
+    val arithmetic = mutableListOf<Int>()
+    for(i in case.indices){
+        if(case[i] > 0){
+            repeat(case[i]){
+                arithmetic.add(i)
+            }
+        }
+    }
+    // 큰 수와 작은 수
+    var maxNum = Int.MIN_VALUE
+    var minNum = Int.MAX_VALUE
+    val q = ArrayDeque<Int>()
+    val visited = BooleanArray(arithmetic.size)
+    fun back(dept:Int){
+        if(q.size == arithmetic.size){
+            var num = arr[0]
+            for(i in 1 until arr.size){
+                // 더하기
+                if(q[i-1]==0) num+=arr[i]
+                // 빼기
+                if(q[i-1]==1) num-=arr[i]
+                // 곱하기
+                if(q[i-1]==2) num*=arr[i]
+                // 나누기
+                if(q[i-1]==3){
+                    if(num < 0){
+                        // 음수일 경우
+                        num*=-1 // 양수로 만들고
+                        num/=arr[i]
+                        num*=-1
+                    }else{
+                        num/=arr[i]
+                    }
+                }
+            }
+            if(num > maxNum){
+                maxNum = num
+            }
+            if(minNum > num){
+                minNum = num
+            }
+        }
+
+        for(i in arithmetic.indices){
+            if(!visited[i]){
+                visited[i] = true
+                q.add(arithmetic[i])
+                back(dept+1)
+                q.removeLast()
+                visited[i] = false
+            }
+        }
+    }
+
+    back(0)
+    bw.write("$maxNum\n$minNum")
+
+    bw.flush()
+    bw.close()
+}
