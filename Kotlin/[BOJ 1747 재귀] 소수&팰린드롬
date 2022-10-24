@@ -1,0 +1,51 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    var num = br.readLine().toInt()
+
+    var answer = false    // 소수&팰린드롬 만족하는지
+    fun palindrome(l:Int, r:Int, s:String) {
+        if(l >= r){
+            answer = true
+            return
+        }
+        if(s[l] != s[r]) return
+        else palindrome(l+1, r-1, s)
+    }
+
+    while(true){
+        // 1. 소수 판별
+        var check = true
+        for (j in 2..kotlin.math.sqrt((num + 1.toDouble().toInt()).toDouble()).toInt()){
+            if (num%j==0){
+                check = false
+                break
+            }
+        }
+
+        if (check){
+            // 2. 소수라면 팰린드롬 검증
+            val s = num.toString()
+            palindrome(0, s.length-1, s)
+        }
+
+        // 3. 소수 & 팰린드롬
+        if(answer){
+            // 소수 검증은 2부터 하기 떄문에 입력 받은수가 1일 경우 2를 출력한다.(2는 소수이면서 팰린드롬임)
+            if (num == 1) num = 2
+            bw.write("$num")
+            break
+        }else{
+            num+=1
+        }
+    }
+
+    bw.flush()
+    bw.close()
+}
