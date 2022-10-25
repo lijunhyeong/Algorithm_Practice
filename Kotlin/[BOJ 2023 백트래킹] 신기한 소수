@@ -1,0 +1,48 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val n = br.readLine().toInt()
+
+    fun check(number: Int): Boolean {
+        if (number < 2) return false
+        if (number == 2) return true
+        var checked = true
+        for (j in 2..kotlin.math.sqrt((number + 1.toDouble().toInt()).toDouble()).toInt()) {
+            if (number % j == 0) {
+                checked = false
+                break
+            }
+        }
+        return checked
+    }
+
+    val answer = mutableListOf<Int>()
+
+    fun back(str: String, dept: Int) {
+        if (str.length == n) {
+            answer.add(str.toInt())
+            return
+        }
+
+        for (i in 1..9) {
+            val numStr = str + i.toString()
+            // 첫째자리가 무조건 소수여야 함
+            if (check(numStr.toInt())){
+                back(numStr,dept + 1)
+            }
+
+        }
+    }
+    back("",0)
+
+    bw.write(answer.joinToString("\n"))
+
+    bw.flush()
+    bw.close()
+}
