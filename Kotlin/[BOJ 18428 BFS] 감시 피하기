@@ -1,0 +1,127 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val n = br.readLine().toInt()
+    val visited = Array(n) { BooleanArray(n) }
+    val studentPosition = mutableListOf<Pair<Int, Int>>()
+    val teacherPosition = mutableListOf<Pair<Int, Int>>()
+    val map = Array(n) { Array(n) { "" } }
+    for (j in 0 until n) {
+        val s = br.readLine().split(" ")
+        for (i in 0 until n) {
+            map[j][i] = s[i]
+            if (s[i] == "S") {
+                studentPosition.add(Pair(j, i))
+            }
+            if (s[i] == "T") {
+                teacherPosition.add(Pair(j, i))
+            }
+        }
+    }
+
+    for (i in studentPosition) {
+        // 행 탐색
+        for (j in 0 until n) {
+            if (map[i.first][j] == "T") {
+                if (j > i.second) {
+                    if (map[i.first][i.second + 1] != "S")
+                        visited[i.first][i.second + 1] = true
+                } else {
+                    if (map[i.first][i.second - 1] != "S")
+                        visited[i.first][i.second - 1] =true
+                }
+            }
+        }
+        // 열 탐색
+        for (j in 0 until n) {
+            if (map[j][i.second] == "T") {
+                if (j > i.first) {
+                    if (map[i.first + 1][i.second] != "S")
+                        visited[i.first + 1][i.second] =true
+                } else {
+                    if (map[i.first - 1][i.second] != "S")
+                        visited[i.first - 1][i.second] =true
+                }
+            }
+        }
+    }
+
+    // 정답
+    var answerFinal = true
+
+    val dy = arrayOf(1, -1, 0, 0)
+    val dx = arrayOf(0, 0, 1, -1)
+    var check = true
+    val answer = mutableSetOf<Pair<Int, Int>>()
+    // 벽 3개 & 인접한 T 탐색
+    for (i in studentPosition) {
+        // S와 인접한 T 탐색
+        for (j in dy.indices) {
+            val ny = i.first + dy[j]
+            val nx = i.second + dx[j]
+            if (ny in 0 until n && nx in 0 until n) {
+                if (map[ny][nx] == "T") {
+                    check = false
+                    break
+                }
+                if (visited[ny][nx]) {
+                    answer.add(Pair(ny, nx))
+                }
+            }
+        }
+        if (!check) {
+            answerFinal = false
+            break
+        }
+    }
+
+    if (answerFinal && answer.size >3) {
+        val answerNum = mutableSetOf<Pair<Int,Int>>()
+        for (i in teacherPosition) {
+            // 행 탐색
+            for (j in i.first + 1 until n) {
+                if (visited[j][i.second]) {
+                    answerNum.add(Pair(j, i.second))
+                    break
+                }
+            }
+            for (j in i.first - 1 downTo 0) {
+                if (visited[j][i.second]) {
+                    answerNum.add(Pair(j, i.second))
+                    break
+                }
+            }
+            // 열 탐색
+            for (j in i.second + 1 until n) {
+                if (visited[i.first][j]) {
+                    answerNum.add(Pair(i.first, j))
+                    break
+                }
+            }
+            for (j in i.second - 1 downTo 0) {
+                if (visited[i.first][j]) {
+                    answerNum.add(Pair(i.first, j))
+                    break
+                }
+            }
+        }
+        if (answerNum.size > 3){
+            answerFinal = false
+        }
+    }
+
+    if (answerFinal) {
+        bw.write("YES")
+    } else {
+        bw.write("NO")
+    }
+
+    bw.flush()
+    bw.close()
+}
