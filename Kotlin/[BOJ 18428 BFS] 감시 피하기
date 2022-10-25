@@ -25,6 +25,7 @@ fun main() {
         }
     }
 
+    // 학생이 있는 행과 열에 T가 있는지 탐색
     for (i in studentPosition) {
         // 행 탐색
         for (j in 0 until n) {
@@ -59,7 +60,7 @@ fun main() {
     val dx = arrayOf(0, 0, 1, -1)
     var check = true
     val answer = mutableSetOf<Pair<Int, Int>>()
-    // 벽 3개 & 인접한 T 탐색
+    // 학생이 있는 행과 열에 벽 새우기 && S와 T가 붙어 있으면 종료
     for (i in studentPosition) {
         // S와 인접한 T 탐색
         for (j in dy.indices) {
@@ -81,7 +82,9 @@ fun main() {
         }
     }
 
+    // 학생과 T가 붙어 있지 않고 벽이 3개 초과하면
     if (answerFinal && answer.size >3) {
+        // T 시선에서 보이는 S 탐색 answer에 있는 벽 중 진짜 필요한 벽 필터
         val answerNum = mutableSetOf<Pair<Int,Int>>()
         for (i in teacherPosition) {
             // 행 탐색
@@ -111,6 +114,8 @@ fun main() {
                 }
             }
         }
+        
+        // T와 S 시선을 종합했을 때 필요한 병이 3개 초과면 No 출력
         if (answerNum.size > 3){
             answerFinal = false
         }
