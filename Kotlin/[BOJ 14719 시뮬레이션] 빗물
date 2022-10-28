@@ -1,0 +1,51 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val (H, W) = br.readLine().split(" ").map{it.toInt()}
+    val arr = br.readLine().split(" ").map{it.toInt()}
+
+    val map = Array(H){BooleanArray(W)}
+    for(y in 0 until W){
+        repeat(arr[y]){
+            map[it][y] = true
+        }
+    }
+
+    /*for(y in 0 until H){
+        for(x in 0 until W){
+            bw.write("${map[y][x]} ")
+        }
+        bw.newLine()
+    }*/
+
+    var answer = 0
+    for(y in 0 until H){
+        var cnt = 0
+        var check = false //처음 true를 만나야지 카운트
+        for(x in 0 until W){
+            if (check) {
+                // 1차 조건 false 부분에서 카운트
+                if (!map[y][x]) cnt += 1
+                else {
+                    // 2차 조건 true일땐 answer에 카운트한 값 더하기
+                    answer += cnt
+                    cnt = 0
+                }
+            }else{
+                if (map[y][x]) check = true
+            }
+        }
+    }
+
+    bw.write("$answer")
+
+
+    bw.flush()
+    bw.close()
+}
