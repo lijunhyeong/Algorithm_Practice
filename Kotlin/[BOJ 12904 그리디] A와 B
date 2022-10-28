@@ -1,0 +1,45 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+
+    val s = br.readLine()
+    var res = br.readLine()
+
+    // 큐에 담는다.
+    val q = ArrayDeque<Char>()
+    for (i in res) {
+        q.add(i)
+    }
+    var check = false
+
+    while (true) {
+        // 현재 큐에 담긴 문자의 합이 s와 같으면 true
+        if (q.joinToString("") == s) {
+            check = true
+            break
+        }
+        // 만약 길이가 같거나 작으면 다르면 멈춘다.
+        if (q.size <= s.length) break
+
+        // 마지막 문자가 B이면 B를 제거하고 뒤집는다.
+        if (q[q.size - 1] == 'B') {
+            q.removeLast()
+            q.reverse()
+        } else {
+            // A면 그냥 삭제한다.
+            q.removeLast()
+        }
+    }
+
+    if (check) bw.write("1") else bw.write("0")
+
+
+    bw.flush()
+    bw.close()
+}
