@@ -1,0 +1,78 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import java.lang.Integer.max
+import java.lang.Integer.min
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val (R, C) = br.readLine().split(" ").map{it.toInt()}
+    val map = Array(R+1){Array(C+1){'.'}}
+    for(y in  0 until R){
+        val s = br.readLine()
+        for(x in 0 until C){
+            map[y][x] = s[x]
+        }
+    }
+    /*for(y in 0 until R){
+        for(x in 0 until C){
+            bw.write("${map[y][x]}")
+        }
+        bw.newLine()
+    }*/
+
+    // 출력 시작점 구하기
+    var yStart = Int.MAX_VALUE
+    var yEnd = 0
+    var xStart = Int.MAX_VALUE
+    var xEnd = 0
+
+    // 왼,오,위,아래
+    val dx = arrayOf(-1,1,0,0)
+    val dy = arrayOf(0,0,-1,1)
+    for(y in 0 until R){
+        for(x in 0 until C){
+            // 4면 혹은 3면이 .인지 확인
+            if(map[y][x] == 'X'){
+                var check = 0    // 3면 이상이 .이면 X를 없앤다. -로 표현
+                // 오른쪽위, 오른쪽밑, 왼쪽위, 왼쪽밑 모서리/ 가자장자리 면 예외처리
+                if (y == 0) check +=1
+                if (x == 0) check +=1
+                if (x == C-1) check +=1
+                if (y == R-1) check +=1
+
+                for(k in 0 until 4){
+                    val ny = y+dy[k]
+                    val nx = x+dx[k]
+                    if(ny in 0 until R && nx in 0 until C){
+                        if(map[ny][nx]=='.') check +=1
+                    }
+                }
+                // 3면 이상이 바다면
+                if(check >=3){
+                    map[y][x] = '-'
+                }else{
+                    xStart = min(xStart, x)
+                    yStart = min(yStart, y)
+                    xEnd = max(xEnd, x)
+                    yEnd = max(yEnd, y)
+                }
+            }
+        }
+    }
+
+    // 정답 출력
+    for(y in yStart..yEnd){
+        for(x in xStart..xEnd){
+            if(map[y][x]=='X') bw.write("X")
+            else bw.write(".")
+        }
+        if(y != yEnd) bw.newLine()
+    }
+
+    bw.flush()
+    bw.close()
+}
