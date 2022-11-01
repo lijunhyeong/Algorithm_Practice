@@ -1,0 +1,51 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+/*
+1. 아이디어:
+- 사람의 수 크기의 IntArray 배열을 만들고 제일 큰 키로 초기 값을 넣는다.
+- 첫번째 for문이 현재 사람의 키이다.
+- 주어진 현재 사람의 키 순서를 탐색한다.
+  - IntArray를 탐색하며 앞의 사람이 현재 나보다 키가 클 경우 cnt +=1 한다
+  - 현재 사람의 앞의 있는 사람의 수와 cnt가 같으면 그자리가 현재 사람 순서이다.
+- 키가 다른데 앞에 있는 사람의 수가 같을 수 있으니 자리를 잡은 사람은 방문 처리해 중복을 막는다.
+ */
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val n = br.readLine().toInt()
+    val arr = br.readLine().split(" ").map{it.toInt()}
+    // 모든 자리의 수를 제일 큰 키로 초기화 한다.
+    val answer = IntArray(n){n}
+    // 자리를 잡았으면 true, 아니면 false
+    val visited = BooleanArray(n)
+    // 제일 작은 사람은 처음에 포지셔닝 해준다.(자신보다 큰 사람이 없기 때문)
+    answer[arr[0]] = 1
+    visited[arr[0]] = true
+    
+    // 키가 2인 사람부터 탐색을 한다.
+    // ex) arr = 2 1 1 0 -> 1번째 사람 앞에 두명, 2번째 사람 앞에 1명 ---
+    for(i in 2..n){
+        var cnt = 0
+        for(j in 0 until n){
+            // 현재 사람의 수와 앞 사람의 수가 같고 방문한 적이 없으면 포지셔닝
+            if(cnt == arr[i-1] && !visited[j]){
+                answer[j] = i
+                visited[j] = true
+                break
+            }
+            // 자신보다 현재 사람의 키가 크면 +1
+            if(answer[j] > i) cnt+=1
+        }
+    }
+
+    for(i in 0 until n){
+        bw.write("${answer[i]} ")
+    }
+
+
+    bw.flush()
+    bw.close()
+}
