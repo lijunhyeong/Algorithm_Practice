@@ -1,0 +1,72 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val (N, M) = br.readLine().split(" ").map { it.toInt() }
+    // D -> 0=북/1=동/2=남/3=서
+    val (R, C, D) = br.readLine().split(" ").map { it.toInt() }
+
+    val map = Array(N) { IntArray(M) }
+    for (j in 0 until N) {
+        val s = br.readLine().split(" ").map { it.toInt() }
+        for (i in 0 until M) {
+            map[j][i] = s[i]
+        }
+    }
+
+    var answer = 0
+
+    // 큐 입력 순서 y,x,direction
+    val q = ArrayDeque<Triple<Int, Int, Int>>()
+    q.add(Triple(R, C, D))
+
+    // 북, 동,남, 서
+    val dy = arrayOf(-1, 0, 1, 0)
+    val dx = arrayOf(0, 1, 0, -1)
+
+    while (q.isNotEmpty()) {
+        val (yy, xx, dd) = q.removeFirst()
+        // 1. 현재 칸이 아직 청소되지 않은 경우, 현재 칸 청소
+        if (map[yy][xx] == 0) {
+            map[yy][xx] = 2
+            answer += 1
+        }
+
+        // 2,3 주변 4칸 중 청소 유무 확인
+        for (i in 0 until 4) {
+            // 방향 계산 핵심
+            val direct = (dd + 3 - i) % 4
+            val ny = yy + dy[direct]
+            val nx = xx + dx[direct]
+            if (ny in 0 until N && nx in 0 until M && map[ny][nx] == 0) {
+                q.add(Triple(ny, nx, direct))
+                break
+            }
+        }
+
+        if (q.isEmpty()) {
+            // 방향 계산 핵심
+            val ny = yy + dy[(dd + 2) % 4]
+            val nx = xx + dx[(dd + 2) % 4]
+            if (ny in 0 until N && nx in 0 until M && map[ny][nx] == 1) break
+            else q.add(Triple(ny, nx, dd))
+        }
+    }
+
+    /*for (j in 0 until N) {
+        for (i in 0 until M) {
+            bw.write("${map[j][i]} ")
+        }
+        bw.newLine()
+    }*/
+
+    bw.write("$answer")
+
+    bw.flush()
+    bw.close()
+}
