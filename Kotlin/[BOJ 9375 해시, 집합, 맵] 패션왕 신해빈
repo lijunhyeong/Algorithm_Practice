@@ -1,0 +1,37 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val case = br.readLine().toInt()
+
+    repeat(case){
+        val num = br.readLine().toInt()
+        val hashmap = hashMapOf<String,Int>()
+        var answer = 1
+        repeat(num){
+            val (item, kind) = br.readLine().split(" ")
+            if(hashmap[kind] == null){
+                hashmap[kind] = 1
+            }else{
+                val n = hashmap[kind]!!
+                hashmap[kind] = n+1
+            }
+        }
+
+        for(i in hashmap.values){
+            // 자신의 것을 안 입는 경우의 수도 있기 때문에 +1
+            answer*=(i+1)   
+        }
+        // 알몸인 경우는 없기 때문에 -1를 한다. 위에서 조합을 하다보면 아무것도 안입은 경우도 포함되기 떄문에
+        bw.write("${answer-1}\n")
+
+    }
+
+    bw.flush()
+    bw.close()
+}
