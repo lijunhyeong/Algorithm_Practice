@@ -1,0 +1,64 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+/*
+ 이 문제의 포인트: "치킨집의 모든 조합"을 만들어 치킨거리를 계산하여 최소값을 구한다.
+    -> 백트래킹을 통해 치킨집의 모든 조합을 구할 수 있다.
+ */
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val(N,M) = br.readLine().split(" ").map{it.toInt()}
+    var answer = 99999999
+    val chickenMap = mutableListOf<Pair<Int,Int>>()
+    val homeMap = mutableListOf<Pair<Int,Int>>()
+    // 치킨거리가 적은 치킨집 최대 M개
+    for(j in 0 until N){
+        val s = br.readLine().split(" ").map{it.toInt()}
+        for(i in 0 until N){
+            //map[j][i] = s[i]
+            if(s[i] == 2) chickenMap.add(Pair(j,i))
+            if(s[i] == 1) homeMap.add(Pair(j,i))
+        }
+    }
+
+    val q = ArrayDeque<Pair<Int,Int>>()
+    val visited = BooleanArray(chickenMap.size)
+    fun dfs(idx:Int, dept:Int){
+        if(q.size == M){
+            // 조합된 치킨집으로 최단거리 계산
+            var distanceScore = 0
+            for(i in homeMap){
+                var distance = 999999999
+                for(j in q){
+                    val d = kotlin.math.abs(i.first-j.first) + kotlin.math.abs(i.second-j.second)
+                    if(distance > d) distance = d
+                }
+                distanceScore += distance
+            }
+            if(answer > distanceScore) answer = distanceScore
+            return
+        }
+
+
+        for(i in idx until chickenMap.size){
+            if(!visited[i]){
+                visited[i] = true
+                q.add(chickenMap[i])
+                dfs(i,dept+1)
+                visited[i] = false
+                q.removeLast()
+            }
+        }
+    }
+
+    dfs(0,0)
+
+    bw.write("$answer")
+
+    bw.flush()
+    bw.close()
+}
