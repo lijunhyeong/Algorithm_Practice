@@ -1,0 +1,66 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+/*
+- 이슈
+    1. bfs를 돌리고 8자리 숫자를 visited처리 해주기 위해 100000000개의 리스트를 만들었다. 하지만 메모리초과. (4*100000000byte=390625KB=381MB)
+    2. visited를 set으로 처리했지만 또 메모리 초과가 났다.
+    3. 방문배열을 맵를 이용해 생성해주면 최대 8!(40320)만큼의 크기만 사용한다.
+ */
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val (N, K) = br.readLine().split(" ").map { it.toInt() }
+    val arr = br.readLine().split(" ").map { it.toInt() }
+    var acs = ""
+    for (i in 1..N){
+        acs+=i.toString()
+    }
+    val visitedMap = mutableMapOf<String,Int>()
+    visitedMap[arr.joinToString("")] = 0
+    var answer = -1
+
+    val q = ArrayDeque<Pair<IntArray, Int>>()
+    q.add(Pair(arr.toIntArray(), 0))
+
+    while (q.isNotEmpty()) {
+
+            val (state, cnt) = q.removeFirst()
+
+
+            if (state.joinToString("") == arr.sorted().joinToString("")) {
+                answer = cnt
+                q.clear()
+                break
+            }
+
+            // 경우의 수 문자열 만들기
+            for (i in 0 until N - K + 1) {
+                val str = state.copyOf()
+                //println(state.joinToString(""))
+                // 문자 뒤집기
+                for (j in 0 until K / 2) {
+                    val temp =  str[i + j]
+                    str[i + j] = str[i + K - j - 1]
+                    str[i + K - j - 1]  = temp
+                }
+                val copyStateStr = str.joinToString("")
+
+                if (copyStateStr !in visitedMap) {
+                    visitedMap[copyStateStr] = cnt + 1
+                    q.add(Pair(str, cnt + 1))
+                }
+
+            }
+    }
+
+
+
+    bw.write("$answer")
+
+
+    bw.flush()
+    bw.close()
+}
