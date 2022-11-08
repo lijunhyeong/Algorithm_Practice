@@ -1,0 +1,81 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val n = br.readLine().toInt()
+    val arrPlus = mutableListOf<Int>()
+    val arrSub = mutableListOf<Int>()
+
+    // 음수랑 홀수 나누기
+    repeat(n){
+        val num = br.readLine().toInt()
+        if(num < 0) arrSub.add(num)
+        else arrPlus.add(num)
+    }
+
+    // 음수 배열
+    val arrSubRes = mutableListOf<Int>()
+    if(arrSub.isNotEmpty()){
+        // 오름차순
+        arrSub.sort()
+        if(arrSub.size%2==1){
+            // 홀수개
+            var cnt =0
+            for(i in arrSub){
+                cnt+=1
+                if(cnt%2==0){
+                    val one= i
+                    val two = arrSubRes.removeLast()
+                    arrSubRes.add(one*two)
+                }else{
+                    arrSubRes.add(i)
+                }
+            }
+        }else{
+            // 짝수개
+            var one = 0
+            var two = 1
+            for(i in 0 until arrSub.size/2){
+                arrSubRes.add(arrSub[one]*arrSub[two])
+                one+=2
+                two+=2
+            }
+        }
+    }
+
+    // 양수
+    val arrPlusRes = mutableListOf<Int>()
+    if(arrPlus.isNotEmpty()){
+        // 홀수개인지 짝수개인지
+        arrPlus.sortDescending()
+        var cnt = 0
+        for(i in arrPlus){
+            cnt+=1
+            if(i !=0 && cnt%2==0){
+                val two = arrPlusRes.removeLast()
+                if (i == 1) arrPlusRes.add(i + two)
+                else arrPlusRes.add(i * two)
+            }else{
+                arrPlusRes.add(i)
+            }
+        }
+    }
+
+    // 마이너스쪽이 마지막 수가 양수인지 음수인지
+    if (arrSubRes.isNotEmpty() && arrSubRes[arrSubRes.size-1] <0){
+        if (arrPlusRes.isNotEmpty() && arrPlusRes[arrPlusRes.size-1] == 0){
+            arrSubRes.removeLast()
+            arrPlusRes.removeLast()
+        }
+    }
+
+    bw.write("${arrPlusRes.sum()+arrSubRes.sum()}")
+
+
+    bw.flush()
+    bw.close()
+}
