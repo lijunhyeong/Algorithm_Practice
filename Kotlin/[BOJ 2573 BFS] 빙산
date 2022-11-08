@@ -1,0 +1,111 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+/*
+- 아이디어
+    1. bfs를 통해 빙산이 떨어져있는지 확인한다.
+    2. 빙산이 떨어져 있으면 멈춘다.
+    3. 빙산이 붙어 있으면 문제 조건에 맞게 수를 뺀다.
+    4. meltinCnt를 증가시키고 1번으로 돌아간다.
+ */
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val (N, M) = br.readLine().split(" ").map { it.toInt() }
+    val map = Array(N) { IntArray(M) }
+    var q = ArrayDeque<Pair<Int, Int>>()
+    for (j in 0 until N) {
+        val s = br.readLine().split(" ").map { it.toInt() }
+        for (i in 0 until M) {
+            map[j][i] = s[i]
+            if (s[i] != 0) q.add(Pair(j, i))
+        }
+    }
+
+    var answer = 0
+
+    // 빙산 녹이기
+    fun meltingIcebergs(qq: ArrayDeque<Pair<Int, Int>>): ArrayDeque<Pair<Int, Int>> {
+
+        val returnQ = ArrayDeque<Pair<Int, Int>>()
+        for (idx in qq.indices) {
+            var zeroCnt = 0
+
+            val (j, i) = qq.removeFirst()
+            // 좌
+            if (i - 1 in 0 until M && map[j][i - 1] == 0 && Pair(j, i - 1) !in qq) zeroCnt += 1
+            // 우
+            if (i + 1 in 0 until M && map[j][i + 1] == 0 && Pair(j, i + 1) !in qq) zeroCnt += 1
+            // 상
+            if (j - 1 in 0 until N && map[j - 1][i] == 0 && Pair(j - 1, i) !in qq) zeroCnt += 1
+            // 하
+            if (j + 1 in 0 until N && map[j + 1][i] == 0 && Pair(j + 1, i) !in qq) zeroCnt += 1
+
+
+            map[j][i] = if (map[j][i] - zeroCnt <= 0) 0 else map[j][i] - zeroCnt
+            // 이번턴에 들어가서 0이 된 번호는 스킵
+            if (map[j][i] == 0) qq.add(Pair(j, i))
+            else returnQ.add(Pair(j, i))
+        }
+
+        return returnQ
+    }
+
+    // 떨어져 있는 빙산 있는지 체크
+    val dy = arrayOf(0, 0, 1, -1)
+    val dx = arrayOf(1, -1, 0, 0)
+
+    var meltingCnt = 0
+    while (q.isNotEmpty()) {
+        val visited = Array(N) { BooleanArray(M) }
+        fun bfsSearch(y: Int, x: Int) {
+            val queue = ArrayDeque<Int>()
+            queue.add(y)
+            queue.add(x)
+            visited[y][x] = true
+
+            while (queue.isNotEmpty()) {
+                val yy = queue.removeFirst()
+                val xx = queue.removeFirst()
+                for (i in dy.indices) {
+                    val ny = yy + dy[i]
+                    val nx = xx + dx[i]
+                    if (ny in 0 until N && nx in 0 until M
+                        && !visited[ny][nx] && map[ny][nx] != 0
+                    ) {
+                        visited[ny][nx] = true
+                        queue.add(ny)
+                        queue.add(nx)
+                    }
+                }
+            }
+        }
+
+        var cnt = 0
+        var check = false
+        for ((j, i) in q) {
+            if (!visited[j][i]) {
+                cnt += 1
+                if (cnt == 2) {
+                    check=true
+                    answer = meltingCnt
+                    break
+                }
+                bfsSearch(j, i)
+            }
+        }
+        if (check) break
+
+        // 주변 얼음 녹이기
+        q = meltingIcebergs(q)
+        meltingCnt += 1
+    }
+
+
+    bw.write("$answer")
+
+    bw.flush()
+    bw.close()
+}
