@@ -2,7 +2,9 @@ import java.io.BufferedReader
 import java.io.BufferedWriter
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
-
+/*
+먄약 answerX부터 시작하다가 answerY가 있는 곳이면 스탑하고 없으면 -1를 출력한다.
+*/
 fun main() {
     val br = BufferedReader(InputStreamReader(System.`in`))
     val bw = BufferedWriter(OutputStreamWriter(System.out))
