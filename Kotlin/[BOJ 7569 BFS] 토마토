@@ -1,0 +1,58 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val (M, N, H) = br.readLine().split(" ").map { it.toInt() }
+
+    val map = Array(H) { Array(N) { IntArray(M) } }
+    var zeroCnt = 0
+    val onePosition = ArrayDeque<Triple<Int, Int, Int>>()
+    // 3차원 입력
+    for (z in 0 until H) {
+        for (y in 0 until N) {
+            val s = br.readLine().split(" ").map { it.toInt() }
+            for (x in 0 until M) {
+                map[z][y][x] = s[x]
+                if (s[x] == 0) zeroCnt += 1
+                if (s[x] == 1) onePosition.add(Triple(z, y, x))
+            }
+        }
+    }
+
+    var answer = if (zeroCnt>0) -1 else 0
+    // 서로 다른 위치에 있는 토마토가 각자 퍼질 때 최소 일수 구하기
+
+    var zero = 0
+    //위칸, 밑칸, 좌,우,위,아래
+    val dz = arrayOf(-1,1,0,0,0,0)
+    val dy = arrayOf(0,0,-1,1,0,0)
+    val dx = arrayOf(0,0,0,0,1,-1)
+    while (onePosition.isNotEmpty()){
+        val(zz,yy,xx) = onePosition.removeFirst()
+        for (i in dz.indices){
+            val nz = zz+dz[i]
+            val ny = yy+dy[i]
+            val nx = xx+dx[i]
+            if (nz in 0 until H && ny in 0 until N && nx in 0 until M){
+                if (map[nz][ny][nx]==0){
+                    map[nz][ny][nx] = map[zz][yy][xx] +1
+                    zero+=1
+                    onePosition.add(Triple(nz,ny,nx))
+
+                    // 바꾼 0이랑 0의 개수가 같을 때, 처음 시작이 1이기 때문에 1을 빼줌
+                    if (zero == zeroCnt) answer=map[nz][ny][nx]-1
+                }
+            }
+        }
+    }
+
+    bw.write("$answer")
+
+    bw.flush()
+    bw.close()
+}
