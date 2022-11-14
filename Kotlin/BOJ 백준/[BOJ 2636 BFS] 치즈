@@ -1,0 +1,172 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+/*
+- 아이디어:
+1. bfs로 떨어져 있는지 본다.
+2. 대각선도 이어져있다고 봄.
+3. 주변이 0이면 없앤다.
+4. 공기부분 표시(첫줄, 마지막줄, 각행의 처음과 끝
+*/
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val (n, m) = br.readLine().split(" ").map { it.toInt() }
+    val map = Array(n + 1) { IntArray(m + 1) }
+
+    // 공기부분 표시
+    val visitedAir = Array(n + 1) { BooleanArray(m + 1) }
+
+    for (y in 0 until n) {
+        val s = br.readLine().split(" ").map { it.toInt() }
+        for (x in 0 until m) {
+            map[y][x] = s[x]
+            if (y == 0 || y == n - 1) {
+                visitedAir[y][x] = true
+            }
+        }
+        visitedAir[y][0] = true
+        visitedAir[y][m - 1] = true
+    }
+
+
+    // 왼위, 오위, 왼아, 오아, 상,하,좌,우
+    val dx = arrayOf(-1, 1, -1, 1, 0, 0, -1, 1)
+    val dy = arrayOf(-1, -1, 1, 1, -1, 1, 0, 0)
+
+
+    var meltingTime = 0
+    var anHourAgoCheese = 0
+
+    while (true) {
+
+        // 공기 체크
+        fun checkingAirBfs(j: Int, i: Int) {
+            val q = ArrayDeque<Pair<Int, Int>>()
+            q.add(Pair(j, i))
+
+            while (q.isNotEmpty()) {
+                val (yy, xx) = q.removeFirst()
+                for (idx in 4..7) {
+                    val ny = yy + dy[idx]
+                    val nx = xx + dx[idx]
+                    if (nx in 0 until m && ny in 0 until n
+                        && map[ny][nx] == 0 && !visitedAir[ny][nx]
+                    ) {
+                        visitedAir[ny][nx] = true
+                        q.add(Pair(ny, nx))
+                    }
+                }
+            }
+        }
+
+        for (y in 0 until n) {
+            for (x in 0 until m) {
+                if (map[y][x] == 0 && visitedAir[y][x]) {
+                    checkingAirBfs(y, x)
+                }
+            }
+        }
+
+        // 보여주기
+        /*for (y in 0 until n) {
+            for (x in 0 until m) {
+                bw.write("${map[y][x]} ")
+            }
+            bw.newLine()
+        }
+        bw.newLine()*/
+
+        val visited = Array(n + 1) { BooleanArray(m + 1) }
+        // 현재 남아있는 치즈조각이 놓여 있는 칸의 개수
+        var cheeseCnt = 0
+
+        // 치즈 탐색
+        fun bfs(j: Int, i: Int) {
+            val q = ArrayDeque<Pair<Int, Int>>()
+            q.add(Pair(j, i))
+
+            while (q.isNotEmpty()) {
+                val (yy, xx) = q.removeFirst()
+
+                for (idx in dx.indices) {
+                    val nx = xx + dx[idx]
+                    val ny = yy + dy[idx]
+                    if (nx in 0 until m && ny in 0 until n
+                        && map[ny][nx] == 1 && !visited[ny][nx] ) {
+                        visited[ny][nx] = true
+                        q.add(Pair(ny, nx))
+                        cheeseCnt += 1
+                    }
+                }
+
+            }
+        }
+        //  끝까지 true이면 1이 없는 거임
+        var isFinish = true
+        for (y in 0 until n) {
+            for (x in 0 until m) {
+                if (map[y][x] == 1 && !visited[y][x]) {
+                    cheeseCnt += 1
+                    visited[y][x] = true
+                    isFinish = false
+                    bfs(y, x)
+                }
+            }
+        }
+        // 종료
+        if (isFinish) break
+
+        // 모두 녹기 한 시간 전에 남아있는 치즈조각이 놓여 있는 칸의 개수
+        // 만약 치즈가 떨어져 있으면 종료 되기 때문에 그전에 값이 출력됨
+        if (cheeseCnt != 0) anHourAgoCheese = cheeseCnt
+
+        // 치즈 녹이기
+        val nowMelting = mutableListOf<Pair<Int, Int>>(Pair(n + 1, m + 1))
+        for (y in 0 until n) {
+            for (x in 0 until m) {
+                if (map[y][x] == 1 && !visitedAir[y][x]) {
+                    var isCheck = false
+                    
+                    // 좌
+                    if (x - 1 in 0 until m && map[y][x - 1] == 0 && visitedAir[y][x - 1] 
+                        && Pair(y, x - 1) !in nowMelting) isCheck = true 
+
+                    // 우
+                    if (x + 1 in 0 until m && map[y][x + 1] == 0 && visitedAir[y][x + 1] 
+                        && Pair(y, x + 1) !in nowMelting) isCheck = true
+                    
+                    // 위
+                    if (y - 1 in 0 until n && map[y - 1][x] == 0 && visitedAir[y - 1][x]
+                        && Pair(y - 1, x) !in nowMelting) isCheck = true 
+
+                    // 아래
+                    if (y + 1 in 0 until n && map[y + 1][x] == 0 && visitedAir[y + 1][x]
+                        && Pair(y + 1, x) !in nowMelting) isCheck = true 
+
+                    if (isCheck) {
+                        map[y][x] = 0
+                        visitedAir[y][x] = true
+                        nowMelting.add(Pair(y, x))
+                    }
+
+                }
+            }
+        }
+
+
+        // 치즈가 모두 녹아서 없어지는 데 걸리는 시간
+        meltingTime += 1
+    }
+
+    bw.write("$meltingTime\n")
+    bw.write("$anHourAgoCheese")
+
+
+    bw.flush()
+    bw.close()
+    br.close()
+}
