@@ -1,0 +1,97 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import java.util.*
+/*
+- 아이디어:
+1. 회전시킬 톱니 바퀴 번호가 주어지면 왼쪽과 오른쪽의 경우를 나눈다.
+2. 왼쪽부터 앞 톱니바퀴 6번째와 해당 톱니바퀴 2번째 인덱스를 비교해서 같은 것이면 멈추고, 다르면 배열에 넣는다.
+3. 오른쪽은 전 톱니바퀴 2번째 인덱스와 해당 톱니바퀴 6번째 인덱스를 비교해서 같은 면 멈추고 다르면 배열에 넣는다.
+4. 배열에 들어간 톱니바퀴를 rotate라이브러리를 통해 회전시킨다.
+    - 이때, 초기값에 따라 한번씩 번갈아가며 시계 ,반시계 방향으로 회전 시킨다.
+ */
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val cogwheel = mutableListOf<List<Char>>()
+    cogwheel.add(listOf('a'))
+    repeat(4){
+        val wheel = mutableListOf<Char>()
+        val s1 = br.readLine()
+        for (i in s1){
+            wheel.add(i)
+        }
+        cogwheel.add(wheel)
+    }
+
+    repeat(br.readLine().toInt()){
+        val (n, d) = br.readLine().split(" ").map { it.toInt() }
+
+
+        // 한번씩 바뀜
+        // ex) 반시계 시작 -> 시계 -> 반시계
+        // 왼쪽
+        val rotateLeftCogWheel = mutableListOf<Int>()
+        for (leftCogWheel in n-1 downTo 1){
+            if (cogwheel[leftCogWheel][2] == cogwheel[leftCogWheel+1][6]) break
+            else rotateLeftCogWheel.add(leftCogWheel)
+        }
+        // 초기값이 -1이면 그다음은 1로 돈다.
+        var leftDirection = d == -1
+        for (i in 0 until rotateLeftCogWheel.size){
+            leftDirection = if (leftDirection){
+                Collections.rotate(cogwheel[rotateLeftCogWheel[i]], 1)
+                false
+            }else{
+                Collections.rotate(cogwheel[rotateLeftCogWheel[i]], -1)
+                true
+            }
+        }
+
+        // 오른쪽
+        val rotateRightCogWheel = mutableListOf<Int>()
+        for (rightCogWheel in n+1 until 5){
+            if (cogwheel[rightCogWheel][6] == cogwheel[rightCogWheel-1][2]) break
+            else rotateRightCogWheel.add(rightCogWheel)
+        }
+        var rightDirection = d == -1
+        for (i in 0 until rotateRightCogWheel.size){
+            rightDirection = if (rightDirection){
+                Collections.rotate(cogwheel[rotateRightCogWheel[i]], 1)
+                false
+            }else{
+                Collections.rotate(cogwheel[rotateRightCogWheel[i]], -1)
+                true
+            }
+        }
+
+        Collections.rotate(cogwheel[n], d)
+
+        /*// 보여주기
+        for (i in 1..4){
+            bw.write("${cogwheel[i]}\n")
+        }
+        bw.newLine()*/
+    }
+
+    var answer = 0
+    for (i in 1.. 4){
+        if (cogwheel[i][0]=='1'){
+            answer += when(i){
+                1 -> 1
+                2 -> 2
+                3 -> 4
+                4 -> 8
+                else -> 0
+            }
+        }
+    }
+
+    bw.write("$answer")
+
+    bw.flush()
+    bw.close()
+    br.close()
+}
