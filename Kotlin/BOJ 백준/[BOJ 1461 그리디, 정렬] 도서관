@@ -1,0 +1,63 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+/*
+- 아이디어
+1. 음수, 양수 배열을 나눈다.
+2. 배열을 나눌 때 음수는 절대값으로 넣는다.
+3. 각 배열을 들고 갈 수 있는 책의 개수 만큼 묶는다.
+4. 묶은 수 중 제일 큰 수를 distanceBetweenBooks 배열에 넣는다.
+5. 배열에 있는 모든 수를 곱한 후, 음수, 양수 배열 중 가장 큰수를 뺀다.
+(제일 큰수는 왕복할 필요없음. 다시 돌아오지 않아도 되기 떄문에)
+*/
+
+private val distanceBetweenBooks = mutableListOf<Int>()
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val (numberOfBook, goInBook) = br.readLine().split(" ").map { it.toInt() }
+    val distanceBooks = br.readLine().split(" ").map { it.toInt() }.toMutableList()
+
+    var answer = 0
+    val distancePositive = mutableListOf<Int>()
+    val distanceNegative = mutableListOf<Int>()
+
+    for (book in distanceBooks) {
+        if (book < 0) distanceNegative.add(kotlin.math.abs(book))
+        else distancePositive.add(book)
+    }
+
+    distanceNegative.sortDescending()
+    distancePositive.sortDescending()
+
+    calculation(distanceNegative, goInBook)
+    calculation(distancePositive, goInBook)
+
+    for (idx in distanceBetweenBooks){
+        answer += (idx*2)
+    }
+
+    bw.write("${answer-distanceBetweenBooks.maxOrNull()!!}")
+
+    bw.flush()
+    bw.close()
+    br.close()
+}
+
+private fun calculation(distance:List<Int>, goInBook:Int){
+    val arr = mutableListOf<Int>()
+    for (book in distance){
+        arr.add(book)
+        if (arr.size==goInBook){
+            distanceBetweenBooks.add(arr.maxOrNull()!!)
+            arr.clear()
+        }
+    }
+    if (arr.isNotEmpty()){
+        distanceBetweenBooks.add(arr.maxOrNull()!!)
+        arr.clear()
+    }
+}
