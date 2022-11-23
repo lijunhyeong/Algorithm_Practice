@@ -7,7 +7,7 @@ import java.io.OutputStreamWriter
 1. sum 배열에 누적합을 넣는다.
 2. 투포인터를 돌며 조건의 맞는 누적합과 가장 짧은 것의 길이를 구한다.
 3. check 변수를 통해 만약 한 번도 조건에 맞지 않았다면 0을 출력한다.
-4. 누적합의 구간을 구하는 방법은 st, ed변수를 통해 sum[ed]-sum[st]가 ed, st인덱스 사이의 합이 된다.
+4. 부분합을 구하는 방법은 st, ed변수를 통해 sum[ed]-sum[st]가 ed, st인덱스 사이의 합이 된다.
 */
 fun main() {
     val br = BufferedReader(InputStreamReader(System.`in`))
