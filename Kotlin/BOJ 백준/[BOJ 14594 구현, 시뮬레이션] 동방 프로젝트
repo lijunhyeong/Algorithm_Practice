@@ -1,0 +1,58 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+/*
+- 아이디어:
+1. 빅-종빈빌런의 행동 횟수가 0이면 동아리방의 수(n)을 출력한다.
+2. 빅-종빈빌런의 행동 횟수가 0이 아니라면, roomState에 x번과 ,y번을 넣고 x기준으로 오름차순 정렬한다.
+3. 첫번째 인덱스에 시작점과 끝점을 넣는다. 이때 시작점이 1이 아니면 st-1을 answer에 넣고 시작한다.
+ex) 맨처음 시작점이 3인 경우, 1번,2번방을 카운터 해줌
+4. 이제 빌런직한 방을 for문으로 돈다. 만약 ed보다 다음이 크고 처음 큰 방을 만난거라면 answer을 두번 +1해준다.
+5. 이후부턴 현재 ed보다 큰 새로운 방을 만날 때마다 answer+=1을 해주며 ed와 새로운 방의 앞 번호가 1이상 차이난다면 사이에 있는 방의 수를 더한다.
+6. for문이 끝나고 n-ed를 answer에 더해서 ed와 끝방 사이의 방을 카운트한다.
+ */
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val n = br.readLine().toInt()
+    val case = br.readLine().toInt()
+    var answer = n
+    if (case != 0) {
+        val roomState = mutableListOf<Pair<Int, Int>>()
+        repeat(case) {
+            val (st, ed) = br.readLine().split(" ").map { it.toInt() }
+            roomState.add(Pair(st, ed))
+        }
+        roomState.sortWith(compareBy { it.first })
+
+        val st = roomState[0].first
+        var ed = roomState[0].second
+        answer = if (st == 1) 0 else st-1
+        var check = true
+        for (idx in 1 until roomState.size) {
+            if (ed >= roomState[idx].first) {
+                if (roomState[idx].second > ed) ed = roomState[idx].second
+            } else {
+                if (check) {
+                    answer+=1
+                    check = false
+                }
+                answer +=1
+                if (roomState[idx].first > ed+1) answer += (roomState[idx].first - ed)-1
+                ed = roomState[idx].second
+            }
+        }
+        if (check) answer+=1
+        answer += (n - ed)
+
+    }
+
+    bw.write("$answer")
+
+    bw.flush()
+    bw.close()
+    br.close()
+}
