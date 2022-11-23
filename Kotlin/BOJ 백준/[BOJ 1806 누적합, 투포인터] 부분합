@@ -1,0 +1,57 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+/*
+- 아이디어:
+1. sum 배열에 누적합을 넣는다.
+2. 투포인터를 돌며 조건의 맞는 누적합과 가장 짧은 것의 길이를 구한다.
+3. check 변수를 통해 만약 한 번도 조건에 맞지 않았다면 0을 출력한다.
+4. 누적합의 구간을 구하는 방법은 st, ed변수를 통해 sum[ed]-sum[st]가 ed, st인덱스 사이의 합이 된다.
+*/
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val (N, S) = br.readLine().split(" ").map { it.toInt() }
+    val arr = br.readLine().split(" ").map { it.toInt() }
+
+    var answer = Int.MAX_VALUE
+    val sum = IntArray(N+2)
+    sum[0] = 0
+    sum[1] = arr[0]
+    for(i in 2 .. arr.size){
+        sum[i] = sum[i-1]+arr[i-1]
+    }
+
+
+    var check = true
+
+    fun recursive(st: Int, ed:Int){
+        if (st > arr.size || ed > arr.size) return
+
+        val res = sum[ed] - sum[st]
+        if (res >= S) {
+            val temp = kotlin.math.abs(ed-st)
+            if (answer > temp) {
+                check = false
+                answer = temp
+            }
+
+            recursive(st+1, ed)
+        }else{
+            recursive(st,ed+1)
+        }
+
+    }
+
+    recursive(0,0)
+
+    if (check ) bw.write("0")
+    else  bw.write("$answer")
+
+
+    bw.flush()
+    bw.close()
+    br.close()
+}
