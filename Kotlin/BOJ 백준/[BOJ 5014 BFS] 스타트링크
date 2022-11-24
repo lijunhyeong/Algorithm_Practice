@@ -1,0 +1,54 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+/*
+- 아이디어:
+너비우선 탐색을 이용해서
+각 경우의 수의 value를 계산해서 각 층에 도달하면 value+1를 출력한다.
+*/
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    // 건물 높이, 강호가 있는 층, 스타트링크가 있는 층, 올라갈 수 있는 층, 내려가는 층
+    val (F, S, G, U, D) = br.readLine().split(" ").map { it.toInt() }
+
+    val visited = BooleanArray(F+1)
+    var answer = Int.MAX_VALUE
+    fun bfs(idx: Int){
+        // 층, 값
+        val q= ArrayDeque<Pair<Int,Int>>()
+        q.add(Pair(idx,0))
+        visited[idx] = true
+        if (G==idx) answer = 0
+
+        while (q.isNotEmpty()){
+            val (stairs, value) = q.removeFirst()
+
+            for (i in arrayOf(U,D*-1)){
+                val nStairs = stairs + i
+
+                if (nStairs in 1..F && !visited[nStairs]){
+                    visited[nStairs] = true
+                    if (nStairs == G) {
+                        if (answer > value) answer = value+1
+                    }
+                    q.add(Pair(nStairs,value+1))
+                }
+            }
+        }
+
+    }
+
+
+    bfs(S)
+
+    if (answer== Int.MAX_VALUE) bw.write("use the stairs")
+    else bw.write("$answer")
+
+
+    bw.flush()
+    bw.close()
+    br.close()
+}
