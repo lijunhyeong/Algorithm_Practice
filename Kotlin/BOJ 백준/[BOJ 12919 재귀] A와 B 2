@@ -1,0 +1,64 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+/*
+- 아이디어:
+1. bfs를 통해 s->t를 만들어 비교하려 했지만 메모리 초과가 나서 다른 접근 방법이 필요했다.
+2. 역으로 t에서 s를 만들었다. 주어진 조건과 역으로 재귀를 돌린다.
+    1) 맨끝이 A이면 맨끝을 빼고 다시 재귀를 돌린다.
+    2) 맨앞이 B이면 맨앞을 빼고 뒤집어서 재귀를 돌린다.
+3. 만약 s와 같으면 check=true를 준다.
+4. s보다 길이가 짧아지면 함수를 종료한다.
+ */
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val s = br.readLine()
+    val t = br.readLine().toMutableList()
+
+    var check = false
+
+    fun dfs(tt : List<Char>) {
+        val one = ArrayDeque<Char>()
+        val two = ArrayDeque<Char>()
+        for (i in tt){
+            one.add(i)
+            two.add(i)
+        }
+
+        val inputT = tt.joinToString("")
+
+        if (inputT == s) {
+            check = true
+            return
+        }
+
+        if (inputT.length < s.length) return
+
+        if (inputT[inputT.length-1] == 'A'){
+            one.removeLast()
+            dfs(one)
+        }
+
+        if (inputT[0]=='B'){
+            two.removeFirst()
+            two.reverse()
+            dfs(two)
+        }
+
+    }
+
+    dfs(t)
+
+    if (check) bw.write("1")
+    else bw.write("0")
+
+    bw.flush()
+    bw.close()
+    br.close()
+}
+
