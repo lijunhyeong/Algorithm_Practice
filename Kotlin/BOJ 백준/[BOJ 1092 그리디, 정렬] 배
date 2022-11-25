@@ -1,0 +1,63 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+/*
+- 아이디어
+1. 크래인과 박스 배열을 내림차순으로 정렬한다.
+2. 만약 크레인의 무게 제한보다 무거운 박스가 있다면 박스를 배로 옮길 수 없기 때문에 -1을 출력한다.
+3. 무게가 큰 크레인부터 박스를 하나씩 옮기고 1분을 추가한다.
+ex)
+크레인: [20, 19]
+박스: [19, 16, 16, 14, 12, 5, 1]
+1분: 크레인 20 -> 박스 19, 크레인 19 -> 박스 16
+2분: 크레인 20 -> 박스 16, 크레인 19 -> 박스 14
+3분: 크레인 20 -> 박스 12, 크레인 19 -> 박스 5
+4분: 크레인 20 -> 박스 1
+총 4분이 걸린다.
+4. 이 때, 크레인과 박스를 비교하면서 크레인이 더 클경우 박스의 리스트에서 해당 인덱스를 삭제한다.
+ */
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val numberOfCranes = br.readLine().toInt()
+    val cranesWeight = br.readLine().split(" ").map { it.toInt() }.toMutableList()
+    cranesWeight.sortDescending()
+
+    val numberOfBox = br.readLine().toInt()
+    val boxWeight = br.readLine().split(" ").map { it.toInt() }.toMutableList()
+    boxWeight.sortDescending()
+
+    println(cranesWeight)
+    println(boxWeight)
+
+    if (cranesWeight[0] < boxWeight[0]) bw.write("-1")
+    else{
+
+        var answer = 0
+
+        while (boxWeight.isNotEmpty()){
+
+            answer+=1
+            for (cranes in cranesWeight){
+                for (boxIdx in 0 until boxWeight.size){
+
+                    if (cranes >= boxWeight[boxIdx]){
+                        boxWeight.removeAt(boxIdx)
+                        break
+                    }
+                }
+            }
+        }
+
+        bw.write("$answer")
+
+    }
+
+    bw.flush()
+    bw.close()
+    br.close()
+}
