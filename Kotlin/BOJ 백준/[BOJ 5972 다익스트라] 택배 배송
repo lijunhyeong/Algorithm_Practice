@@ -1,0 +1,59 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import java.util.*
+
+/*
+- 아이디어:
+1. 다익스트라 알고리즘을 이용해서 목적지까지 최소 비용을 계산한다.
+2. start= 1, 도착지=n
+*/
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val (n, m) = br.readLine().split(" ").map { it.toInt() }
+    val map = Array(n+1){ mutableListOf<Pair<Int,Int>>()}
+    val distanceValue = IntArray(n+1) {Int.MAX_VALUE}
+
+    repeat(m){
+        val (st, ed, value) = br.readLine().split(" ").map { it.toInt() }
+        map[st].add(Pair(ed, value))
+        map[ed].add(Pair(st, value))
+
+    }
+
+    // 우선 순위 큐(거리, 값)
+    val q = PriorityQueue<Pair<Int, Int>> { p1, p2 ->
+        when {
+            p1.second > p2.second -> 1
+            p1.second < p2.second -> -1
+            else -> 0
+        }
+    }
+
+    q.add(Pair(1, 0))
+    distanceValue[1] = 0
+
+    while (q.isNotEmpty()){
+        val(dist, value) = q.poll()
+
+        if (distanceValue[dist] < value)  continue
+
+        for (i in map[dist]){
+            val cost = i.second+value
+            if (cost < distanceValue[i.first]){
+                distanceValue[i.first] = cost
+                q.add(Pair(i.first, cost))
+            }
+        }
+    }
+
+        bw.write("${distanceValue[n]}")
+
+
+    bw.flush()
+    bw.close()
+    br.close()
+}
