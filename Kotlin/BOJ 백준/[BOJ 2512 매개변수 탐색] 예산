@@ -1,0 +1,43 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+/*
+- 아이디어:
+1. 예산이 1,000,000,000 이하이기 때문에 예산을 Long으로 선언한다.
+2. 매개변수 탐색을 활용하여 푼다.
+3. 계산한 totalBudget이 주어진 Budget보다 작거나 같다면 answer을 비교해서 더 큰 수를 대입한다.
+*/
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val n = br.readLine().toInt()
+    val arr = br.readLine().split(" ").map { it.toInt() }
+    val budget = br.readLine().toLong()
+    var answer = 0
+    var start = 0
+    var end = arr.maxOrNull()!!
+
+    while (start<=end){
+        val minBudget = (start+end)/2
+        var totalBudget = 0
+
+        for (cityBudget in arr){
+            totalBudget += if (cityBudget >= minBudget) minBudget
+            else cityBudget
+        }
+
+        if (totalBudget > budget) end = minBudget-1
+        else {
+            answer = kotlin.math.max(answer, minBudget)
+            start = minBudget + 1
+        }
+    }
+
+    bw.write("$answer")
+
+    bw.flush()
+    bw.close()
+    br.close()
+}
