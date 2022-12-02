@@ -1,0 +1,52 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+/*
+- 아이디어:
+1. 전투력 상한값이 비내림차순(오름차순)으로 주어진다고 했고 칭호개수 10^5라는 등을 보아 탐색 문제라는 것을 유추할 수 있다.
+2. 이분탐색을 활용하여 풀었다.
+3. "어떤 캐릭터의 전투력으로 출력할 수 있는 칭호가 여러 개인 경우 가장 **먼저 입력된 칭호 하나**만 출력"
+4. 이분탐색을 통해 현재 Power가 입력된 전투력보다 크거나 같은 경우 ed를 줄여 더 작은 수를 탐색한다.
+5. 이렇게 하다보면 먼저 들어 온 칭호를 출력하게 된다.
+ */
+data class Power(
+    val name: String,
+    val power: Int
+)
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val (n, m) = br.readLine().split(" ").map { it.toInt() }
+
+    val powerStandard = mutableListOf<Power>()
+    repeat(n) {
+        val (name, power) = br.readLine().split(" ")
+        powerStandard.add(Power(name, power.toInt()))
+    }
+
+    repeat(m) {
+        val inputPower = br.readLine().toInt()
+        var st = 0
+        var ed = powerStandard.size-1
+        var answer = 0
+
+        while (st<=ed){
+            val mid = (st+ed)/2
+
+            if (powerStandard[mid].power >= inputPower){
+                answer=mid
+                ed=mid-1
+            }else{
+                st = mid+1
+            }
+        }
+        bw.write("${powerStandard[answer].name}\n")
+    }
+
+    bw.flush()
+    bw.close()
+    br.close()
+}
