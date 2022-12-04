@@ -1,0 +1,44 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+/*
+- 아이디어:
+1. 승률이 99%이면 몇 번을 이겨도 100%는 될 수 없기 때문에 승률이 99% 이상일 경우 -1을 출력한다.
+2. 수가 1,000,000,000까지 주어지기 때문에 이분탐색을 이용했다.
+3. 새로운 승률 공식은 (입력 받은 이긴 횟수 + 계산한 이긴 횟수(mid)*100) / (입력 받은 전체 게임횟수+계산한 이긴 횟수(mid) 이다.
+4. 따라서, st=0, ed=입력 받은 전체 게임횟수 -> 승률이 달라지는 최소 게임 횟수를 찾는다.
+5. 실수형 오차 발생으로 인해 해맸다. 실수형 오차에 대해서 공부하기
+ */
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val (gameNumber, winNumber) = br.readLine().split(" ").map { it.toLong() }
+    val score = (winNumber*100)/gameNumber
+
+    if (score >= 99){
+        println("-1")
+        return
+    }
+
+    var st = 0L
+    var ed = gameNumber
+
+    while (st <= ed){
+        val mid = (st+ed)/2
+
+        val changeScore = (mid+winNumber)*100/ (mid+gameNumber)
+
+        if (changeScore > score) ed = mid-1
+        else st = mid+1
+
+    }
+    bw.write("$st")
+
+
+    bw.flush()
+    bw.close()
+    br.close()
+}
