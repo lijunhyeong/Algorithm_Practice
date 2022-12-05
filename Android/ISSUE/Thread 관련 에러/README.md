@@ -22,7 +22,7 @@ Original Thread으로만 UI(view heirarchy: 화면 체계)를 변경시킬 수 �
 - `runOnUiThread`는 현재 스레드가 `UI 스레드`인지 확인하고 맞으면 실행, 틀리면 핸들러를 통해 UI 스레드의 이벤트 큐로 post한다.
 
 
-- 참고
+### 참고
 ```
 - https://devfarming.tistory.com/3
 - https://gema.tistory.com/418
