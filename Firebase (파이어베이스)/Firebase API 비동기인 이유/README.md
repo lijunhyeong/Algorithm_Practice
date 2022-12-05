@@ -70,6 +70,12 @@ task.addOnFailureListener(new OnFailureListener() {
 - `16ms`이상일 경우 메인 스레드는 그 작업이 최종적으로 완료될 때까지 당신의 앱에 대한 UI 렌더링을 건너 뙨다. 프레임을 건너뛰는 것은 좋지 않다.
 - 따라서, 이벤트 루프에서 이러한 작업 중 하나가 너무 오래 걸리면 대기열에 갇히게 된다. 
 
+### 비동기적으로 생각하기
+- Firebase API는 앱의 메인 스레드 성능에 민감하다.  
+- 즉, 디스크 또는 네트워크의 데이터를 처리해야 하는 Firebase API 비동기식으로 구현된다.
+- 기능이 즉시 되돌아오기 때문에 성능에 대한 걱정 없이 메인 스레드에서 호출할 수 있다. 문서 및 샘플에 설정된 패턴을 사용하여 콜백을 구현하기만 하면 된다.
+
+
 - 참고
  ```
  - https://medium.com/firebase-developers/why-are-firebase-apis-asynchronous-callbacks-promises-tasks-e037a6654a93
