@@ -12,10 +12,10 @@
 - [Firebase API가 비동기인 이유](https://github.com/lijunhyeong/Study/tree/main/Firebase%20(%ED%8C%8C%EC%9D%B4%EC%96%B4%EB%B2%A0%EC%9D%B4%EC%8A%A4)/Firebase%20API%20%EB%B9%84%EB%8F%99%EA%B8%B0%EC%9D%B8%20%EC%9D%B4%EC%9C%A0)
 
 ### Kotlin
-- [BOJ 백준 문제 풀이](https://github.com/lijunhyeong/Study/tree/main/Kotlin/BOJ%20%EB%B0%B1%EC%A4%80)
-[![Solved.ac Profile](http://mazassumnida.wtf/api/v2/generate_badge?boj=daba44)](https://solved.ac/daba44/)
+- [BOJ 백준 문제 풀이](https://github.com/lijunhyeong/Study/tree/main/Kotlin/BOJ%20%EB%B0%B1%EC%A4%80)  
+[![Solved.ac Profile](http://mazassumnida.wtf/api/v2/generate_badge?boj=daba44)](https://solved.ac/daba44/)  
 - [실수(Float, Double) 오차](https://github.com/lijunhyeong/Study/tree/main/Kotlin/%EC%8B%A4%EC%88%98(Float%2C%20Double)%20%EC%98%A4%EC%B0%A8)
 
 ### Python
-- [BOJ 백준 문제 풀이](https://github.com/lijunhyeong/Study/tree/main/Python)
-[![Solved.ac Profile](http://mazassumnida.wtf/api/v2/generate_badge?boj=lijunhyeong)](https://solved.ac/lijunhyeong/)  
+- [BOJ 백준 문제 풀이](https://github.com/lijunhyeong/Study/tree/main/Python)  
+[![Solved.ac Profile](http://mazassumnida.wtf/api/v2/generate_badge?boj=lijunhyeong)](https://solved.ac/lijunhyeong/)    
