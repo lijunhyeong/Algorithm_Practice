@@ -4,6 +4,7 @@
 - Room은 스마트폰 내장 DB에 데이터를 저장하기 위해 사용하는 `ORM(Object Relational Mapping)`라이브러리이다.
 - Jectpack 라이브러리의 일부로 내부 저장소이며, ORM 라이브러리(DB데이터를 JAVA/Kotlin으로 변환) 입니다
 - Room은 SQLite의 추상레이어 위에 제공하고 있으며 SQLite의 모든 기능을 제공하면서 편한 데이터베이스의 접근을 허용한다.
+- liveData나 RxJAVA와 같이 Observation 형태도 지원하므로 아키텍쳐 패턴에도 적용이 매우 쉽다.
 
 ## SharedPreferences와 차이
 - SharedPreferences도 앱의 로컬에 데이터를 저장할 수 있지만, 가벼운 데이터를 저장할 목적으로 로컬 DB를 사용한다.
