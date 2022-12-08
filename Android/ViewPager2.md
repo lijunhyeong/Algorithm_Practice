@@ -12,6 +12,7 @@
   - `RecyclerView.Adapter`를 붙이면 **ViewPager와 RecyclerView가 혼합된 방식**으로 만들 수 있다.
 ### RecyclerView.Adapter
 - RecyclerView.Adapter 사용 방법과 같다.
+-  RecyclerView.Adapter를 이용한 ViewPager2는 Layout이 같고 contents가 다른 화면을 만들 때 유용하다.
 - [Adapter(+ViewHolder) + item_view.xml]을 ViewPager2에 붙이면 된다.
 - getItemCount()에서 반환된 개수만큼 item_view를 만들어 화면에 하나씩 보여준다.
 <img src="https://user-images.githubusercontent.com/72978589/206439313-0d64addb-b9d6-4e30-a2f5-f733f27b8845.png" width="70%" height="40%">    
@@ -116,6 +117,90 @@ class ViewPagerAdapter(private val number: ArrayList<Int>):RecyclerView.Adapter<
 ### 결과 화면
 <img src="https://user-images.githubusercontent.com/72978589/206442530-5f77e5e2-7c33-4f59-80d9-fe7d00f3f2a7.gif" width="30%" height="20%">    
 
+
+## 응용
+<img src="https://user-images.githubusercontent.com/72978589/206445944-350e299c-a0b1-452b-b90b-5a797a8d0dba.jpg" width="30%" height="20%">    
+
+### values/dimens.xml
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--  item_view 간의 양 옆 여백을 상쇄할 값   -->
+    <dimen name="offsetBetweenPages">40dp</dimen>
+    <!--  각 페이지의 양 옆 margin  -->
+    <dimen name="pageMargin">50dp</dimen>
+</resources>
+```
+
+### number_item.xml  
+- number_item.xml 최상위 Layout의 양옆에 dimens에서 작성한 PageMargin 값으로 margin을 주고 contentsdls TextView의 layout_height 값을 500dp로 지정한다.
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/numberTextView"
+        android:layout_width="300dp"
+        android:layout_height="500dp"
+        android:background="#F0F0F000"
+        android:gravity="center"
+        android:textColor="@color/purple_200"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+```
+
+### MainActivity.kt
+- ViewPager2의 Adapter를 지정한 부분 아래에 Paging Animation 처리에 대한 부분을 추가한다.
+```xml
+class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
+
+        // 어댑터 생성
+        binding.viewPager2.adapter = ViewPagerAdapter(getNumber())
+        // 관리하는 페이지 수. default = 1
+        binding.viewPager2.offscreenPageLimit = 3
+        // item_view 간의 양 옆 여백을 상쇄할 값
+        val offsetBetweenPages = resources.getDimensionPixelOffset(R.dimen.offsetBetweenPages).toFloat()
+        binding.viewPager2.setPageTransformer{page, position ->
+            val myOffset = position * -(2*offsetBetweenPages)
+            if (position < -1){
+                page.translationX = -myOffset
+            }else if (position <= 1){
+                // Paging 시 Y축 Animation 배경색을 약간 연하게 처리
+                val scaleFactor = 0.8f.coerceAtLeast(1- kotlin.math.abs(position))
+                page.translationX = myOffset
+                page.scaleY = scaleFactor
+                page.alpha = scaleFactor
+            }else{
+                page.alpha = 0f
+                page.translationX = myOffset
+            }
+        }
+
+    }
+
+    private fun getNumber(): ArrayList<Int>{
+        return arrayListOf(1,2,3)
+    }
+}
+```
+### 결과 화면
+<img src="https://user-images.githubusercontent.com/72978589/206446680-e9df0356-4cef-4160-b05d-60380a750c1a.gif" width="30%" height="20%"> 
 
 # 
 ```Text
