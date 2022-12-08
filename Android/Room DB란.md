@@ -106,7 +106,51 @@ interface BookmarkDao {
 }
 ```
 
+### DB 정의
+- Entity와 DAO가 작성되었으니 마지막으로 Database를 작성한다.
+- Room에서 데이터베이스를 정의하기 위해서는 `@Database`를 사용하며 클래스는 `추상 클래스`로 작성되어야 한다.
+- 추상 클래스는 `RoomDatabase()`를 상속해야 하며 매개 변수가 없는 추상 메서드를 포함해야 한다.
+- 어노테이션에는 데이터베이스와 연결된 항목의 목록과 버전을 포함해야 한다. 만약 entity 여러 개일 경우 arrayOf를 사용해서 entity를 묶는다.
+```Kotlin
+@Database(entities = [Bookmark::class], version = 1, exportSchema = false)
+abstract class BookmarkDatabase:RoomDatabase() {
+    abstract fun bookmarkDao() : BookmarkDao
+}
+```
+### DB 사용하기
+- 데이터베이스의 틀을 완성한 후, `Room.databaseBuilder`를 하여 코틀린에서 사용한다.
+- `DB 정의`에서 DAO 밑에 추가해서 어느 클래스에서든 접근할 수 있도록 했다.
+- Room.databaseBuilder의 매개변수는 Context, Class(@Database로 어노테이션 된 추상 클래스), name(데이터베이스 파일의 이름)이 온다.
+```Kotlin
+companion object{
+        var bookmarkDatabase : BookmarkDatabase ?= null
 
+        fun getBookmarkDatabase(context: Context): BookmarkDatabase?{
+            if (bookmarkDatabase == null){
+                bookmarkDatabase = Room.databaseBuilder(
+                    context.applicationContext,
+                    BookmarkDatabase::class.java,
+                    "bookmarkDatabase" )
+                    .allowMainThreadQueries()
+                    .build()
+            }
+            return bookmarkDatabase
+        }
+        
+    }
+```
+```Kotlin
+private var bookmarkList : List<Bookmark> ?= null
+
+override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    ..
+    // DB 빌드
+    bookmarkDatabase = getBookmarkDatabase(this)
+    // DB 사용
+    bookmarkList = bookmarkDatabase!!.bookmarkDao().getAll()
+}
+```
 
 #
 ```
