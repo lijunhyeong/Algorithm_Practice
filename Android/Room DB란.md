@@ -83,6 +83,29 @@ data class Bookmark(
 )
 ```
 
+### DAO
+- DAO는 `Data Access Object의 약자이다.
+- DAO를 통해 쿼리문을 사용하여 데이터베이스의 데이터에 접근할 수 있다.
+- Dao로 정의하기 위해선 `@Dao`라는 어노테이션이 필요하며, `인터페이스(interface)`로 작성된다.
+- `@Query`를 통해 직접 SQL을 작성할 수 있다. 그 외에도 `@Insert` `@Delete` `@Update` 등으로 간편하게 구현할 수 있는 기능을 제공한다.
+- 활용 방법이 많으니 자세한건 안드로이드 개발자 문서를 찾아는 걸 추천한다.
+```Kotlin
+@Dao
+interface BookmarkDao {
+    @Query("SELECT * FROM bookmark")
+    fun getAll(): List<Bookmark>
+
+    @Insert
+    fun insertBookmark(bookmark: Bookmark)
+
+    @Query("DELETE FROM bookmark")
+    fun deleteAll()
+
+    @Delete
+    fun delete(bookmark: Bookmark)
+}
+```
+
 
 
 #
