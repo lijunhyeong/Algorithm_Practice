@@ -160,7 +160,17 @@ class ViewPagerAdapter(private val number: ArrayList<Int>):RecyclerView.Adapter<
 
 ### MainActivity.kt
 - ViewPager2의 Adapter를 지정한 부분 아래에 Paging Animation 처리에 대한 부분을 추가한다.
-```xml
+- myOffset 변수와 ViewPager2의 offscreenPageLimit이 Paging Animation 부분이다.
+- myOffset 값은 position * -(2 * offsetBetweenPages)인데 offsetBetweenPages는 dimens.xml에서 40dp로 지정했기 때문에 position을 -80dp만큼 움직여라로 이해하면 된다.
+- 아래 그림에서 각 Item은 각 Fragment의 전체 화면 기준으로 양쪽에 pageMargin 만큼의 margin을 준 상태이며 FirstItem을 기준으로 Second, ThirdItem이 왼쪽으로 2*offsetBetweenPages 만큼 움직였다.
+- 각 Fragment의 양쪽에 margin이 있으니 Item 간의 여백은 margin*2가 될 것이고 그렇기 때문에 전, 후의 item이 현재 화면에 살짝 걸치게 되려면 2*offsetBetweenPages가 pageMargin보다 커야 한다.
+- offscreenPageLimit은 ViewPager2의 1.0.0-alpha04에 추가되었고 Docs에 아래와 같이 나와있다.
+> `offscreenPageLimit`은 뷰 계층 구조에 보관된 `View/Fragment` 수를 엄격히 제어할 수 있습니다.
+  - ViewPager에서 페이지 관리하는 것과 같은 내용이다.
+  - default 값은 1이며 앞, 뒤 화면 하나씩 Preloading 한다.
+<img src="https://user-images.githubusercontent.com/72978589/206447777-b9cb9d4e-2541-4537-8624-368ae1378320.png" width="50%" height="30%">    
+
+```kotlin
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
