@@ -1,31 +1,31 @@
 # ViewPager2
 
-## ViewPager 란?
+## 📌 ViewPager 란?
 - View를 슬라이드쇼처럼 넘길 수 있는 페이징 기법이다.
 - 2019년, 구글이 viewPager2를 발표하면서 기존 방법보다 사용하기 훨씬 쉬워졌다. 리사이클러뷰(recyclerview) 사용하듯이 사용하면 된다.
 - [공식 문서](https://developer.android.com/jetpack/androidx/releases/viewpager2?hl=ko)
 
-## ViewPager2 특징
+## 📌 ViewPager2 특징
 - ViewPager2는 `RTL(Right-to-Left)` `수직 방향(Vertical Orientation)` `수정 가능한 Fragment Collection` 등을 지원한다.
 - Adapter에 따라 형태가 달라진다.
   - `FragmentStateAdapter`를 붙이면 기존 ViewPager 방식이다.
   - `RecyclerView.Adapter`를 붙이면 **ViewPager와 RecyclerView가 혼합된 방식**으로 만들 수 있다.
-### RecyclerView.Adapter
+### ✅ RecyclerView.Adapter
 - RecyclerView.Adapter 사용 방법과 같다.
 -  RecyclerView.Adapter를 이용한 ViewPager2는 Layout이 같고 contents가 다른 화면을 만들 때 유용하다.
 - [Adapter(+ViewHolder) + item_view.xml]을 ViewPager2에 붙이면 된다.
 - getItemCount()에서 반환된 개수만큼 item_view를 만들어 화면에 하나씩 보여준다.
 <img src="https://user-images.githubusercontent.com/72978589/206439313-0d64addb-b9d6-4e30-a2f5-f733f27b8845.png" width="70%" height="40%">    
 
-## ViewPager2 활용
+## 📌 ViewPager2 활용
 <img src="https://user-images.githubusercontent.com/72978589/206432419-a53ce350-ef5a-4adc-950e-e03682a18e93.gif" width="30%" height="30%">    
 - 광고 배너, 소개 페이지 등 다방면에서 활용된다.
 
-## 구글 디자인 정책상 권장되지 않는 방법
+## 📌 구글 디자인 정책상 권장되지 않는 방법
 - 스와이프를 통해 페이지(메뉴)를 변경한는 것은 **구글 디자인 정책상 권장되지 않는 방법**이다. [참고 기사](https://www.sedaily.com/NewsVIew/1S4JMKWUI0)
 
-## 사용 예시
-### activity_main.xml
+## 📌 사용 예시
+### ✅ activity_main.xml
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -47,7 +47,7 @@
 </androidx.constraintlayout.widget.ConstraintLayout>
 ```
 
-### number_item.xml
+### ✅ number_item.xml
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -69,7 +69,7 @@
 </androidx.constraintlayout.widget.ConstraintLayout>
 ```
 
-### MainActivity.kt
+### ✅ MainActivity.kt
 ```kotlin
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -90,7 +90,7 @@ class MainActivity : AppCompatActivity() {
 }
 ```
 
-### ViewPagerAdapter.kt
+### ✅ ViewPagerAdapter.kt
 ```kotlin
 class ViewPagerAdapter(private val number: ArrayList<Int>):RecyclerView.Adapter<ViewPagerAdapter.PagerViewHolder>() {
 
@@ -114,14 +114,14 @@ class ViewPagerAdapter(private val number: ArrayList<Int>):RecyclerView.Adapter<
     override fun getItemCount(): Int = number.size
 }
 ```
-### 결과 화면
+### ✅ 결과 화면
 <img src="https://user-images.githubusercontent.com/72978589/206442530-5f77e5e2-7c33-4f59-80d9-fe7d00f3f2a7.gif" width="30%" height="20%">    
 
 
-## 응용
+## 📌 응용
 <img src="https://user-images.githubusercontent.com/72978589/206445944-350e299c-a0b1-452b-b90b-5a797a8d0dba.jpg" width="30%" height="20%">    
 
-### values/dimens.xml
+### ✅ values/dimens.xml
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
@@ -132,7 +132,7 @@ class ViewPagerAdapter(private val number: ArrayList<Int>):RecyclerView.Adapter<
 </resources>
 ```
 
-### number_item.xml  
+### ✅ number_item.xml  
 - number_item.xml 최상위 Layout의 양옆에 dimens에서 작성한 PageMargin 값으로 margin을 주고 contentsdls TextView의 layout_height 값을 500dp로 지정한다.
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -158,7 +158,7 @@ class ViewPagerAdapter(private val number: ArrayList<Int>):RecyclerView.Adapter<
 
 ```
 
-### MainActivity.kt
+### ✅ MainActivity.kt
 - ViewPager2의 Adapter를 지정한 부분 아래에 Paging Animation 처리에 대한 부분을 추가한다.
 - myOffset 변수와 ViewPager2의 offscreenPageLimit이 Paging Animation 부분이다.
 - myOffset 값은 position * -(2 * offsetBetweenPages)인데 offsetBetweenPages는 dimens.xml에서 40dp로 지정했기 때문에 position을 -80dp만큼 움직여라로 이해하면 된다.
@@ -209,7 +209,7 @@ class MainActivity : AppCompatActivity() {
     }
 }
 ```
-### 결과 화면
+### ✅ 결과 화면
 <img src="https://user-images.githubusercontent.com/72978589/206446680-e9df0356-4cef-4160-b05d-60380a750c1a.gif" width="30%" height="20%"> 
 
 # 
