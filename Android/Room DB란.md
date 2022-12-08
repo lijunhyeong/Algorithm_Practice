@@ -39,7 +39,6 @@
 - App이 업데이트 되어서 DB가 변경될 경우 이전 DB와 구분이 필요하므로 version에 `int`값을 넣어 관리한다.
 
 ## 📌 사용 예제
-- Edittext 글 저장하기
 
 ### ✅ build.gradle
 ```Kotlin
