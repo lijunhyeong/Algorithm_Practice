@@ -5,19 +5,122 @@
 - 2019년, 구글이 viewPager2를 발표하면서 기존 방법보다 사용하기 훨씬 쉬워졌다. 리사이클러뷰(recyclerview) 사용하듯이 사용하면 된다.
 - [공식 문서](https://developer.android.com/jetpack/androidx/releases/viewpager2?hl=ko)
 
-## ViewPager 활용
-<img src="https://user-images.githubusercontent.com/72978589/206432419-a53ce350-ef5a-4adc-950e-e03682a18e93.gif" width="30%" height="30%">    
+## ViewPager2 특징
+- ViewPager2는 `RTL(Right-to-Left)` `수직 방향(Vertical Orientation)` `수정 가능한 Fragment Collection` 등을 지원한다.
+- Adapter에 따라 형태가 달라진다.
+  - `FragmentStateAdapter`를 붙이면 기존 ViewPager 방식이다.
+  - `RecyclerView.Adapter`를 붙이면 **ViewPager와 RecyclerView가 혼합된 방식**으로 만들 수 있다.
+### RecyclerView.Adapter
+- RecyclerView.Adapter 사용 방법과 같다.
+- [Adapter(+ViewHolder) + item_view.xml]을 ViewPager2에 붙이면 된다.
+- getItemCount()에서 반환된 개수만큼 item_view를 만들어 화면에 하나씩 보여준다.
+<img src="https://user-images.githubusercontent.com/72978589/206439313-0d64addb-b9d6-4e30-a2f5-f733f27b8845.png" width="70%" height="40%">    
 
+## ViewPager2 활용
+<img src="https://user-images.githubusercontent.com/72978589/206432419-a53ce350-ef5a-4adc-950e-e03682a18e93.gif" width="30%" height="30%">    
 - 광고 배너, 소개 페이지 등 다방면에서 활용된다.
 
 ## 구글 디자인 정책상 권장되지 않는 방법
 - 스와이프를 통해 페이지(메뉴)를 변경한는 것은 **구글 디자인 정책상 권장되지 않는 방법**이다. [참고 기사](https://www.sedaily.com/NewsVIew/1S4JMKWUI0)
 
+## 사용 예시
+### activity_main.xml
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager2"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:background="#F0F0F000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+```
+
+### number_item.xml
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/numberTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:textColor="@color/purple_200"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+```
+
+### MainActivity.kt
+```kotlin
+class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
+
+        // 어댑터 생성
+        binding.viewPager2.adapter = ViewPagerAdapter(getNumber())
+        // ViewPager의 Paging 방향은 Horizontal
+        binding.viewPager2.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+    }
+    private fun getNumber(): ArrayList<Int>{
+        return arrayListOf(1,2,3)
+    }
+}
+```
+
+### ViewPagerAdapter.kt
+```kotlin
+class ViewPagerAdapter(private val number: ArrayList<Int>):RecyclerView.Adapter<ViewPagerAdapter.PagerViewHolder>() {
+
+    inner class PagerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val numberTextView: TextView = itemView.findViewById(R.id.numberTextView)
+
+        fun bind(number: Int, position: Int) {
+            numberTextView.text = "Page $number"
+        }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PagerViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.number_item,parent,false)
+        return PagerViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: PagerViewHolder, position: Int) {
+        holder.bind(number[position], position)
+    }
+
+    override fun getItemCount(): Int = number.size
+}
+```
+### 결과 화면
+<img src="https://user-images.githubusercontent.com/72978589/206442530-5f77e5e2-7c33-4f59-80d9-fe7d00f3f2a7.gif" width="30%" height="20%">    
 
 
-
+# 
 ```Text
 참고
 - https://todaycode.tistory.com/26
 - https://heaven0713.tistory.com/59
+- https://furang-note.tistory.com/25
 ```
