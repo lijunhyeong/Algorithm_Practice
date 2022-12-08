@@ -16,6 +16,7 @@
 ### SQLite의 단점
 <img src="https://user-images.githubusercontent.com/72978589/206114703-286ba690-31c2-42c8-b7a0-9c46ce962007.png" width="80%" height="20%">    
 
+- Room은 LiveData와 RxJava를 위한 Observation으로 생성하여 동작할 수 있지만 SQLite는 그렇지 않다.
 - SQLite를 활용하며, 데이터 접근이 편리하고 유지보수가 용이하며, 마이그레이션도 간단하다.  
 - SQLite와 달리, 컴파일 타임에 쿼리의 적합성을 확인할 수 있다. SQLite보다 편리한 DB라고 생각하면 된다. 
 
@@ -36,6 +37,28 @@
 - DB에서 사용될 테이블의 정보(entity)가 필요하고, version 정보가 필요한다.
 > @Database(entities = [UserInfo::class], version = 1)
 - App이 업데이트 되어서 DB가 변경될 경우 이전 DB와 구분이 필요하므로 version에 `int`값을 넣어 관리한다.
+
+## 사용 예제
+- Edittext 글 저장하기
+
+### build.gradle
+```Kotlin
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-android'     // 추가
+    id 'kotlin-kapt'        // 추가
+}
+
+dependencies {
+    // Room DB
+    def roomVersion = "2.4.3"
+    implementation("androidx.room:room-runtime:$roomVersion")
+    annotationProcessor("androidx.room:room-compiler:$roomVersion")
+    kapt("androidx.room:room-compiler:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
+}
+```
 
 #
 ```
