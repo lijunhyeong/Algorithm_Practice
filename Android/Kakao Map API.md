@@ -1,13 +1,13 @@
 # Kakao Map API
 
-## Kakao 개발자 사이트에서 앱 등록
+## 📌 Kakao 개발자 사이트에서 앱 등록
 - 로그인하고, 애플리케이션을 등록한다.
 <img src="https://user-images.githubusercontent.com/72978589/206891546-eb498aa8-5a73-4482-9cd5-689561d7fdbd.png" width="60%" height="20%"> 
 
 - '플랫폼' 탭으로 이동하여 내 프로젝트 `패키지명`과 `키 해시`를 등록한다.  
-<img src="https://user-images.githubusercontent.com/72978589/206891662-e186384c-c043-4e1e-a798-cdf801f24344.png" width="60%" height="20%">     
+<img src="https://user-images.githubusercontent.com/72978589/206891662-e186384c-c043-4e1e-a798-cdf801f24344.png" width="50%" height="20%">     
 
-### 키해시 얻는 법  
+### ✅ 키해시 얻는 법  
 - 아래 메서드를 통해 확인할 수 있다.  
 ```Kotlin
 private fun getHashKey() {
@@ -29,16 +29,16 @@ private fun getHashKey() {
         }
     }
 ```
-### 패키지명
+### ✅ 패키지명
 - 패키지명은 `AndroidManifest.xml`파일 가장 상단에서 확인할 수 있다.
 <img src="https://user-images.githubusercontent.com/72978589/206891861-6b883086-cf49-4535-993c-bfb9691ef1be.png" width="60%" height="20%">    
 
-## 라이브러리 추가
+## 📌 라이브러리 추가
 - Kakao map API 개발자 사이트에서 [SDK](https://apis.map.kakao.com/android/guide/#step1) 다운한다.
 - `libs`폴더를 만들어 jar파일을 넣고, `jinLibs`폴더를 만들어 나머지 파일을 넣는다.
-<img src="https://user-images.githubusercontent.com/72978589/206891984-69905441-dddc-4e7b-a989-852750c19d44.png" width="60%" height="20%">    
+<img src="https://user-images.githubusercontent.com/72978589/206891984-69905441-dddc-4e7b-a989-852750c19d44.png" width="50%" height="20%">    
 
-## Manifest 등록
+## 📌 Manifest 등록
 - `android:usesCleartextTraffic="true`는 cleartext HTTP와 같은 cleartext 네트워크 트래픽을 사용할지 여부를 나타내는 flag로 이 플래그가 flase 로 되어 있으면, 플랫폼 구성 요소 (예 : HTTP 및 FTP 스택, DownloadManager, MediaPlayer)는 일반 텍스트 트래픽 사용에 대한 **앱의 요청을 거부**하게 됩니다. 이 flag를 설정하게 되면 모든 cleartext 트래픽은 허용처리가 됩니다.
 - APP KEY 추가
 - `내 애플리케이션 선택`->`앱 설정`-> `앱- 키` -> `네이티브 앱 키`
@@ -57,14 +57,14 @@ private fun getHashKey() {
 ```
 <img src="https://user-images.githubusercontent.com/72978589/206892331-f5ef0d24-09c2-4578-86b8-98be6b78071f.png" width="60%" height="20%">    
 
-## build.gradle:Module에 등록
+## 📌 build.gradle:Module에 등록
 ```xml
 //kakao map
 implementation fileTree(include: ['*.jar'], dir: 'libs')
 implementation files('libs/libDaumMapAndroid.jar')
 ```
 
-## settings:gradle(Project Settings) 등록
+## 📌 settings:gradle(Project Settings) 등록
 ```xml
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
@@ -79,7 +79,7 @@ dependencyResolutionManagement {
 }
 ```
 
-## activity_main.xml
+## 📌 activity_main.xml
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -101,7 +101,7 @@ dependencyResolutionManagement {
 
 ```
 
-## GPS 및 위치 권한 확인, 내위치 불러오기
+## 📌 GPS 및 위치 권한 확인, 내위치 불러오기
 ```Kotlin
 // 내 위치 불러오기
 private fun getMyPosition(){
@@ -188,6 +188,8 @@ private fun startTracking() {
 }
 ```
 
+## 📌 실행 화면
+<img src="https://user-images.githubusercontent.com/72978589/206893006-77eaf999-c801-48a0-b119-24c46c0da5c6.jpg" width="30%" height="10%">  
 
 #
 ```
