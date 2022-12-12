@@ -48,8 +48,9 @@
 - 스레드 간에 통신이 용이하기 때문이다.
 
 
-참고
+#
 ```
+참고
 https://velog.io/@aeong98/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9COS-%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4%EC%99%80-%EC%8A%A4%EB%A0%88%EB%93%9C
 
 ```
