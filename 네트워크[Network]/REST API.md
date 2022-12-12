@@ -12,6 +12,8 @@
 - REST는 API 작동 방식에 대한 조건을 부과하는 소프트웨어 아키텍처이다.
 - REST는 처음에 인터넷과 같은 복잡한 네트워크에서 통신을 관리하기 위한 지침으로 만들어졌다.
 - `REST(Representational State Transfer)`의 약자로 자원을 이름으로 구분하여 해당 자원의 상태를 주고 받는 모든 것을 의미한다.
+<img src="https://user-images.githubusercontent.com/72978589/206942082-8a0b6ec3-1c14-4b37-ac14-fcb7440dd276.png" width="80%" height="20%">      
+
 ### 즉 REST란
 - HTTP URI(Uniform Resource Identifier)를 통해 자원(Resource)을 명시하고,
   - `URI`란, 은행계좌는 계좌번호, 버스는 노선번호, 사람은 주민등록번호로 구분되듯 웹 서버의 리소스 또한 각자의 이름이 있다. (클라이언트가 요청할 때 찾아야하니까, id같은 고유한 식별값이 있어야겠지!) 이때 서버 리소스 이름(식별자)을 uniform resource identifier(통합 자원 식별자), URI라고 부른다. 
@@ -57,25 +59,34 @@
 
 ## REST API 설계 예시
 - URI는 동사보다는 명사를, 대문자보다는 소문자를 사용하여야 한다.
-> Bad Example https://github.com/Studying  
-> Good Example  https://github.com/Study    
+```
+Bad Example https://github.com/Studying  
+Good Example  https://github.com/Study    
+```
 
 - 마지막에 슬래시 (/)를 포함하지 않는다.
-> Bad Example https://github.com/test/  
-> Good Example  https://github.com/test  
+```
+Bad Example https://github.com/test/  
+Good Example  https://github.com/test  
+```
 
 - 언더바 대신 하이폰을 사용한다.
-> Bad Example https://github.com/test_test  
-> Good Example  https://github.com/test-test  
+```
+Bad Example https://github.com/test_test  
+Good Example  https://github.com/test-test  
+```
 
 - 파일확장자는 URI에 포함하지 않는다.
-> Bad Example https://github.com/photo.jpg   
-> Good Example  https://github.com/photo  
+```
+Bad Example https://github.com/photo.jpg   
+Good Example  https://github.com/photo  
+```
 
 - 행위를 포함하지 않는다.
-> Bad Example https://github.com/delete-post/1  
-> Good Example  https://github.com/post/1  
-
+```
+Bad Example https://github.com/delete-post/1  
+Good Example  https://github.com/post/1  
+```
 
 #
 ```
