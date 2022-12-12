@@ -40,13 +40,13 @@ private fun getHashKey() {
 
 ## 📌 Manifest 등록
 - `android:usesCleartextTraffic="true`는 cleartext HTTP와 같은 cleartext 네트워크 트래픽을 사용할지 여부를 나타내는 flag로 이 플래그가 flase 로 되어 있으면, 플랫폼 구성 요소 (예 : HTTP 및 FTP 스택, DownloadManager, MediaPlayer)는 일반 텍스트 트래픽 사용에 대한 **앱의 요청을 거부**하게 됩니다. 이 flag를 설정하게 되면 모든 cleartext 트래픽은 허용처리가 됩니다.
-- APP KEY 추가
-- `내 애플리케이션 선택`->`앱 설정`-> `앱- 키` -> `네이티브 앱 키`
+### ✅ APP KEY 추가
+- 카카오 개발자 페이지에서 `내 애플리케이션 선택`->`앱 설정`-> `앱- 키` -> `네이티브 앱 키`
 - android:value에 네이티브 앱 키를 넣는다.
 ```xml
 <meta-data android:name="com.kakao.sdk.AppKey" android:value="xxxxxxxxxxxxxxxxxxxxx" />
 ```
-- Permission 추가
+### ✅ Permission 추가
 ```xml
 <!-- 인터넷 권한 -->
 <uses-permission android:name="android.permission.INTERNET" />
