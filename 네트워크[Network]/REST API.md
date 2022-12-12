@@ -4,7 +4,7 @@
 - REST는 API 작동 방식에 대한 조건을 부과하는 소프트웨어 아키텍처이다.
 - REST는 처음에 인터넷과 같은 복잡한 네트워크에서 통신을 관리하기 위한 지침으로 만들어졌다.
 - `REST(Representational State Transfer)`의 약자로 자원을 **이름으로 구분**하여 해당 자원의 상태를 주고 받는 모든 것을 의미한다.
-- 네트워크 상에서 **Client 와 Server 사이의 통신 방식** 중 하나이다.
+- **네트워크 상에서 Client 와 Server 사이의 통신 방식** 중 하나이다.
 <img src="https://user-images.githubusercontent.com/72978589/206942082-8a0b6ec3-1c14-4b37-ac14-fcb7440dd276.png" width="80%" height="20%">      
 
 ### ✅ 즉 REST란
