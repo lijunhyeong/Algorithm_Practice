@@ -1,0 +1,80 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+/*
+- 아이디어
+1. 갈 수 없는 곳은 -1로 출력하기 때문에 -1로 배열을 초기화 한다.
+2. 지도 입력을 받을 때 2가 나올 때, y와 x를 startY, startX에 저장한다.
+3. BFS를 돌며 answer[ny][ny]==-1이면 처음이기 때문에 answer[y][x] +1를 넣는다.
+4. answer[ny][ny] !=0 && answer[ny][ny]!=-1이면 0도 아니고 초기값도 아니기 때문에 
+if (answer[ny][nx] > answer[yy][xx]+1) 조건에 맞으면 answer[ny][nx]값을 갱신한다.
+* 문제를 제대로 읽지 않아 모든 범위를 n으로 둬서 많이 틀리고 해맸다..
+ */
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val (n, m) = br.readLine().split(" ").map { it.toInt() }
+
+    val answer = Array(n) { IntArray(m) { -1 } }
+
+    var startY = 0
+    var startX = 0
+
+    for (y in 0 until n) {
+        val s = br.readLine().split(" ").map { it.toInt() }
+        for (x in 0 until m) {
+            if (s[x] == 2) {
+                startY = y
+                startX = x
+                answer[y][x] = 0
+            }
+            if (s[x] == 0)  answer[y][x] = 0
+
+        }
+    }
+
+    // 상 하 좌 우
+    val dy = arrayOf(1, -1, 0, 0)
+    val dx = arrayOf(0, 0, -1, 1)
+    fun dfs(y: Int, x: Int) {
+        val q = ArrayDeque<Pair<Int, Int>>()
+        q.add(Pair(y, x))
+        while (q.isNotEmpty()) {
+            val (yy, xx) = q.removeFirst()
+            for (i in dy.indices) {
+                val ny = yy + dy[i]
+                val nx = xx + dx[i]
+                if (ny in 0 until n && nx in 0 until m){
+                    if (answer[ny][nx] == -1){
+                        answer[ny][nx] = answer[yy][xx]+1
+                        q.add(Pair(ny,nx))
+                        continue
+                    }
+                    if (answer[ny][nx] !=0 && answer[ny][nx] != -1){
+                        if (answer[ny][nx] > answer[yy][xx]+1){
+                            answer[ny][nx] = answer[yy][xx]+1
+                            q.add(Pair(ny,nx))
+                            continue
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
+    dfs(startY, startX)
+
+    for (y in 0 until n){
+        for (x in 0 until m){
+            bw.write("${answer[y][x]} ")
+        }
+        bw.newLine()
+    }
+
+
+    bw.flush()
+    bw.close()
+}
