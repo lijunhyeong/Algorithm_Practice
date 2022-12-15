@@ -19,7 +19,6 @@
 ### Kotlin
 - [BOJ 백준 문제 풀이](https://github.com/lijunhyeong/Study/tree/main/Kotlin/BOJ%20%EB%B0%B1%EC%A4%80)  
 [![Solved.ac Profile](http://mazassumnida.wtf/api/v2/generate_badge?boj=daba44)](https://solved.ac/daba44/)  
-- [실수(Float, Double) 오차](https://github.com/lijunhyeong/Study/tree/main/Kotlin/%EC%8B%A4%EC%88%98(Float%2C%20Double)%20%EC%98%A4%EC%B0%A8)
 
 ### Python
 - [BOJ 백준 문제 풀이](https://github.com/lijunhyeong/Study/tree/main/Python)  
