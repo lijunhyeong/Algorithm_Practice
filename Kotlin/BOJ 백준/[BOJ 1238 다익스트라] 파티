@@ -1,0 +1,107 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import java.util.*
+import kotlin.collections.ArrayList
+
+/*
+- 아이디이:
+1. 다익스트라를 활용한다.
+2. 도로는 단방향이다.
+3. x번 마을에서 집으로 가는 최소 비용 + 집에서 X번 마을로 가는 최소 비용 중에서 가장 큰 값을 출력한다.
+-> 각자 집에서 파티가 있는 x번 마을까지의 왕복 최단시간을 구하고, 그 중 제일 시간이 오래 걸리는 사람을 출력.
+ */
+
+private lateinit var map : Array<ArrayList<Pair<Int,Int>>>
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val (n, m, x) = br.readLine().split(" ").map { it.toInt() }
+
+    map = Array(n + 1) { ArrayList<Pair<Int, Int>>() }
+
+    val partyToHome = IntArray(n + 1) { Int.MAX_VALUE }
+
+    repeat(m) {
+        val (start, end, value) = br.readLine().split(" ").map { it.toInt() }
+        map[start].add(Pair(end, value))
+    }
+
+    // 우선 순위 큐(거리, 값)
+    val pq = PriorityQueue<Pair<Int, Int>> { p1, p2 ->
+        when {
+            p1.second > p2.second -> 1
+            p1.second < p2.second -> -1
+            else -> 0
+        }
+    }
+
+    // party 장소인 x번 마을에서 집으로 가는 최소 비용
+    pq.add(Pair(x, 0))
+    partyToHome[x] = 0
+    while (pq.isNotEmpty()) {
+        val (dist, value) = pq.poll()
+
+        if (partyToHome[dist] < value) continue
+
+        for (i in map[dist]) {
+            val (nDist, nValue) = i
+            val cost = value + nValue
+
+            if (partyToHome[nDist] > cost){
+                partyToHome[nDist] = cost
+                pq.add(Pair(nDist, cost))
+            }
+        }
+    }
+
+    var answer = 0
+    for (i in 1..n){
+        if (i == x) continue
+        val cost = partyToHome[i] + dijkstra(n, i, x)
+        answer = kotlin.math.max(answer, cost)
+    }
+
+    bw.write("$answer")
+
+    bw.flush()
+    bw.close()
+    br.close()
+}
+
+// x번 집에서 party 장소로 가는 최소 비용
+private fun dijkstra(n:Int, x:Int, target:Int): Int{
+    val distance = IntArray(n + 1) { Int.MAX_VALUE }
+
+    // 우선 순위 큐(거리, 값)
+    val pq = PriorityQueue<Pair<Int, Int>> { p1, p2 ->
+        when {
+            p1.second > p2.second -> 1
+            p1.second < p2.second -> -1
+            else -> 0
+        }
+    }
+
+    // x번 집에서 party 장소로 가는 최소 비용
+    pq.add(Pair(x, 0))
+    distance[x] = 0
+    while (pq.isNotEmpty()) {
+        val (dist, value) = pq.poll()
+
+        if (distance[dist] < value) continue
+
+        for (i in map[dist]) {
+            val (nDist, nValue) = i
+            val cost = value + nValue
+
+            if (distance[nDist] > cost){
+                distance[nDist] = cost
+                pq.add(Pair(nDist, cost))
+            }
+        }
+    }
+
+    return distance[target]
+}
