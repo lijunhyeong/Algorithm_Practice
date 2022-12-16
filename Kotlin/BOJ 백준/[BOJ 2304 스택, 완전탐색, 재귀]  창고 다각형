@@ -1,0 +1,87 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+/*
+- 아이디어:
+1. 입력 값중 높이가 제일 큰 인덱스를 찾는다.
+2. 입력된 배열Pair(l, h)을 l오름차순 h내림차순으로 정렬한다.
+3. 제일 높은 지붕 기준으로 왼쪽, 오른쪽 나눈다.
+4. 각 방향을 재귀로 탐색한다.
+    - 자신보다 크면 멈추고 넓이를 구하고 큰 인덱스부터 다시 탐색한다.
+    - 자신 보다 큰 지붕이 없는 경우 각 방향의 총 넓이를 리턴한다.
+ */
+private lateinit var map : ArrayList<Pair<Int,Int>>
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val n = br.readLine().toInt()
+    map = ArrayList()
+    var answer = 0
+
+    var maxH = 0
+    var maxL = 0
+    repeat(n){
+        val (l ,h)= br.readLine().split(" ").map { it.toInt() }
+        map.add(Pair(l, h))
+
+        if (maxH < h){
+            maxH = h
+            maxL = l
+        }
+    }
+
+    map.sortWith(compareBy<Pair<Int, Int>> { it.first }.thenByDescending { it.second })
+    val maxIdx = map.indexOf(Pair(maxL, maxH))
+
+    answer+=maxH
+    answer+= leftSearch(0, maxIdx, 0)
+    answer+= rightSearch(0, maxIdx, n-1)
+
+    bw.write("$answer")
+
+    bw.flush()
+    bw.close()
+    br.close()
+}
+
+private fun leftSearch(value:Int , maxIdx:Int, st:Int): Int{
+    var answer = value
+    var check = true
+    var idx = 0
+    for (i in st+1 .. maxIdx){
+        if (map[st].second <= map[i].second){
+            answer += (map[i].first - map[st].first) * map[st].second
+            idx = i
+            check = false
+            break
+        }
+    }
+
+    if (!check) return leftSearch(answer, maxIdx, idx)
+
+    return answer
+}
+
+private fun rightSearch(value:Int , maxIdx:Int, st:Int): Int{
+    var answer = value
+    var check = true
+    var idx = 0
+
+    for (i in st-1 downTo maxIdx){
+        if (map[st].second <= map[i].second){
+            val l = map[st].first+1
+            val ed = map[i].first+1
+            answer+= (l - ed) * map[st].second
+            idx = i
+            check = false
+            break
+        }
+    }
+
+    if (!check) return rightSearch(answer, maxIdx, idx)
+
+    return answer
+}
