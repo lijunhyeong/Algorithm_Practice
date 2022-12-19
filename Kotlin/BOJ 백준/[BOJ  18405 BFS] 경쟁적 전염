@@ -1,0 +1,76 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+/*
+- 아이디어:
+*중요: 번호가 낮은 바이러스부터 증식한다. BFS를 활용한다.
+1. 각 바이러스의 좌표를 virusMap에 저장한다. map에는 바이러스를 저장한다.
+2. 바이러스 번호를 virusNumber에 저장한 후 오름차순 정렬한다.
+3. S만큼 for문을 돌며, virusNumberdml virusMap을 상,하,좌,우로 번식한다.
+4. 번식이 가능한 좌표는 virusMap에 좌표를 넣는다.
+5. (X, Y)을 출력한다.
+ */
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val (n, k) = br.readLine().split(" ").map { it.toInt() }
+    val map = Array(n + 1) { IntArray(n + 1) }
+    val visited = Array(n + 1) { BooleanArray(n + 1) }
+    val virusMap = Array(k + 1) { ArrayDeque<Pair<Int, Int>>() }
+    val virusNumber = mutableSetOf<Int>()
+
+    for (j in 1 .. n) {
+        val s = br.readLine().split(" ").map { it.toInt() }
+        for (i in 1 .. n) {
+            val virus = s[i-1]
+            if (virus != 0) {
+                virusMap[virus].add(Pair(j, i))
+                visited[j][i] = true
+                map[j][i] = virus
+                virusNumber.add(virus)
+            }
+        }
+    }
+
+    val virusNumberSet = virusNumber.sorted()
+
+    val (s, y, x) = br.readLine().split(" ").map { it.toInt() }
+    // 상 하 좌 우
+    val dx = arrayOf(0, 0, -1, 1)
+    val dy = arrayOf(1, -1, 0, 0)
+    repeat(s) {
+
+        // 입력 받은 바이러스 오름차순으로 순회
+        for (virus in virusNumberSet) {
+            // 해당 바이러스 번호에 있는 좌표 탐색
+            for (idx in 0 until virusMap[virus].size) {
+                // BFS로 전염 가능한 곳은 전염
+                val (yy, xx) = virusMap[virus].removeFirst()
+                for (direction in dx.indices) {
+                    val ny = yy + dy[direction]
+                    val nx = xx + dx[direction]
+                    // 번식이 가능한 경우 해당 좌표를 바이러스 배열에 넣고 방문 처리한다.
+                    if (ny in 1.. n && nx in 1..n && !visited[ny][nx]){
+                        virusMap[virus].add(Pair(ny,nx))
+                        map[ny][nx] = virus
+                        visited[ny][nx] = true
+                    }
+                }
+
+            }
+
+        }
+
+
+    }
+
+    bw.write("${map[y][x]}")
+
+
+    bw.flush()
+    bw.close()
+    br.close()
+}
