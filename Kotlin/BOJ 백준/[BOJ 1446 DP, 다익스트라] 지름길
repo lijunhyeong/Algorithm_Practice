@@ -1,0 +1,45 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+/*
+- 아이디어:
+1. (시작 위치, 도착위치, 지름길) 입력 받을 때 도착위치가 주어진 고속도로 길이보다 작거나 같은 수만 받는다.
+2. 1부터 d까지  answer[i] += answer[i-1] + 1 길이를 더하다.
+3. 입력받은 수를 돌리며 - 도착위치와 시작위치+지름길을 비교하여 더 작은 수를 계속해서 answer[도착위치] 갱신한다.
+    - 예제 1번을 보면, 첫번째 for 문이 50이 왔을 때 answer[50] = 50이다.
+    하지만 두번째 포문에서 answer[50] = kotlin.math.min(answer[50], answer[0]+10)이 되면서 
+    answer[50] = 10으로 갱신된다.
+    다음 첫번째 for 문 51번째에는 answer[51] = 11이 되는 것이다.
+    이런 식으로 지름길을 계속 돌려주며 최솟값을 구한다. 
+ */
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val (n, d) = br.readLine().split(" ").map { it.toInt() }
+    val map = mutableListOf<Triple<Int, Int, Int>>()
+    repeat(n) {
+        val (st, ed, cost) = br.readLine().split(" ").map { it.toInt() }
+        if (ed <= d) map.add(Triple(st, ed, cost))
+    }
+
+    val answer = IntArray(d + 1)
+    for (i in 1..d) {
+        answer[i] += answer[i-1] + 1
+
+        for (j in map){
+            val (start, end, cost) = j
+            answer[end] = kotlin.math.min(answer[end], answer[start] + cost)
+        }
+
+    }
+
+    bw.write("${answer[d]}")
+
+    bw.flush()
+    bw.close()
+    br.close()
+}
