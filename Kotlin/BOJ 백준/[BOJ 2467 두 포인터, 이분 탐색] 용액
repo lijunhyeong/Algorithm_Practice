@@ -1,0 +1,56 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+/*
+- 아이디어:
+* 경우가 두 개 이상일 경우에는 그 중 아무것이나 하나를 출력한다.
+* 두 용액은 특성값의 오름차순으로 출력한다.
+* 알칼리성 2개 또는 산성 2개여도 된다.
+1. 시간복잡도: n^2은 안됨
+2. 투 포인터를 활용한다.
+3. cost = arr[start] + arr[end]를 해서 두 값을 구한다.
+4. 기존 answer 와 cost 두 값의 절대값을 비교해서 answer 이 더 클 경우 answer 에 cost 값을 넣어 값을 갱신한다.
+* 여기서 start 와 end 를 언제 좁혀야될지 고민을 많이 했다.
+5.  arr[end] 와 arr[start] 의 절대값을 비교하여 arr[end] 의 절대값이 더 클경우에 end-=1을한다.
+어차피 절대값으로 계산하기 때문에 값이 더 큰 값을 작은 값으로 좁힌다.
+ */
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val n = br.readLine().toInt()
+    val arr = br.readLine().split(" ").map { it.toInt() }
+
+    var start = 0
+    var end = n-1
+
+    var answer = arr[start] + arr[end]
+    var answerUp = 0
+    var answerDown = end
+
+    while (start < end){
+        val cost = arr[start] + arr[end]
+
+//        bw.write("-- start = $start -- end = $end \n")
+//        bw.write("arr[start] = ${arr[start]} + arr[end] = ${arr[end]} \n")
+//        bw.write("cost = $cost -- answer = $answer \n")
+//        bw.newLine()
+
+        if (kotlin.math.abs(cost) <= kotlin.math.abs(answer)){
+            answer = cost
+            answerUp = arr[end]
+            answerDown = arr[start]
+        }
+
+        if (kotlin.math.abs(arr[start]) <= kotlin.math.abs(arr[end])) end-=1
+        else start+=1
+
+    }
+
+    bw.write("$answerDown $answerUp")
+
+    bw.flush()
+    bw.close()
+    br.close()
+}
