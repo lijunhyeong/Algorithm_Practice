@@ -1,0 +1,39 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import kotlin.collections.ArrayDeque
+/*
+- 아이디어:
+* 원생의 키 배열은 오름차순으로 주어진다.
+1. k 개의 조로 나누어야 한다.
+2. 원생은 N 명이다.
+3. 예제 기준으로 설명
+  - [1, 3, 5, 6, 10] 오름차순으로 주어지기 때문에 arr[i+1]-arr[i]를 하여 사이 값을 구한다.
+  - [2, 2, 1, 4]가 나온다. 오름차순으로 정렬 한다.
+  - k-1만큼 큰 수(뒤에서부터) 뺀다.
+  - 나머지 수를 더한다.
+ */
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val (n, k) = br.readLine().split(" ").map { it.toInt() }
+    val arr = br.readLine().split(" ").map { it.toInt() }
+
+    val answer = ArrayDeque<Int>()
+    for (i in 0 until arr.size-1){
+        answer.add(arr[i+1] - arr[i])
+    }
+    answer.sort()
+
+    repeat(k-1){
+        answer.removeLast()
+    }
+    
+    bw.write(answer.sum())
+
+    bw.flush()
+    bw.close()
+    br.close()
+}
