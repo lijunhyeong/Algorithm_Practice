@@ -1,0 +1,40 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import java.util.PriorityQueue
+/*
+- 아이디어:
+* 가장 작은 두 묶음을 더하는 문제이기 때문에 [우선순위 큐]를 활용한다.
+1. 큐에 있는 작은 값 두개를 빼서 더하고 그 값을 다시 큐에 넣는다.
+2. 두 수를 더한 값을 answer에 누적으로 더한다.
+3. 연산을 하는 횟수는 n-1번이다.
+이 문제의 키포인트는 "현재 존재하는 카드 묶음 중에서, 가장 작은 2개의 묶음을 우선적으로 계산"하는 것이다.
+처음에 가장 작은 두 수를 더했다면 그 묶음이 배열에 추가 된다.
+2개의 묶음을 합치는 과정은 N-1 번 반복한다.
+ */
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val n = br.readLine().toInt()
+    val pq = PriorityQueue<Int>()
+
+    repeat(n) {
+        pq.add(br.readLine().toInt())
+    }
+
+    var answer = 0
+    repeat(n-1){
+        val x = pq.poll()
+        val y = pq.poll()
+        answer += x+y
+        pq.add(x+y)
+    }
+
+    bw.write("$answer")
+
+    bw.flush()
+    bw.close()
+    br.close()
+}
