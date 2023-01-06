@@ -1,0 +1,41 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import java.util.PriorityQueue
+/*
+- 아이디어:
+이전에 이 문제와 비슷한 문제(1715번)를 풀었던 적이 있어서 기억을 되살려서 코드를 짰는데 틀렸다.
+그래서 내가 문제를 잘 못이해한 것인줄 알았는데, 알고보니 자료형을 Long 으로 바꾸면 되는 거였다..
+** 시간복잡도와 자료구조를 계산하고 문제 풀자 **
+이번 문제를 풀면서 알게 된 것인데 이 문제는 <허프만 인코딩 알고리즘>이었다.
+허프만 코딩이란 데이터 압축을 수행하는 알고리즘이며, 파일 압축의 기본 개념을 형성한다.
+허프만 압출 알고리즘 강좌: https://www.youtube.com/watch?v=haXz9MEOGbo
+ */
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    repeat(br.readLine().toInt()){
+        val n = br.readLine().toInt()
+        val arr = br.readLine().split(" ").map { it.toInt() }
+        val pq = PriorityQueue<Long>()
+        for (i in arr){
+            pq.add(i.toLong())
+        }
+        var answer = 0L
+
+        repeat(n-1){
+            val x1 = pq.poll()
+            val x2 = pq.poll()
+            answer += x1+ x2
+            pq.add(x1+x2)
+        }
+
+        bw.write("${answer}\n")
+    }
+
+    bw.flush()
+    bw.close()
+    br.close()
+}
