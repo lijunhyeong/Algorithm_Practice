@@ -10,6 +10,7 @@ import java.util.PriorityQueue
 ** 시간복잡도와 자료구조를 계산하고 문제 풀자 **
 이번 문제를 풀면서 알게 된 것인데 이 문제는 <허프만 인코딩 알고리즘>이었다.
 허프만 코딩이란 데이터 압축을 수행하는 알고리즘이며, 파일 압축의 기본 개념을 형성한다.
+허프만 설명: https://ko.wikipedia.org/wiki/%ED%97%88%ED%94%84%EB%A8%BC_%EB%B6%80%ED%98%B8%ED%99%94
 허프만 압출 알고리즘 강좌: https://www.youtube.com/watch?v=haXz9MEOGbo
  */
 fun main() {
