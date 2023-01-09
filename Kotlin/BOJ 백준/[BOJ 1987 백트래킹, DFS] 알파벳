@@ -1,0 +1,59 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+/*
+- 아이디어:
+* DFS를 활용하여 풀었다.
+1. 좌측 상담부터 시작하며 말이 지나는 칸은 좌측 상단의 칸도 포함된다.
+2. 알파벳 방문 체크를 BooleanArray 배열을 만들고 알파벳 Char 형을 숫자로 변환하여 지나간 알파벳은 true로 바꾸었다.
+   2-1) answer = 1부터 시작한다. 시작부분 visited[Character.getNumericValue(map[0][0])] = true 방문 처리 한다.
+3. DFS를 돌며 백트래킹 형식으로 방문한 알파벳은 true로 바꾸고 재귀를 돌 때 cnt+1을 한다.
+  3-1) answer = kotlin.math.max(answer, cnt) 하여 지나간 칸의 최대 크기를 갱신한다.
+4. 재귀를 벗어나면 해당 알파벳은 해제 처리한다. 그래야 다른 쪽도 탐색할 수 있다.
+*/
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val (r, c) = br.readLine().split(" ").map { it.toInt() }
+    val map = Array(r + 1) { CharArray(c + 1) }
+
+    for (j in 0 until r) {
+        val s = br.readLine()
+        for (i in 0 until c) {
+            map[j][i] = s[i]
+        }
+    }
+
+    var answer = 1
+    val visited = BooleanArray(100)
+    visited[Character.getNumericValue(map[0][0])] = true
+
+    val dy = arrayOf(1, -1, 0, 0)
+    val dx = arrayOf(0, 0, -1, 1)
+    fun dfs(y: Int, x: Int, cnt: Int) {
+        answer = kotlin.math.max(answer, cnt)
+
+        for (i in dy.indices) {
+            val ny = y + dy[i]
+            val nx = x + dx[i]
+            if (ny in 0 until r && nx in 0 until c){
+                if (!visited[Character.getNumericValue(map[ny][nx])]){
+                    visited[Character.getNumericValue(map[ny][nx])] = true
+                    dfs(ny, nx, cnt+1)
+                    visited[Character.getNumericValue(map[ny][nx])] = false
+                }
+            }
+        }
+
+    }
+
+    dfs(0, 0, 1)
+
+    bw.write("$answer")
+
+    bw.flush()
+    bw.close()
+    br.close()
+}
