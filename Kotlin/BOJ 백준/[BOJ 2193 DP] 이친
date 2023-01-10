@@ -1,0 +1,46 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+/*
+- 아이디어:
+이 문제의 점화식은 dp[i] = dp[i-1] + dp[i-2] 이다.
+때문에 for 문을 3..n까지 돌기 때문에 초기값으로 
+dp[1] = 1
+dp[2] = 1
+설정한다.
+
+
+val dp = LongArray(n+1) -- dp의 사이즈는 n+1을 주고 채점을 했더니
+** 런타임 에러 (ArrayIndexOutOfBounds) **이 나왔다.
+
+왜일까?
+
+이유는 초기값으로 dp[1]과 dp[2]를 설정해 놨는데 n이 1일 경우 dp 사이즈는 2가 된다.
+dp = LongArray(2) 는 dp[0], dp[1]이 생성되는 것이기 때문에 dp[2] 초기 설정에서
+ArrayIndexOutOfBounds 가 발생하는 것이다.
+때문에, 
+dp = LongArray(n+2)로 해결하였다.
+dp 문제를 풀 때 주의해야겠다.
+ */
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val n = br.readLine().toInt()
+    val dp = LongArray(n+2)
+
+    dp[1] = 1
+    dp[2] = 1
+
+    for (i in 3..n){
+        dp[i] = dp[i-1] + dp[i-2]
+    }
+
+    bw.write("${dp[n]}")
+
+    bw.flush()
+    bw.close()
+    br.close()
+}
