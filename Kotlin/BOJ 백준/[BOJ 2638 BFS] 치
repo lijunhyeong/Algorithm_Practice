@@ -1,0 +1,87 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+/*
+- 아이디어:
+문제를 읽고 '치즈 내부의 빈칸' 과  '치즈 외부의 빈칸'을 어떻게 구분할까라는 고민을 했다.
+** 모눈종이의 맨 가장자리에는 치즈가 놓이지 않는 것으로 가정한다. ** 
+시작점을 (0,0)으로 놓고 BFS를 돌렸다.
+1. BFS 내부에 사본 mapTwo를 만든다. 실제 map에서 1을 만났을 때 mapTwo[y][x] + 1 을 해서 2가 되면 makeZero에 해당 좌표를 넣는다.
+2. 사본 mapTwo를 만든 이유는, 만약 실제 map에서 누적으로 더하면 첫번째 탐색에서 +1, 두번째 탐색에서 +1 
+두 번의 탐색으로 +2가 되어 치즈가 녹는 오류가 생기기 떄문이다. 
+"한번의 탐색에서 공기 2면이 닿아서 치즈가 녹아야된다."
+3. BFS를 돌면 makeZero에 있던 좌표를 실제 map[y][x] = 0 으로 넣고 다시 BFS를 탐색한다.
+이런 식으로 겉에만 탐색하도록 하는 로직을 짰다.
+4. 처음 치즈를 받을 때 치즈 개수를 저장했고(cheeseCnt) 치즈개수가 0이 될 때까지 BFS를 돌리며 BFS 탐색 횟수를(answer) 출력했다.
+ */
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val (n, m) = br.readLine().split(" ").map { it.toInt() }
+    val map = Array(n + 1) { IntArray(m + 1) }
+    var cheeseCnt = 0
+
+    for (j in 0 until n) {
+        val s = br.readLine().split(" ").map { it.toInt() }
+        for (i in 0 until m) {
+            map[j][i] = s[i]
+            if (s[i] == 1) cheeseCnt += 1
+        }
+    }
+
+    var answer = 0
+    val dy = arrayOf(-1, 1, 0, 0)
+    val dx = arrayOf(0, 0, -1, 1)
+
+    fun bfs(y: Int, x: Int) : ArrayDeque<Pair<Int,Int>> {
+        val visited = Array(n + 1) { BooleanArray(m + 1) }
+        val mapTwo = Array(n + 1) { IntArray(m + 1) }
+        val makeZero = ArrayDeque<Pair<Int,Int>>()
+        val q = ArrayDeque<Pair<Int, Int>>()
+        
+        visited[y][x] = true
+        q.add(Pair(y, x))
+
+        while (q.isNotEmpty()) {
+            val (yy, xx) = q.removeFirst()
+
+            for (i in 0 until 4) {
+                val ny = yy + dy[i]
+                val nx = xx + dx[i]
+                
+                if (ny in 0 until n && nx in 0 until m) {
+                    if (!visited[ny][nx] && map[ny][nx] == 0) {
+                        visited[ny][nx] = true
+                        q.add(Pair(ny, nx))
+                    }
+                    if (map[yy][xx] == 0 && map[ny][nx] > 0){
+                        mapTwo[ny][nx] += 1
+                        if (mapTwo[ny][nx] == 2) {
+                            cheeseCnt -= 1
+                            makeZero.add(Pair(ny,nx))
+                        }
+                    }
+                }
+            }
+
+        }
+        return makeZero
+    }
+
+    while (cheeseCnt > 0) {
+        answer += 1
+        val makeZero = bfs(0, 0)
+        for (i in makeZero){
+            map[i.first][i.second] = 0
+        }
+    }
+
+    bw.write("$answer")
+    
+    bw.flush()
+    bw.close()
+    br.close()
+}
