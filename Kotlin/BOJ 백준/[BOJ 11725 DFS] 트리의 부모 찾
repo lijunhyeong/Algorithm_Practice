@@ -1,0 +1,49 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+/*
+- 아이디어:
+* DFS 재귀를 활용하여 문제를 풀었다.
+1. map 배열에 주어진 노드를 양방향으로 저장한다.
+2. answer 배열을 노드 개수만큼 사이즈 지정한다.
+3. 트리의 루트가 1이기 때문에 루트 1부터 해당 노드의 부모 노드를 탐색한다.
+4. 1부터 자식노드를 아직 방문하지 않았다면 (초기값은 0이다), answer[자식] = 부모를 넣고
+다시 DFS를 탐색한다.
+ */
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val n = br.readLine().toInt()
+    val map = Array(n + 1) { mutableListOf<Int>() }
+
+    repeat(n-1){
+        val(a, b) = br.readLine().split(" ").map { it.toInt() }
+        map[a].add(b)
+        map[b].add(a)
+    }
+
+    val answer = IntArray(n+1)
+
+    fun dfs(idx:Int){
+        for (i in map[idx]){
+            if (answer[i] == 0){
+                answer[i] = idx
+                dfs(i)
+            }
+        }
+    }
+
+    dfs(1)
+
+    for (i in 2..n){
+        bw.write("${answer[i]}\n")
+    }
+
+    bw.flush()
+    bw.close()
+    br.close()
+}
+
