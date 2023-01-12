@@ -1,0 +1,50 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+/*
+- 아이디어:
+* DP를 활용한 문제다.
+점화식:
+        map[i+1][0] += kotlin.math.min(map[i][1], map[i][2])
+        map[i+1][1] += kotlin.math.min(map[i][0], map[i][2])
+        map[i+1][2] += kotlin.math.min(map[i][0], map[i][1])
+1. i와 i+1이 달라야 한다.
+2. 예를 들어
+2 100 100
+1 100 100
+이 있다고 가정한다.
+map[1][0] += kotlin.math.min(100, 100)  // map[1][0] = 101
+map[1][1] += kotlin.math.min(2, 100)    // map[1][1] = 102
+map[1][2] += kotlin.math.min(100, 100)  // map[1][2] = 102
+이런 식으로 최소값을 계속 누적한다.
+누적합이 끝난 후엔, map[n-1][0], map[n-1][1], map[n-1][2] 를 비교해서
+가장 작은 수를 출력하면 된다.
+ */
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val n = br.readLine().toInt()
+    val map = Array(n + 1) { IntArray(3) }
+
+    repeat(n) {idx ->
+        val (r, g, b) = br.readLine().split(" ").map { it.toInt() }
+        map[idx][0] = r
+        map[idx][1] = g
+        map[idx][2] = b
+    }
+
+
+    for (i in 0 until n-1){
+        map[i+1][0] += kotlin.math.min(map[i][1], map[i][2])
+        map[i+1][1] += kotlin.math.min(map[i][0], map[i][2])
+        map[i+1][2] += kotlin.math.min(map[i][0], map[i][1])
+    }
+
+    bw.write("${kotlin.math.min(kotlin.math.min(map[n-1][0], map[n-1][1]), map[n-1][2])}")
+
+    bw.flush()
+    bw.close()
+    br.close()
+}
