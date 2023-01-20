@@ -1,0 +1,43 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+/*
+- 아이디어:
+점화식 - dp[j][i] = dp[j-1][i-1] + dp[j-1][i]
+
+ */
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val (r, c, w) = br.readLine().split(" ").map { it.toInt() }
+
+    val dp = Array(r + +w + 3) { IntArray(r + +w + 3) }
+    dp[1][1] = 1
+
+    for (j in 2..r + w) {
+        for (i in 1..j) {
+            dp[j][i] = dp[j - 1][i - 1] + dp[j - 1][i]
+        }
+    }
+
+    // 꼭지점이 dp[r][c] 이고
+    // 한변이 포함하는 수의 개수가 w 이다.
+    // 처음에는 1하나 두번쨰는 2개 .. +1개씩 늘리면서 범위의 수를 더해야 한다.
+    var answer = 0
+    var cnt = 1
+    for (j in r until r + w) {
+        for (i in 0 until cnt) {
+            answer += dp[j][i + c]
+        }
+        cnt += 1
+    }
+
+    bw.write("$answer")
+
+    bw.flush()
+    bw.close()
+    br.close()
+}
