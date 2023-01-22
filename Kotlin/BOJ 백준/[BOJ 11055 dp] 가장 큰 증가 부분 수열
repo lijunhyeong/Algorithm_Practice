@@ -1,0 +1,41 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+/*
+- 아이디어:
+점화식:
+if (arr[j] < arr[i]) dp[i] = kotlin.math.max(dp[j] + arr[i], dp[i])
+이중 포문 j와 i를 비교하며 j보다 i수가 클 경우
+기존 dp의 j 값과 i번째 수를 더한 값, dp의 i번째 수를 비교하여 더 큰 값으로 i번째 수를 갱신한다.
+(직접 쓰면서, j번째 수를 갱신하면 쉽게 이해할 수 있음)
+
+n이 1일 수도 있기 때문에, answer은 arr[0]으로 기본 값을 초기화 한다.
+dp를 처음 받은 배열로 초기화한다.
+그 후 이중 for문으로 arr[j]를 arr[i]와 비교 하며 만약 arr[i]가 arr[j]보다 클 경우,
+점화식을 적용시켜 dp[i]를 갱신한 후, answer보다 dp[i]가 클 경우 answer도 갱신한다.
+ */
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val n = br.readLine().toInt()
+    val arr = br.readLine().split(" ").map { it.toInt() }
+    val dp = arr.toIntArray()
+    var answer = arr[0]
+
+    for (j in 0 until n){
+        for (i in j+1 until n){
+            if (arr[j] < arr[i]) dp[i] = kotlin.math.max(dp[j] + arr[i], dp[i])
+            answer = kotlin.math.max(answer, dp[i])
+        }
+    }
+
+    bw.write("$answer")
+
+    bw.flush()
+    bw.close()
+    br.close()
+}
+
