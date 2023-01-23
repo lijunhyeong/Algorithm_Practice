@@ -1,0 +1,43 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+/*
+- 아이디어:
+점화식:
+dp[j] = kotlin.math.max(dp[j], dp[i] + 1)
+dp[j] 현재 상자, dp[i] 는 기준이 되는 상자
+
+증가하는 수 문제랑 비슷하다.
+현재 상자가 기준 상자보다 클 때,
+'기준 상자에 담긴 상자 수'와 '현재 상자에 담긴 수'를 비교해서
+기준 상자에 담긴 상자 수 + 1이 현재 상자에 담긴 수보다 클 경우,
+더 많은 상자를 현재 상자가 담을 수 있는 것이기 때문에
+현재 상자가 담을 수 있는 수를 기준 상자에 담긴 상자 수 + 1로 갱신해준다.
+그리고 가장 많이 담은 상자의 수를 answer에 계속 갱신해 준 후 출력한다.
+ */
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val n = br.readLine().toInt()
+    val arr = br.readLine().split(" ").map { it.toInt() }
+    var answer = 1
+    val dp = IntArray(n + 1) { 1 }
+
+    for (i in 0 until n) {
+        for (j in i + 1 until n) {
+            if (arr[i] < arr[j]){
+                dp[j] = kotlin.math.max(dp[j], dp[i] + 1)
+                answer = kotlin.math.max(answer, dp[j])
+            }
+        }
+    }
+
+    bw.write("$answer")
+
+    bw.flush()
+    bw.close()
+    br.close()
+}
