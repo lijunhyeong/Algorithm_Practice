@@ -1,0 +1,49 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val (s, p) = br.readLine().split(" ").map { it.toInt() }
+    val dna = br.readLine()
+    val (a, c, g, t) = br.readLine().split(" ").map { it.toInt() }
+
+    var st = 0
+    var ed = p-1
+    var answer = 0
+
+    val hashmap = hashMapOf(
+        'A' to 0,
+        'C' to 0,
+        'G' to 0,
+        'T' to 0,
+    )
+    for (i in 0 until s) {
+        if (dna[i] == 'A') hashmap['A'] = hashmap['A']!! + 1
+        if (dna[i] == 'C') hashmap['C'] = hashmap['C']!! + 1
+        if (dna[i] == 'G') hashmap['G'] = hashmap['G']!! + 1
+        if (dna[i] == 'T') hashmap['T'] = hashmap['T']!! + 1
+
+        // 고정 사이즈보다 커졌을 경우
+        if (i-ed == 1){
+            // 첫번째 값(st)을 지워준다.
+            hashmap[dna[st]] = hashmap[dna[st]]!! - 1
+            // 고정 사이즈 한칸 앞으로도 이동
+            ed+=1
+            st+=1
+        }
+        println(hashmap)
+        // i의 길이가 p-1보다 같거나 커야 되기 때문에 꼭 i >= p-1 조건을 걸어줘야 한다.
+        if (i >= p-1 && hashmap['A']!! >= a && hashmap['C']!! >= c && hashmap['G']!! >= g && hashmap['T']!! >= t) answer += 1
+
+    }
+
+    bw.write("$answer")
+
+    bw.flush()
+    bw.close()
+    br.close()
+}
