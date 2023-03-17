@@ -1,0 +1,43 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+/*
+- 아이디어:
+라이언 인형이 K개 이상 있는 가장 작은 연속된 인형들의 집합 크기를 구한다.
+즉, 라이언 인형이 K개일 때, 인형들의 연속된 집합을 구하면 된다.
+라이언 인형을 만났을 때, 라이언 인형의 인덱스를 count 덱에 넣었다.
+count.size() == k 가 만족하면 
+현재 i(마지막 인덱스 - st(첫번째 라이언 인형의 인덱스) + 1(0부터 시작하기 때문에 + 1을 한다.) 
+연속된 인형들의 집합 크기를 구한다.
+그다음 count의 첫번째 인덱스를 지우고
+두번째 인덱스를 st로 지정해서 첫번째 라이언 인형의 인덱스로 범위를 좁혀준다.
+슬라이딩 윈도우 알고리즘을 생각하면 된다.
+ */
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val (n, k) = br.readLine().split(" ").map { it.toInt() }
+    val map = br.readLine().split(" ").map { it.toInt() }
+
+    var st = 0
+    var answer = Int.MAX_VALUE
+    val count = ArrayDeque<Int>()
+    for (i in 0 until map.size) {
+        if (map[i] == 1) count.add(i)
+        if (count.size >= k) {
+            answer = kotlin.math.min(answer, i - st +1)
+            count.removeFirst()
+            st = count[0]
+        }
+    }
+
+    if (answer == Int.MAX_VALUE) bw.write("-1")
+    else bw.write("$answer")
+
+    bw.flush()
+    bw.close()
+    br.close()
+}
