@@ -1,0 +1,59 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+/*
+- 아이디어:
+사전순으로 가장 빠른 것이 되려면 최대한 0이 앞쪽으로 와야되고, 1은 최대한 뒤쪽에 가야된다.
+1이 나온 총 횟수의 반만큼 앞에서 지우고, 0은 뒤에서부터 지우면 된다.
+예를 듯어,
+101011 이 주어지면,
+1은 4개
+0은 2개
+즉, 1을 2개 지우고, 0은 1개 지우면 된다.
+답은 011이 된다.
+ */
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val s = br.readLine().toCharArray()
+    var zero = 0
+    var one = 0
+    for (i in s) {
+        if (i == '1') one += 1
+        if (i == '0') zero += 1
+    }
+
+    // 1과 0 개수를 반으로 나눈다.
+    zero /= 2
+    one /= 2
+    // 앞에서부터 1을 (one/2)개 9로 바꿔준다.(9는 지우는 숫자를 의미)
+    var cnt = 0
+    for (i in s.indices) {
+        if (s[i] == '1') {
+            cnt += 1
+            s[i] = '9'
+        }
+        if (one == cnt) break
+    }
+    // 뒤에서부터 0을 (zero/2)개 9로 바꿔준다.
+    var cnt1 = 0
+    for (i in s.size-1 downTo 0) {
+        if (s[i] == '0') {
+            cnt1 += 1
+            s[i] = '9'
+        }
+        if (zero == cnt1) break
+    }
+    // 9를 빼고 0과 1을 출력한다.
+    for (i in s.indices) {
+        if (s[i] == '0') bw.write("0")
+        if (s[i] == '1') bw.write("1")
+    }
+
+    bw.flush()
+    bw.close()
+    br.close()
+}
