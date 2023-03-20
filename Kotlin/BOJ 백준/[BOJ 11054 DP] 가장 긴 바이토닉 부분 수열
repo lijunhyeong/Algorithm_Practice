@@ -1,0 +1,46 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+/*
+- 아이디어:
+
+ */
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val n = br.readLine().toInt()
+    val map = br.readLine().split(" ").map { it.toInt() }
+    val right = IntArray(n + 1) { 1 }
+    val left = IntArray(n + 1) { 1 }
+
+    // 오른쪽에서 왼쪽 방향으로 각 인덱스의 증가 수열 개수
+    for (i in 0 until n) {
+        for (j in i + 1 until n) {
+            if (map[i] < map[j])
+                right[j] = kotlin.math.max(right[j], right[i] + 1)
+        }
+    }
+
+    // 왼쪽에서 오른쪽 방향으로 각 인덱스의 증가 수열 개수
+    for (i in n - 1 downTo 0) {
+        for (j in i - 1 downTo 0) {
+            if (map[i] < map[j])
+                left[j] = kotlin.math.max(left[j], left[i] + 1)
+        }
+    }
+
+    var answer = 0
+    for (i in 0 until n){
+        answer = kotlin.math.max(answer, right[i]+left[i]-1)
+    }
+
+    bw.write("$answer")
+
+
+    bw.flush()
+    bw.close()
+    br.close()
+}
