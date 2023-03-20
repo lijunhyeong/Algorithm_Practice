@@ -5,7 +5,7 @@ import java.io.OutputStreamWriter
 
 /*
 - 아이디어:
-
+https://velog.io/@lijunhyeong/%EB%B0%94%EC%9D%B4%ED%86%A0%EB%8B%89-%EC%88%98%EC%97%B4%EC%9D%B4%EB%9E%80feat.-%EB%B0%B1%EC%A4%80-11054%EB%B2%88
  */
 fun main() {
     val br = BufferedReader(InputStreamReader(System.`in`))
