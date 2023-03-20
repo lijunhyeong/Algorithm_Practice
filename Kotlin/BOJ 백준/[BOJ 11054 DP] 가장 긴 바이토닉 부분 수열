@@ -13,8 +13,8 @@ fun main() {
 
     val n = br.readLine().toInt()
     val map = br.readLine().split(" ").map { it.toInt() }
-    val right = IntArray(n + 1) { 1 }
-    val left = IntArray(n + 1) { 1 }
+    val right = IntArray(n ) { 1 }
+    val left = IntArray(n ) { 1 }
 
     // 오른쪽에서 왼쪽 방향으로 각 인덱스의 증가 수열 개수
     for (i in 0 until n) {
