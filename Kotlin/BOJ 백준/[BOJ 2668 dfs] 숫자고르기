@@ -1,0 +1,53 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+/*
+- 아이디어:
+자기 번호로 시작해서 자기 번호로 다시 오는 완전한 사이클을 가진 번호를 뽑는다.
+오름차순으로 정렬하고 뽑힌 번호의 개수를 출력한다.
+1. 인덱스 1부터 n까지 dfs를 돌린다.
+2. 인덱스 i에서 dfs로 탐색하여 방문했던 숫자에 다시 방문했을 때, 다시 i로 돌아왔는지 검사한다.
+ */
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val n = br.readLine().toInt()
+    val map = IntArray(101)
+    repeat(n) {
+        map[it + 1] = br.readLine().toInt()
+    }
+
+    val answer = mutableListOf<List<Int>>()
+    val collection = mutableListOf<Int>()
+    fun dfs(num: Int, visited: BooleanArray) {
+        if (visited[num]) return
+        visited[num] = true
+        collection.add(map[num])
+
+        return dfs(map[num], visited)
+    }
+
+    for (i in 1..n) {
+        val visited = BooleanArray(101)
+        dfs(i, visited)
+        if (i == collection[collection.size - 1]) {
+            answer.add(collection.sorted())
+        }
+        collection.clear()
+    }
+
+    val res = mutableListOf<Int>()
+    for (i in answer.toSet()){
+        for (j in i){
+            res.add(j)
+        }
+    }
+
+    bw.write("${res.size}\n${res.sorted().joinToString("\n")}")
+    bw.flush()
+    bw.close()
+    br.close()
+}
