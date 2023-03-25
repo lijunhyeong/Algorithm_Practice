@@ -1,0 +1,39 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+/*
+- 아이디어:
+https://velog.io/@lijunhyeong/%EB%B0%B1%EC%A4%80-2565-%EC%A0%84%EA%B9%83%EC%A4%84feat.-LIS
+ */
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    var max = 0
+    val map = IntArray(501)
+    val num = br.readLine().toInt()
+    for (i in 0 until num) {
+        val (n, m) = br.readLine().split(" ").map { it.toInt() }
+        map[n] = m
+        max = kotlin.math.max(max, n)
+        max = kotlin.math.max(max, m)
+    }
+
+    val answer = IntArray(501)
+    var res = 0
+    for (i in 0 .. max){
+        for (j in i+1 .. max){
+            if (map[i] < map[j])
+                answer[j] = kotlin.math.max(answer[i]+1, answer[j])
+        }
+        res = kotlin.math.max(res, answer[i])
+    }
+
+    bw.write("${num-res}")
+
+    bw.flush()
+    bw.close()
+    br.close()
+}
