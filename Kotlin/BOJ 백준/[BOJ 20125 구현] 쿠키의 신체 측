@@ -1,0 +1,84 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+/*
+- 아이디어:
+주어진 값은 정사각형 n*n형태이다.
+1. 심장을 찾는다.
+2. 심장 기준으로, 양쪽 팔, 머리, 허리, 다리를 출력한다.
+3. 굽혀진 곳이 없기 때문에 부위의 행 또는 열만 카운트하면 된다.
+ */
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val n = br.readLine().toInt()
+
+    val map = Array(n + 1) { Array(n + 1) { ' ' } }
+    for (i in 0 until n) {
+        val s = br.readLine()
+        for (j in 0 until n) {
+            map[i][j] = s[j]
+        }
+    }
+
+    var (y, x) = Pair(0, 0)
+    for (i in 1 until n - 1) {
+        for (j in 1 until n - 1) {
+            if (map[i][j] == '*' && map[i][j - 1] == '*' && map[i][j + 1] == '*' &&
+                map[i - 1][j] == '*' && map[i + 1][j] == '*'
+            ) {
+                y = i
+                x = j
+            }
+        }
+    }
+
+    // 심장 위치 출력
+    bw.write("${y+1} ${x+1}\n")
+
+    // 왼쪽 팔
+    var leftArm = 0
+    for (i in x - 1 downTo 0) {
+        if (map[y][i] == '*') leftArm += 1
+        else break
+    }
+
+    // 오른 팔
+    var rightArm = 0
+    for (i in x + 1 until n) {
+        if (map[y][i] == '*') rightArm += 1
+        else break
+    }
+
+    // 허리
+    var waist = 0
+    for (i in y + 1 until n) {
+        if (map[i][x] == '*') {
+            waist += 1
+            y = i +1
+        } else break
+    }
+
+    // 왼쪽 다리
+    var leftLeg = 0
+    for (i in y  until n) {
+        if (map[i][x - 1] == '*') leftLeg += 1
+        else break
+    }
+
+    // 오른쪽 다리
+    var rightLeg = 0
+    for (i in y until n) {
+        if (map[i][x + 1] == '*') rightLeg += 1
+        else break
+    }
+
+    bw.write("$leftArm $rightArm $waist $leftLeg $rightLeg")
+
+    bw.flush()
+    bw.close()
+    br.close()
+}
