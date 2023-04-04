@@ -1,0 +1,35 @@
+from collections import deque
+import sys
+input = sys.stdin.readline
+
+n, m = map(int, input().split())
+arr = list(map(int, input().split()))
+buliding = []
+
+for i in range(0, n):
+    buliding.append([False]*m)
+
+for i in range(0, n):
+    for j in range(0, m):
+        if i < arr[j]:
+            buliding[i][j] = True
+
+answer = 0
+for i in range(0, n):
+    cnt = 0
+    q = deque()
+
+    for j in range(0, m):
+        if buliding[i][j] == False:
+            cnt+=1
+
+        if buliding[i][j] == True:
+            q.append(True)
+
+            if len(q) == 2:
+                answer += cnt
+                q.pop()
+                
+            cnt = 0
+
+print(answer)
