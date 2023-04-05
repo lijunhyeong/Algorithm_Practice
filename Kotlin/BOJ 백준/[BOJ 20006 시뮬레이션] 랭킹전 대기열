@@ -1,0 +1,60 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+/*
+- 아이디어:
+1. 처음 주어진 값을 첫번째 방에 넣는다.
+2. 입력 값과 첫 번째 방의 첫번째 플레이어의 레벨을 비교한다.
+3. 조건에 맞지 않을 경우 다음 방의 첫번째 플레어와 비교한다.
+4. 1,2번 조건에 맞지 않거나 인원이 다 찼을 경우 새로운 방을 개설한다.
+6. 방에 있는 플레이어들의 정보는 닉네임이 사전순으로 앞서는 플레이어부터 출력한다.
+ */
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val (playerLimit, roomLimit) = br.readLine().split(" ").map { it.toInt() }
+    val map = Array(301){ ArrayList<Pair<Int,String>>() }
+
+    val (l, p) = br.readLine().split(" ")
+    var currentRoomNumber = 0
+    map[0].add(Pair(l.toInt(), p))
+
+    repeat(playerLimit-1){
+        val (level, player) = br.readLine().split(" ")
+        val playerLevel = level.toInt()
+        var isVisited = true
+
+        for (i in 0..currentRoomNumber){
+            if (playerLevel in map[i][0].first-10..map[i][0].first+10
+                && map[i].size < roomLimit){
+                    map[i].add(Pair(playerLevel, player))
+                    isVisited = false
+                break
+            }
+        }
+
+        if (isVisited){
+            currentRoomNumber+=1
+            map[currentRoomNumber].add(Pair(playerLevel, player))
+        }
+
+    }
+
+    for (i in 0..300){
+        if (map[i].isEmpty()) break
+
+        if (map[i].size == roomLimit) bw.write("Started!\n")
+        else bw.write("Waiting!\n")
+
+        for (j in map[i].sortedWith(compareBy { it.second })){
+            bw.write("${j.first} ${j.second}\n")
+        }
+
+    }
+
+    bw.flush()
+    bw.close()
+    br.close()
+}
