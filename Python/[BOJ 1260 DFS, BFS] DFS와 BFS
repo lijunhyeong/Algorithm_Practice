@@ -1,0 +1,48 @@
+# 아이디어
+# 단순 DFS, BFS 구현
+
+from collections import defaultdict, deque
+import sys
+input = sys.stdin.readline
+
+n, m, v = map(int, input().split())
+
+bfsVisited = [[True]*10001]*1001
+dfsVisited = [[True]*10001]*1001
+graph = defaultdict(list)
+
+for i in range(0, m):
+    a,b = map(int, input().split())
+    graph[b].append(a)
+    graph[a].append(b)
+
+for i in range(1, m+1):
+    graph[i].sort()
+
+def dfs(st):
+    for i in graph[st]:
+        if(dfsVisited[i]):
+            dfsVisited[i] = False
+            print(i, end=" ")
+            dfs(i)
+
+dfsVisited[v] = False
+print(v, end=" ")
+dfs(v)
+print()
+
+def bfs(st):
+    q = deque()
+    q.append(st)
+    bfsVisited[st] = False
+    print(st, end=" ")
+    
+    while(len(q) > 0):
+        answer = q.popleft()
+        for i in graph[answer]:   
+            if(bfsVisited[i]):
+                bfsVisited[i] = False
+                print(i, end=" ")
+                q.append(i)
+
+bfs(v)
