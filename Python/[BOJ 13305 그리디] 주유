@@ -1,0 +1,25 @@
+# 아이디어
+# 첫 비용은 도시의 0번 인덱스 * 리터당 가격 0번 인덱스를 한다.
+# 무조건 다음 주요소 까지는 가야되기 때문이다.
+# 현재 적용되고 있는 리터당 가격을 nowCost = cost[0]로 정의한다.
+# nowCost보다 i번째 리터당 가격이 더 낮으면 nowCost=i로 갱신한다.
+# i 도시의 리터가 더 쌀 경우 i+1에서 i+2거리 만큼을 곳하여 비용에 더 한다.
+
+import sys
+input = sys.stdin.readline
+
+cityNumber = int(input())
+dist = list(map(int, input().split()))
+cityCost = list(map(int, input().split()))
+
+answer = cityCost[0]*dist[0]
+nowCost = cityCost[0]
+
+for i in range(1, cityNumber-1):
+    if nowCost > cityCost[i]:
+        nowCost = cityCost[i]
+
+    answer += nowCost*dist[i]
+    
+
+print(answer)
