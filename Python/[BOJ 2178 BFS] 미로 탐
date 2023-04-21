@@ -1,0 +1,57 @@
+# 아이디어
+# 단순 DFS, BFS 구현
+
+from collections import deque
+import sys
+input = sys.stdin.readline
+
+n, m = map(int, input().split())
+graph = [[0]*m for _ in range(n)]
+visited = [[True]*m for _ in range(n)]
+answer = [[1]*m for _ in range(n)]
+
+for i in range(n):
+    s = input()
+    for j in range(m):
+        graph[i][j] = s[j]
+
+dy = [1,-1,0,0]
+dx = [0,0,-1,1]
+def bfs(y, x):
+    q = deque()
+    q.append(y)
+    q.append(x)
+    visited[y][x] = False
+
+    while len(q) > 0:
+        yy = q.popleft()
+        xx = q.popleft()
+
+        for i in range(4):
+            ny = yy + dy[i]
+            nx = xx + dx[i]
+            if ny >= 0 and ny < n and nx >= 0 and nx < m:
+                
+
+                if visited[ny][nx] and graph[ny][nx] == '1':
+                    visited[ny][nx] = False
+                    answer[ny][nx] = answer[yy][xx] + 1
+                    q.append(ny)
+                    q.append(nx)
+
+                if visited[ny][nx] == False and graph[ny][nx] == '1':
+                    if answer[yy][xx] + 1 < answer[ny][nx]:
+                        answer[ny][nx] = answer[yy][xx] + 1
+                        q.append(ny)
+                        q.append(nx)
+
+                
+bfs(0,0)
+
+# for i in range(n):
+#     for j in range(m):
+#         print(answer[i][j], end=" ")
+#     print()
+
+print(answer[n-1][m-1])
+
