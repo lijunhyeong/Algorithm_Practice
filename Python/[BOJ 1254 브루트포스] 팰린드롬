@@ -1,0 +1,33 @@
+# 아이디어
+# 팰린드롬 알고리즘을 구현한다.
+# 배열 하나를 만들고 팰린드롬 조건이 만족하지 않는다면,
+# 입력 받은 문자열의 0번째 인덱스부터 새배열에 추가한다.
+# 팰린드롬을 확인할 땐, 입력받은 문자열과 새배열을 합친다.
+
+from collections import deque
+import sys
+input = sys.stdin.readline
+
+
+s = input().strip()
+idx = 0
+q = deque()
+
+def search(st, ed, text):
+    global idx
+    
+    if st >= ed:
+        return True
+    
+    if text[st] == text[ed]:
+        return search(st+1, ed-1, text)
+    else:
+        q.appendleft(s[idx])
+        idx= idx + 1
+        return False
+while True:
+    ss = s + ''.join(q)
+    if search(0, len(ss)-1, ss):
+        print(len(ss), ss)
+        break
+    
