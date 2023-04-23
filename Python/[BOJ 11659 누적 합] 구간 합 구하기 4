@@ -1,0 +1,21 @@
+# 아이디어
+# index: 1 2 3 4 5
+# input: 5 4 3 2 1
+# 누적합: 5 9 12 14 15
+# 만약 2,4가 주어진다면 4번 인덱스의 누적합(14) - 1번 인덱스의 누적합(5)
+# 하면 2~4구간의 누적합을 구할 수 있다.
+# 구간의 전 번호의 구간 합을 마지막 구간합과 빼면 된다.
+
+import sys
+input = sys.stdin.readline
+
+n,m = map(int, input().split())
+inputArr = list(map(int, input().split()))
+graph = [0]*(n+1)
+
+for i in range(1, n+1):
+    graph[i] = graph[i-1] + inputArr[i-1]
+
+for i in range(m):
+    st, ed = map(int,input().split())
+    print(graph[ed]-graph[st-1])
