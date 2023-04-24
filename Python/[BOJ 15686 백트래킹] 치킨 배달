@@ -1,0 +1,52 @@
+# 아이디어
+# 집 위치를 저장할 배열을 생성한다.
+# 치킨 집 위치를 저장할 배열을 생성한다.
+# 백트래킹을 돌며 치킨집이 m개가 됐을 때 최소거리를 구해서 그 중 최솟값을 구한다.
+# 즉, 백트래킹을 통해 치킨집 m개가 되는 모든 조합을 구하면서 최소거리를 구한 것이다.
+
+from collections import deque
+import sys
+input = sys.stdin.readline
+
+n,m = map(int, input().split())
+
+homePosition = []
+storePosition = []
+
+for i in range(1, n+1):
+    s = list(map(int, input().split()))
+    for j in range(1, n+1):
+        if s[j-1] == 1:
+            homePosition.append([i,j])
+        if s[j-1] == 2:
+            storePosition.append([i,j])
+
+q = deque()
+visited = [False]*(len(storePosition)+1)
+answer = sys.maxsize
+
+def backTracking(depth):
+    global answer
+    if(len(q)==m):
+        distSum = 0
+        for home in homePosition:
+            homeDist = sys.maxsize
+            for dist in q:
+                homeDist = min(homeDist, abs(home[0]-dist[0]) + abs(home[1]-dist[1]))
+            distSum +=homeDist
+        answer = min(answer, distSum)
+
+        return
+
+    for i in range(depth, len(storePosition)):
+        if visited[i] == False:
+            visited[i] = True
+            q.append(storePosition[i])
+            backTracking(i)
+            visited[i] = False
+            q.pop()
+
+backTracking(0)
+
+        
+print(answer)
