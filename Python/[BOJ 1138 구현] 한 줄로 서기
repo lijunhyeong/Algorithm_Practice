@@ -1,0 +1,30 @@
+# 아이디어
+# 1번 인덱스부터 자신의 왼쪽에 몇명이 있는지 나타낸다
+# 1 2 3 4 -> 인덱스 번호
+# 2 1 1 0
+# 위 예에서는 1번 인덱스 앞에는 1보다 큰 수 2개가 있고
+# 2번 인덱스 앞에는 2보다 큰 수가 1개 있다는 것이다.
+# 이런 식으로 인덱스 앞에 큰 수를 보고 자리를 유추해야 한다.
+# answer 배열을 n으로 메모이제이션을 한 후, 
+# 해당 인덱스의 개수와 현재 자신보다 큰 숫자 개수가 같고 
+# 현재 answer이 n이면 값을 갱신한다.
+
+import sys
+input = sys.stdin.readline
+
+n = int(input())
+arr = list(map(int, input().split()))
+
+answer = [n] * n
+
+for i in range(1, n+1):
+    cnt = 0
+    for j in range(0, n):
+        if arr[i-1] == cnt and answer[j]==n:
+            answer[j] = i
+            break
+        
+        if i <= answer[j]:
+            cnt+=1
+
+print(' '.join(map(str, answer)))
