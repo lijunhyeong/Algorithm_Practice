@@ -1,0 +1,24 @@
+# 아이디어
+# 문제에서 하라는대로 하면 됨......
+
+from collections import deque
+import sys
+input = sys.stdin.readline
+
+n, k = map(int, input().split())
+arr = deque()
+for i in range(1, n+1):
+    arr.append(i)
+
+answer = []
+while len(arr) > 0:
+    cnt = 0
+    while True:
+        cnt+=1
+        if cnt == k:
+            answer.append(arr.popleft())
+            break
+        else:
+            arr.append(arr.popleft())
+
+print("<"+', '.join(map(str,answer))+">")
