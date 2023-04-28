@@ -1,0 +1,20 @@
+# 아이디어
+# 100*100 도화지를 만든다.
+# 입력 받은 x, y ~ x+10, y+10 넓이를 카운트 한다. 
+# 처음 만났을 때만 카운트 해야되기 때문에 해당 인덱스가 False일 때만 카운트한다.
+
+import sys
+input = sys.stdin.readline
+
+graph = [[False]*101 for _ in range(101)]
+answer = 0
+for i in range(0, int(input())):
+    x, y = map(int, input().split())
+
+    for yy in range(y,y+10):
+        for xx in range(x, x+10):
+            if graph[yy][xx] == False:
+                answer+=1
+                graph[yy][xx] = True
+
+print(answer)
