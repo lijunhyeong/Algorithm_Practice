@@ -1,0 +1,42 @@
+# 아이디어
+# 문자열 양 옆의 "[" "]"을 지우고 ","를 기준으로 큐리스트를 만든다.
+# 입력받은 리스트가 없는 D가 주어지면 Error를 출력한다 16-17 Line
+# D가 나왔을 때 isDriection을 통해 True이면 앞에서 빼고 False이면 뒤에서 뺀다.
+# 만약 리스트 크기가 0인데 D가 나오면 error를 출력한다.
+# 입력받은 R,D가 끝나고 isCheck가 False이면 reverse하여 출력한다.
+
+from collections import deque
+import sys
+input = sys.stdin.readline
+
+for i in range(0, int(input())):
+    s = input()
+    n = int(input())
+    
+    isDirection = True
+    isCheck = True
+    graph = deque(input().strip("]""\n""[").split(","))
+    if n == 0 and "D" in s:
+        isCheck = False
+
+    for i in s:
+        if i == "R":
+            if isDirection == True:
+                isDirection=False
+            else:
+                isDirection=True
+        if i == "D":
+            if len(graph) == 0:
+                isCheck = False
+                break
+            if isDirection == True:
+                graph.popleft()
+            else:
+                graph.pop()
+    
+    if isCheck == False:
+        print("error")
+    else:
+        if isDirection == False:
+            graph.reverse()
+        print("["+",".join(graph)+"]")
