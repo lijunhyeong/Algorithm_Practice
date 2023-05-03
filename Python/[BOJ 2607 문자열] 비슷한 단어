@@ -1,0 +1,45 @@
+# 아이디어
+# 첫 입력 값의 각 알파벳 개수를 딕셔너리로 카운트 한다.
+# 기준값의 개수가 입력값의 개수보다 크면 기본 cnt에 차이 값으로 초기화 해준다.
+# 다음 입력 받은 값이 첫 입력값에 들어 있으면 새로운 딕셔너리로 카운트한다.
+# 만약, 기준 딕셔너리보다 값이 크면 cnt+=1 한다.
+# -> 비슷한 단어가 되지 못한다.
+# 최종적으로 cnt가 1보다 같거나 작으면 answer +=1 한다.
+
+from collections import defaultdict
+import sys
+input = sys.stdin.readline
+
+n = int(input())
+s = input()
+graph = defaultdict(int)
+for j in s:
+    graph[j] +=1
+
+answer = 0
+
+for i in range(1, n):
+    ss = input()
+        
+    cnt = 0
+    if len(ss) <= len(s):
+        cnt = abs(len(ss)-len(s))
+    
+    graphCnt = defaultdict(int)
+
+    for j in ss:
+        if j in s:
+            graphCnt[j]+=1
+            if graphCnt[j] > graph[j]:
+                cnt+=1
+        else:
+            cnt+=1
+            
+        if cnt >= 2:
+            break
+        
+    if cnt <= 1:
+        answer+=1
+        
+print(answer)
+        
