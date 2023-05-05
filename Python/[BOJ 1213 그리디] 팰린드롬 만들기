@@ -1,0 +1,64 @@
+# 아이디어
+# 1. 딕셔너리를 통해 각 알파벳 개수를 카운트 한다.
+# 2. 홀수와 짝수 리스트를 만들어 알파벳 개수에 따라 넣는다.
+# 3. 홀수가 두개 이상이면 펠린드롬이 될 수 없다.
+# 4. 홀수가 하나 있는데, 주어진 값의 개수가 짝수이면 팰린드롬이 될 수 없다.
+# 5. 나머지 경우는 팰린드롬이 될 수 있다.
+# * 사전순으로 제일 빠른 팰린드롬 구하는 법.
+# 6. 입력값의 크기만큼 메모이제이션한 리스트를 만든다.
+# 7. 홀수값 하나를 가운데 넣고 딕셔너리-=1을한다.
+# 8. 홀수, 짝수 리스트를 합치고 오름차순 정렬한다.
+# 9. st=0, ed = len(n)-1 일을 하고 
+# 10. 딕셔너리//2를 하여 for문을 돌며 st와 ed자리에 각 알파벳을 넣는다.
+
+import sys
+input = sys.stdin.readline
+from collections import defaultdict
+
+n = list(input().strip())
+
+count = defaultdict(int)
+# 팰린드롬 체크
+for i in n:
+    count[i]+=1
+
+odd = []
+even = []
+nSet = set(n)
+for i in nSet:
+    if count[i] %2 == 1:
+        odd.append(i)
+    else:
+        even.append(i)
+
+if len(odd) >=2:
+    print("I'm Sorry Hansoo")
+elif len(odd) == 1 and len(n)%2==0:
+    print("I'm Sorry Hansoo")
+else:
+    answer = [0]*len(n)
+    answerSet = []
+    
+    if len(odd) == 1:
+        count[odd[0]]-=1
+        answer[len(n)//2] = odd[0]
+        if count[odd[0]] !=0:
+            answerSet.append(odd[0])
+
+    for i in even:
+        answerSet.append(i)
+
+    answerSet.sort()
+
+    st = 0
+    ed = len(n)-1
+
+    for i in answerSet:
+        repeat = count[i]//2
+        for j in range(0, repeat):
+            answer[st]=i
+            answer[ed]=i
+            st+=1
+            ed-=1
+
+    print(''.join(answer))
