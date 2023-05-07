@@ -1,0 +1,82 @@
+# 아이디어
+# 빈칸 좌표를 리스트에 넣고 빈칸 개수를 저장한다.
+# 바이러스 좌표를 리스트에 넣는다.
+# 빈칸 좌표의 모든 조합을 백트래킹으로 구한다.
+    # - 바이러스를 퍼드리고 바이러스 수 만큼 빈칸개 수를 뺀다.
+    # - 위의 최대값을 답으로 출력한다.
+
+import sys
+input = sys.stdin.readline
+from collections import deque
+
+n,m = map(int, input().split())
+graph = [[0]*m for _ in range(n)]
+
+answer = 0
+safeAreaCount = -3
+safeArea = []
+virusArea = []
+for i in range(n):
+    s = list(map(int, input().split()))
+    for j in range(m):
+        graph[i][j] = s[j]
+        if s[j] == 0:
+            safeAreaCount +=1
+            safeArea.append([i,j])
+        if s[j] == 2:
+            virusArea.append([i,j])
+            
+
+q = deque()
+
+dx = [1,-1,0,0]
+dy = [0,0,1,-1]
+def safeAreaSearch(safe):
+    visited = [[False]*m for _ in range(n)]
+    safeCount = safe
+    # virusCnt = 0
+    virusSearch = deque()
+    for i in range(len(virusArea)):
+        y, x = virusArea[i][0], virusArea[i][1]
+        visited[y][x] = True
+        virusSearch.append([y,x])
+        
+    while len(virusSearch) > 0:
+        y,x = virusSearch.popleft()
+        
+        for i in range(4):
+            ny = y+dy[i]
+            nx = x+dx[i]
+            if ny <n and ny>=0 and nx <m and nx >=0:
+                if graph[ny][nx] == 0 and visited[ny][nx] == False:
+                    visited[ny][nx] = True
+                    safeCount-=1
+                    virusSearch.append([ny,nx])
+    
+    return safeCount
+
+visited = [False]*len(safeArea)
+def backTracking(depth):
+    global answer
+    if len(q) == 3:
+        graph[q[0][0]][q[0][1]] = 1
+        graph[q[1][0]][q[1][1]] = 1
+        graph[q[2][0]][q[2][1]] = 1
+        ## 바이러스 퍼트리기
+        answer = max(answer, safeAreaSearch(safeAreaCount))
+        graph[q[0][0]][q[0][1]] = 0
+        graph[q[1][0]][q[1][1]] = 0
+        graph[q[2][0]][q[2][1]] = 0
+        return
+        
+    for i in range(depth, len(safeArea)):
+        if visited[i] == False:
+            visited[i] = True
+            q.append(safeArea[i])
+            backTracking(i+1)
+            visited[i] = False
+            q.pop()
+            
+backTracking(0)
+
+print(answer)
