@@ -1,0 +1,32 @@
+# 아이디어
+# graph[i][j] 기준으로 n과 m 범위 안에서
+# 정사각형을 그려 나간다.
+# 정사각형이 됐을 땐, answer의 값과 비교하여 갱신한다.
+
+import sys
+input = sys.stdin.readline
+
+n, m = map(int, input().split())
+graph = [[0]*m for _ in range(n)]
+
+for i in range(n):
+    s = list(input())
+    for j in range(m):
+        graph[i][j] = s[j]
+
+answer = 0
+for i in range(n):
+    for j in range(m):
+
+        cnt = 0
+        while True:
+            row = i+cnt
+            column = j+cnt
+            if row < n and column < m:
+                if graph[i][j] == graph[i][column] and graph[i][j] == graph[row][j] and graph[i][j] == graph[row][column]:
+                    answer = max(answer, (cnt+1)*(cnt+1))
+            else:
+                break
+            cnt+=1
+
+print(answer)
