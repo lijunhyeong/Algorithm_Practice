@@ -1,0 +1,40 @@
+# 아이디어
+# 금,은,동을 배열에 젖아한후, 금 은 동 순서로 내린차순 정렬한다.
+# 이 문제의 핵심은 같은 등수가 나온 뒤에 다음 나라의 등수를 지정해주는 것이다.
+# 이전 값을 넣을 금,은,동을 처음에 모두 -1로 초기화 한다.
+# 이전 나라의 금,은,동 개수와 현재 나라의 메달의 개수가 같다면 cnt+=1 한다.
+# 다음 나라 메달의 개수가 다르면 전 등수 + 같았단 나라 개수를 하면 된다.
+# 예를 들어,  1,2,3 번째 나라가 같다면 cnt = 3이고 이들의 등수 answer = 1이다
+# 4번 나라의 등수는 cnt+answer = 4가 된다.
+# 다른 예로, 2,3이 같으면 
+# 1번은 1등(answer=1), 2,3은 공동 2등(answer=2) 이때 cnt=2니깐, 4번 인덱스는 answer+cnt=4이다 
+
+import sys
+input = sys.stdin.readline
+
+n, k = map(int, input().split())
+graph = []
+for i in range(n):
+    num, g, s, b = map(int, input().split())
+    graph.append([num, g, s, b])
+
+
+# print(sorted(graph, key = lambda x: (-x[1], -x[2], -x[3] )))
+g, s, b = -1,-1,-1
+
+answer = 1
+cnt=0
+for i in sorted(graph, key = lambda x: (-x[1], -x[2], -x[3] )):
+
+    if i[1] == g and i[2] == s and i[3] == b:
+        cnt +=1
+    else:
+        answer+=cnt
+        cnt = 1
+
+    if i[0]==k:
+        print(answer)
+        break
+    
+    g, s, b = i[1], i[2], i[3]
+    
