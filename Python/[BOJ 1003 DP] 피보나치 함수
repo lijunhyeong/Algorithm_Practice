@@ -1,0 +1,26 @@
+# 아이디어
+# 이 문제는 0번부터 3까지 zero, one의 개수를 적어보았더니 규칙이 나왔다.
+# 점화식은 아래와 같다.
+# dp문제에서 메모이제이션을 할 때 최대값이 0일수 있기 때문에 넉넉하게 최대값에서 +3해주는 게 좋다.
+
+import sys
+input = sys.stdin.readline
+
+
+    
+answer = []
+maxNum = 0
+for i in range(int(input())):
+    n = int(input())
+    answer.append(n)
+    maxNum = max(maxNum, n)
+
+dp=[0]*(maxNum+3)
+dp[0] = [1,0]
+dp[1] = [0,1]
+
+for i in range(2, maxNum+1):
+    dp[i] = [dp[i-1][0] + dp[i-2][0], dp[i-1][1] + dp[i-2][1]]
+
+for i in answer:
+    print(dp[i][0], dp[i][1])
