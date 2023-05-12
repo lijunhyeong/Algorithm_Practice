@@ -1,0 +1,27 @@
+# 아이디어
+# 백준에서 삼성 SW 역량 테스트 기출 문제집에 있길래 풀어보았다.
+# 왜 정답률이 28.598%인지 모르겠다.(내가 풀 당시)
+# 각각의 시험장에 무조건 총감독관은 오직 1명 있어야 하고, 부감독관은 여러 명 있어도 된다.
+# answer = n으로 초기화 해서 로직을 시작한다.
+# 응시자-b를 하고 0보다 클 경우 c로 나눈 몫을 answer에 더한다.
+# answer%c가 0이상일 경우 answer+=1을 하면 필요한 최소 감독관의 수를 알 수 있다.
+
+import sys
+input = sys.stdin.readline
+
+n = int(input())
+
+graph = list(map(int, input().split()))
+b, c = map(int, input().split())
+
+answer = n
+
+for i in graph:
+    num = i-b
+    if num > 0:
+        # print(num//c, num%c)
+        answer+= num//c
+        if num%c >= 1:
+            answer+=1
+    
+print(answer)
