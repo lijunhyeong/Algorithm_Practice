@@ -1,0 +1,52 @@
+# 아이디어
+# 처음엔 백트레킹으로 풀었는데 Python3에서 시간초과가 났고 pypy에서는 통과했다.
+# 하지만 실제 코딩 테스트 시험에서는 Python3으로 풀어야기 때문에 의미없는 통과 그래서 찾아보니 DFS로 풀어야 된다고 해서 다시 풀었다.
+
+import sys
+input = sys.stdin.readline
+
+n = int(input())
+graph = list(map(int, input().split()))
+plus, minus, mul, div = list(map(int, input().split()))
+
+answerMax = sys.maxsize*-1
+answerMin = sys.maxsize 
+
+def dfs(depth, res):
+    global answerMax, answerMin, plus, minus, mul, div
+
+    if depth == n-1:
+        # 주어진 수열을 다 계산 했을 때, 최대값 최소값 갱신
+        answerMax = max(answerMax, res)
+        answerMin = min(answerMin, res)
+    else:
+        if plus > 0:
+            plus-=1
+            dfs(depth+1, res+graph[depth+1])
+            plus+=1
+
+        if minus > 0:
+            minus-=1
+            dfs(depth+1, res-graph[depth+1])
+            minus+=1
+
+        if mul > 0:
+            mul-=1
+            dfs(depth+1, res*graph[depth+1])
+            mul+=1
+
+        if div > 0:
+            div-=1
+            isCheck = True
+            # 조건에 맞게 음수 나누기 방
+            if res < 0:
+                res *=-1
+                dfs(depth+1, (res//graph[depth+1])*-1)
+            else:
+                dfs(depth+1, res//graph[depth+1])
+            div+=1 
+
+dfs(0, graph[0])
+
+print(answerMax)
+print(answerMin)
