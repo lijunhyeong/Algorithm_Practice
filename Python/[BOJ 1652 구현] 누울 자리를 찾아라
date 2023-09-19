@@ -1,0 +1,38 @@
+'''
+리스트에서 X를 기준으로 자르고 '.'개수가 2이상이면 카운트 했다
+예를들어, 
+..X..이면 ['..','..']이 된다.
+그렇다면 이 줄에는 누울 자리가 누개인 것이다.
+가로 리스트와 세로 리스트를 만들어 위와 같은 로직으로 누울자리를 구하였다.
+'''
+import sys
+input = sys.stdin.readline
+
+n = int(input())
+graph = [[0]*n for _ in range(n)]
+
+# 가로 카운트
+answerX = 0
+# 세로 카운트
+answerY = 0
+
+for i in range(n):
+    s = input()
+    for j in range(n):
+        # print(i, j, s[j])
+        graph[j][i] = s[j]
+
+    # 가로 카운트
+    ss = s.split('X')
+    for k in ss:
+        if k.count(".") >= 2:
+            answerX +=1
+
+# 세로 카운트
+for i in range(n):
+    s = str("".join(graph[i])).split("X")
+    for k in s:
+        if k.count(".") >= 2:
+            answerY +=1
+
+print(answerX, answerY)
